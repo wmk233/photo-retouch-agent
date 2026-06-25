@@ -17,6 +17,13 @@ class CreateRetouchJobRequest(BaseModel):
     user_instruction: str = Field(default="", alias="userInstruction")
 
 
+class RefineRetouchJobRequest(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    user_instruction: str = Field(alias="userInstruction")
+    plan: RetouchPlan | None = None
+
+
 class RetouchJob(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
@@ -24,6 +31,7 @@ class RetouchJob(BaseModel):
     source_image_id: str = Field(alias="sourceImageId")
     base_image_id: str | None = Field(default=None, alias="baseImageId")
     plan_id: str | None = Field(default=None, alias="planId")
+    plan: RetouchPlan | None = None
     user_instruction: str = Field(default="", alias="userInstruction")
     model_provider: str = Field(alias="modelProvider")
     model_name: str = Field(alias="modelName")

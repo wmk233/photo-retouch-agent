@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from app.domains.registry import domain_registry
 from app.api.dependencies import get_retouch_service
-from app.schemas.job import CreateRetouchJobRequest, RetouchJob
+from app.schemas.job import CreateRetouchJobRequest, RefineRetouchJobRequest, RetouchJob
 from app.schemas.retouch import RetouchPlan, RetouchPlansRequest
 from app.services.retouch_service import RetouchService
 
@@ -31,3 +31,12 @@ def get_retouch_job(
     service: Annotated[RetouchService, Depends(get_retouch_service)],
 ) -> RetouchJob:
     return service.get_job(job_id)
+
+
+@router.post("/jobs/{job_id}/refine", response_model=RetouchJob, response_model_by_alias=True)
+def refine_retouch_job(
+    job_id: str,
+    request: RefineRetouchJobRequest,
+    service: Annotated[RetouchService, Depends(get_retouch_service)],
+) -> RetouchJob:
+    return service.refine_job(job_id, request)

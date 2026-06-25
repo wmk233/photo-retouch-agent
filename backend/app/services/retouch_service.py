@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from app.core.errors import not_found
+from app.core.errors import bad_request, not_found
 from app.providers.base import ImageEditProvider
 from app.providers.mock_image_provider import MockImageProvider
-from app.schemas.job import CreateRetouchJobRequest, RetouchJob
+from app.schemas.job import CreateRetouchJobRequest, RefineRetouchJobRequest, RetouchJob
 from app.services.job_store import JobStore
 from app.services.storage import StorageService
 
@@ -32,6 +32,7 @@ class RetouchService:
             source_image_id=request.source_image_id,
             base_image_id=request.base_image_id,
             plan_id=request.plan.plan_id,
+            plan=request.plan,
             user_instruction=request.user_instruction,
             model_provider=self.provider.provider_name,
             model_name=self.provider.model_name,
@@ -67,3 +68,21 @@ class RetouchService:
 
     def get_job(self, job_id: str) -> RetouchJob:
         return self.jobs.get(job_id)
+
+    def refine_job(self, job_id: str, request: RefineRetouchJobRequest) -> RetouchJob:
+        parent = self.jobs.get(job_id)
+        if parent.status != "succeeded" or not parent.output_image_ids:
+            raise bad_request("Only succeeded jobs with output can be refined.")
+
+        plan = request.plan or parent.plan
+        if plan is None:
+            raise bad_request("A retouch plan is required for refinement.")
+
+        return self.create_job(
+            CreateRetouchJobRequest(
+                source_image_id=parent.source_image_id,
+                base_image_id=parent.output_image_ids[-1],
+                plan=plan,
+                user_instruction=request.user_instruction,
+            )
+        )
