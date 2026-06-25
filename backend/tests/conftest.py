@@ -6,7 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from app.api.routes.photos import get_storage_service
+from app.api.dependencies import get_storage_service
 from app.core.config import Settings
 from app.main import create_app
 from app.services.storage import StorageService
