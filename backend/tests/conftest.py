@@ -6,9 +6,10 @@ import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from app.api.dependencies import get_storage_service
+from app.api.dependencies import get_job_store, get_storage_service
 from app.core.config import Settings
 from app.main import create_app
+from app.services.job_store import JobStore
 from app.services.storage import StorageService
 
 
@@ -21,6 +22,7 @@ def temp_settings(tmp_path: Path) -> Settings:
 def client(temp_settings: Settings) -> Iterator[TestClient]:
     app = create_app()
     app.dependency_overrides[get_storage_service] = lambda: StorageService(temp_settings)
+    app.dependency_overrides[get_job_store] = lambda: JobStore(temp_settings)
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()

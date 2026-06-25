@@ -1,0 +1,69 @@
+from datetime import datetime, timezone
+from uuid import uuid4
+
+from app.core.errors import not_found
+from app.providers.base import ImageEditProvider
+from app.providers.mock_image_provider import MockImageProvider
+from app.schemas.job import CreateRetouchJobRequest, RetouchJob
+from app.services.job_store import JobStore
+from app.services.storage import StorageService
+
+
+class RetouchService:
+    def __init__(
+        self,
+        storage: StorageService,
+        jobs: JobStore,
+        provider: ImageEditProvider | None = None,
+    ) -> None:
+        self.storage = storage
+        self.jobs = jobs
+        self.provider = provider or MockImageProvider()
+
+    def create_job(self, request: CreateRetouchJobRequest) -> RetouchJob:
+        base_image_id = request.base_image_id or request.source_image_id
+        source_path = self.storage.resolve_image_path(base_image_id)
+        if source_path is None:
+            raise not_found("Base image not found.")
+
+        now = datetime.now(timezone.utc)
+        job = RetouchJob(
+            job_id=f"job_{uuid4().hex[:12]}",
+            source_image_id=request.source_image_id,
+            base_image_id=request.base_image_id,
+            plan_id=request.plan.plan_id,
+            user_instruction=request.user_instruction,
+            model_provider=self.provider.provider_name,
+            model_name=self.provider.model_name,
+            status="running",
+            output_image_ids=[],
+            output_urls=[],
+            error_message=None,
+            created_at=now,
+            updated_at=now,
+        )
+        self.jobs.save(job)
+
+        try:
+            output_image_id = f"out_{uuid4().hex[:12]}"
+            output_filename = f"{output_image_id}.jpg"
+            output_path = self.storage.config.outputs_dir / output_filename
+            self.provider.edit_image(
+                source_path=source_path,
+                output_path=output_path,
+                plan=request.plan,
+                user_instruction=request.user_instruction,
+            )
+            job.status = "succeeded"
+            job.output_image_ids = [output_image_id]
+            job.output_urls = [f"/data/outputs/{output_filename}"]
+            job.updated_at = datetime.now(timezone.utc)
+        except Exception as exc:  # pragma: no cover - defensive status capture
+            job.status = "failed"
+            job.error_message = str(exc)
+            job.updated_at = datetime.now(timezone.utc)
+
+        return self.jobs.save(job)
+
+    def get_job(self, job_id: str) -> RetouchJob:
+        return self.jobs.get(job_id)

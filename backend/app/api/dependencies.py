@@ -1,5 +1,22 @@
+from typing import Annotated
+
+from fastapi import Depends
+
 from app.services.storage import StorageService, storage_service
+from app.services.job_store import JobStore, job_store
+from app.services.retouch_service import RetouchService
 
 
 def get_storage_service() -> StorageService:
     return storage_service
+
+
+def get_job_store() -> JobStore:
+    return job_store
+
+
+def get_retouch_service(
+    storage: Annotated[StorageService, Depends(get_storage_service)],
+    jobs: Annotated[JobStore, Depends(get_job_store)],
+) -> RetouchService:
+    return RetouchService(storage, jobs)
