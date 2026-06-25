@@ -9,6 +9,7 @@ class Settings:
     max_upload_bytes: int = 10 * 1024 * 1024
     allowed_image_types: tuple[str, ...] = ("image/jpeg", "image/png", "image/webp")
     data_dir: Path = Path(__file__).resolve().parents[3] / "data"
+    frontend_dir: Path = Path(__file__).resolve().parents[3] / "frontend"
 
     @property
     def uploads_dir(self) -> Path:

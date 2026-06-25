@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.routes.analyze import router as analyze_router
@@ -17,11 +18,20 @@ def create_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
     )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://127.0.0.1:4173", "http://localhost:4173"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     app.mount("/data", StaticFiles(directory=settings.data_dir), name="data")
     app.include_router(health_router, prefix="/api")
     app.include_router(photos_router, prefix="/api")
     app.include_router(analyze_router, prefix="/api")
     app.include_router(retouch_router, prefix="/api")
+    if settings.frontend_dir.exists():
+        app.mount("/", StaticFiles(directory=settings.frontend_dir, html=True), name="frontend")
     return app
 
 

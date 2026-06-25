@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Retouch Agent</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">PR</span>
+        <div>
+          <h1>Photo Retouch Agent</h1>
+          <p>照片美化 Agent MVP</p>
+        </div>
+      </div>
+      <div class="status" id="status">等待上传</div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <span>Source</span>
+            <h2>原图</h2>
+          </div>
+          <small>JPG / PNG / WebP · 10MB</small>
+        </div>
+        <div class="actions">
+          <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+          <button id="uploadButton" class="primary" type="button">选择照片</button>
+        </div>
+        <figure class="image-box">
+          <img id="sourceImage" alt="原图预览" hidden />
+          <figcaption id="sourceEmpty">未上传</figcaption>
+        </figure>
+        <dl class="meta" id="photoMeta">
+          <div><dt>图片 ID</dt><dd>--</dd></div>
+          <div><dt>尺寸</dt><dd>--</dd></div>
+          <div><dt>大小</dt><dd>--</dd></div>
+          <div><dt>格式</dt><dd>--</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <span>Agent</span>
+            <h2>分析与方案</h2>
+          </div>
+          <button id="analyzeButton" type="button" disabled>开始分析</button>
+        </div>
+        <div id="analysisEmpty" class="empty">待分析</div>
+        <div id="analysisContent" hidden>
+          <div class="summary">
+            <div><span>场景</span><strong id="sceneType">--</strong></div>
+            <div><span>主体</span><strong id="subjectSummary">--</strong></div>
+            <div><span>风险</span><strong id="riskSummary">--</strong></div>
+          </div>
+          <div id="analysisGroups" class="groups"></div>
+        </div>
+        <div class="plans-title">
+          <h3>一键方案</h3>
+          <span id="planCount">0</span>
+        </div>
+        <div id="planList" class="plans"></div>
+      </section>
+
+      <section class="panel result-panel">
+        <div class="panel-head">
+          <div>
+            <span>Output</span>
+            <h2>结果</h2>
+          </div>
+          <div class="actions">
+            <button id="regenerateButton" type="button" disabled>重新生成</button>
+            <a id="downloadLink" class="primary disabled" href="#" download>下载</a>
+          </div>
+        </div>
+        <div class="result-box">
+          <img id="resultImage" alt="美化结果" hidden />
+          <div id="resultEmpty" class="empty">暂无结果</div>
+        </div>
+        <p id="executionNote" class="note">--</p>
+      </section>
+    </main>
+
+    <footer class="dock">
+      <div id="history" class="history">等待任务</div>
+      <form id="refineForm" class="refine">
+        <input
+          id="instructionInput"
+          type="text"
+          placeholder="例如：再自然一点，肤色再亮一些，保持风格但裁成头像"
+          disabled
+        />
+        <button id="refineButton" class="primary" type="submit" disabled>继续修改</button>
+      </form>
+    </footer>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
