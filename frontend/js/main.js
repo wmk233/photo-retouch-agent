@@ -1,4 +1,12 @@
-import { analyzePhoto, assetUrl, createJob, createPlans, refineJob, uploadPhoto } from "./api.js";
+import {
+  analyzePhoto,
+  assetUrl,
+  createJob,
+  createPlans,
+  getProviderCapabilities,
+  refineJob,
+  uploadPhoto,
+} from "./api.js?v=0.2.0";
 
 const state = {
   photo: null,
@@ -7,12 +15,25 @@ const state = {
   selectedPlan: null,
   currentJob: null,
   history: [],
+  provider: {
+    name: "auto",
+    apiKey: "",
+    workspaceId: "",
+    capabilities: null,
+  },
 };
 
 const $ = (selector) => document.querySelector(selector);
 
 const els = {
   status: $("#status"),
+  providerSelect: $("#providerSelect"),
+  apiKeyField: $("#apiKeyField"),
+  apiKeyInput: $("#apiKeyInput"),
+  workspaceField: $("#workspaceField"),
+  workspaceInput: $("#workspaceInput"),
+  providerState: $("#providerState"),
+  providerHint: $("#providerHint"),
   fileInput: $("#fileInput"),
   uploadButton: $("#uploadButton"),
   sourceImage: $("#sourceImage"),
@@ -45,6 +66,19 @@ els.regenerateButton.addEventListener("click", () => {
   if (state.photo && state.selectedPlan) runRetouch(state.selectedPlan, "");
 });
 els.refineForm.addEventListener("submit", handleRefine);
+els.providerSelect.addEventListener("change", () => {
+  state.provider.name = els.providerSelect.value;
+  renderProviderControls();
+});
+els.apiKeyInput.addEventListener("input", () => {
+  state.provider.apiKey = els.apiKeyInput.value;
+  renderProviderControls();
+});
+els.workspaceInput.addEventListener("input", () => {
+  state.provider.workspaceId = els.workspaceInput.value;
+});
+
+initializeProviderControls();
 
 async function handleUpload(event) {
   const file = event.target.files?.[0];
@@ -86,7 +120,12 @@ async function runRetouch(plan, instruction) {
   if (!state.photo || !plan) return;
 
   await runTask(instruction ? "修改中" : "生成中", async () => {
-    const job = await createJob(state.photo.imageId, plan, instruction);
+    const job = await createJob(
+      state.photo.imageId,
+      plan,
+      instruction,
+      providerRequest(),
+    );
     state.currentJob = job;
     state.selectedPlan = plan;
     state.history.push(instruction ? `修改：${instruction}` : `生成：${plan.title}`);
@@ -102,7 +141,11 @@ async function handleRefine(event) {
   if (!instruction || !state.currentJob) return;
 
   await runTask("修改中", async () => {
-    const job = await refineJob(state.currentJob.jobId, instruction);
+    const job = await refineJob(
+      state.currentJob.jobId,
+      instruction,
+      providerRequest(),
+    );
     state.currentJob = job;
     state.history.push(`修改：${instruction}`);
     renderResult(job, job.plan || state.selectedPlan, instruction);
@@ -218,6 +261,49 @@ function renderHistory() {
   els.history.textContent = state.history.length ? state.history.slice(-4).join(" · ") : "等待任务";
 }
 
+async function initializeProviderControls() {
+  try {
+    state.provider.capabilities = await getProviderCapabilities();
+  } catch (error) {
+    state.provider.capabilities = null;
+  }
+  renderProviderControls();
+}
+
+function renderProviderControls() {
+  const isMock = state.provider.name === "mock";
+  const capabilities = state.provider.capabilities;
+  els.apiKeyField.hidden = isMock;
+  els.workspaceField.hidden = isMock;
+
+  if (isMock) {
+    els.providerState.textContent = "本地 Pillow 模拟";
+    els.providerHint.textContent = "不调用外部模型，不需要 API Key";
+    return;
+  }
+
+  const hasUserKey = Boolean(state.provider.apiKey.trim());
+  const serverConfigured = Boolean(capabilities?.qwenConfigured);
+  if (hasUserKey) {
+    els.providerState.textContent = "使用本次会话 API Key";
+  } else if (serverConfigured) {
+    els.providerState.textContent = `服务端已配置 ${capabilities.qwenModel}`;
+  } else if (state.provider.name === "qwen") {
+    els.providerState.textContent = "需要 Qwen API Key";
+  } else {
+    els.providerState.textContent = "无 Key 时使用本地模拟";
+  }
+  els.providerHint.textContent = "API Key 仅随生成请求发送，不会写入任务记录";
+}
+
+function providerRequest() {
+  return {
+    name: state.provider.name,
+    apiKey: state.provider.apiKey.trim(),
+    workspaceId: state.provider.workspaceId.trim(),
+  };
+}
+
 function setMeta(values) {
   [...els.photoMeta.querySelectorAll("dd")].forEach((node, index) => {
     node.textContent = values[index] || "--";
@@ -242,6 +328,9 @@ function setBusy(isBusy) {
   els.regenerateButton.disabled = isBusy || !state.currentJob;
   els.refineButton.disabled = isBusy || !state.currentJob;
   els.instructionInput.disabled = isBusy || !state.currentJob;
+  els.providerSelect.disabled = isBusy;
+  els.apiKeyInput.disabled = isBusy;
+  els.workspaceInput.disabled = isBusy;
 }
 
 function setStatus(text) {

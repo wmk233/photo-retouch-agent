@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo Retouch Agent</title>
-    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/styles.css?v=0.2.0" />
   </head>
   <body>
     <header class="topbar">
@@ -17,6 +17,41 @@
       </div>
       <div class="status" id="status">等待上传</div>
     </header>
+
+    <section class="provider-bar" aria-label="图像模型配置">
+      <label>
+        <span>执行模型</span>
+        <select id="providerSelect">
+          <option value="auto">自动选择</option>
+          <option value="mock">本地模拟</option>
+          <option value="qwen">Qwen Image</option>
+        </select>
+      </label>
+      <label id="apiKeyField">
+        <span>API Key</span>
+        <input
+          id="apiKeyInput"
+          type="password"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="可留空使用服务端环境变量"
+        />
+      </label>
+      <label id="workspaceField">
+        <span>Workspace ID</span>
+        <input
+          id="workspaceInput"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="可选，优先使用服务端配置"
+        />
+      </label>
+      <div class="provider-state">
+        <strong id="providerState">读取配置中</strong>
+        <span id="providerHint">API Key 仅用于本次会话，不会保存</span>
+      </div>
+    </section>
 
     <main class="workspace">
       <section class="panel">
@@ -99,6 +134,6 @@
       </form>
     </footer>
 
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/main.js?v=0.2.0"></script>
   </body>
 </html>

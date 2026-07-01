@@ -8,6 +8,7 @@ from app.schemas.retouch import RetouchPlan
 class MockImageProvider:
     provider_name = "local"
     model_name = "pillow-mock-retoucher"
+    output_extension = ".jpg"
 
     def edit_image(
         self,

@@ -7,6 +7,7 @@ from app.schemas.retouch import RetouchPlan
 class ImageEditProvider(Protocol):
     provider_name: str
     model_name: str
+    output_extension: str
 
     def edit_image(
         self,

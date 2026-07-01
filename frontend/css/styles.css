@@ -30,7 +30,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -122,6 +123,58 @@ figure {
   padding: 0 14px;
   background: #fff;
   color: var(--muted);
+  font-size: 13px;
+}
+
+.provider-bar {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1fr) minmax(190px, 0.8fr) minmax(220px, 1fr);
+  gap: 12px;
+  align-items: end;
+  padding: 12px clamp(16px, 3vw, 32px);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.provider-bar label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.provider-bar label > span,
+.provider-state span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.provider-bar input,
+.provider-bar select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  background: #fff;
+  color: var(--text);
+}
+
+.provider-bar input:focus,
+.provider-bar select:focus {
+  border-color: var(--accent);
+  outline: 3px solid var(--accent-soft);
+}
+
+.provider-state {
+  min-height: 38px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 0 2px;
+}
+
+.provider-state strong {
   font-size: 13px;
 }
 
@@ -380,6 +433,10 @@ figcaption {
 }
 
 @media (max-width: 1180px) {
+  .provider-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .workspace {
     grid-template-columns: minmax(280px, 0.9fr) minmax(420px, 1.1fr);
   }
@@ -400,7 +457,8 @@ figcaption {
   .dock,
   .refine,
   .summary,
-  .meta {
+  .meta,
+  .provider-bar {
     grid-template-columns: 1fr;
   }
 

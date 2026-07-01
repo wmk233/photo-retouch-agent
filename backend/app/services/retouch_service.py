@@ -47,7 +47,7 @@ class RetouchService:
 
         try:
             output_image_id = f"out_{uuid4().hex[:12]}"
-            output_filename = f"{output_image_id}.jpg"
+            output_filename = f"{output_image_id}{self.provider.output_extension}"
             output_path = self.storage.config.outputs_dir / output_filename
             self.provider.edit_image(
                 source_path=source_path,
@@ -65,6 +65,9 @@ class RetouchService:
             job.updated_at = datetime.now(timezone.utc)
 
         return self.jobs.save(job)
+
+    def with_provider(self, provider: ImageEditProvider) -> "RetouchService":
+        return RetouchService(self.storage, self.jobs, provider)
 
     def get_job(self, job_id: str) -> RetouchJob:
         return self.jobs.get(job_id)

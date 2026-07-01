@@ -1,7 +1,9 @@
 const localApi = "http://127.0.0.1:8000/api";
+const staticPreviewPorts = new Set(["4173", "5500"]);
 
 export const API_BASE =
-  window.PHOTO_AGENT_API_BASE || (window.location.origin.includes(":8000") ? "/api" : localApi);
+  window.PHOTO_AGENT_API_BASE ||
+  (staticPreviewPorts.has(window.location.port) ? localApi : "/api");
 
 export function assetUrl(path) {
   if (!path) return "";
@@ -44,18 +46,30 @@ export function createPlans(analysis) {
   });
 }
 
-export function createJob(sourceImageId, plan, userInstruction = "") {
+export function getProviderCapabilities() {
+  return request("/retouch/providers");
+}
+
+function providerHeaders(provider = {}) {
+  const headers = { "Content-Type": "application/json" };
+  if (provider.name) headers["X-AI-Provider"] = provider.name;
+  if (provider.apiKey) headers["X-AI-API-Key"] = provider.apiKey;
+  if (provider.workspaceId) headers["X-AI-Workspace-Id"] = provider.workspaceId;
+  return headers;
+}
+
+export function createJob(sourceImageId, plan, userInstruction = "", provider = {}) {
   return request("/retouch/jobs", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: providerHeaders(provider),
     body: JSON.stringify({ sourceImageId, plan, userInstruction }),
   });
 }
 
-export function refineJob(jobId, userInstruction) {
+export function refineJob(jobId, userInstruction, provider = {}) {
   return request(`/retouch/jobs/${jobId}/refine`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: providerHeaders(provider),
     body: JSON.stringify({ userInstruction }),
   });
 }
