@@ -24,6 +24,9 @@ class Settings:
     image_provider: str = field(
         default_factory=lambda: os.getenv("PHOTO_AGENT_IMAGE_PROVIDER", "mock").strip().lower()
     )
+    brain_provider: str = field(
+        default_factory=lambda: os.getenv("PHOTO_AGENT_BRAIN_PROVIDER", "local").strip().lower()
+    )
     dashscope_api_key: str | None = field(
         default_factory=lambda: _optional_env("DASHSCOPE_API_KEY"),
         repr=False,
@@ -46,6 +49,32 @@ class Settings:
         default_factory=lambda: float(os.getenv("PHOTO_AGENT_PROVIDER_TIMEOUT", "180"))
     )
     provider_download_limit_bytes: int = 30 * 1024 * 1024
+    deepseek_api_key: str | None = field(
+        default_factory=lambda: _optional_env("DEEPSEEK_API_KEY"),
+        repr=False,
+    )
+    deepseek_endpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "DEEPSEEK_ENDPOINT", "https://api.deepseek.com/chat/completions"
+        ).strip()
+    )
+    deepseek_model: str = field(
+        default_factory=lambda: os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash").strip()
+    )
+    zhipu_api_key: str | None = field(
+        default_factory=lambda: _optional_env("ZHIPU_API_KEY")
+        or _optional_env("ZHIPUAI_API_KEY"),
+        repr=False,
+    )
+    zhipu_endpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "ZHIPU_ENDPOINT",
+            "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        ).strip()
+    )
+    zhipu_model: str = field(
+        default_factory=lambda: os.getenv("ZHIPU_MODEL", "glm-5.1").strip()
+    )
 
     @property
     def uploads_dir(self) -> Path:

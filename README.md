@@ -7,6 +7,7 @@
 - 上传 JPG、PNG、WebP 图片，限制 10MB。
 - 生成人像照片结构化分析。
 - 提供自然美化、精致头像、氛围风格三个 RetouchPlan。
+- 支持本地规则、DeepSeek、GLM 作为 Agent 大脑优化修图指令。
 - 支持 Pillow mock provider 和阿里百炼 Qwen Image provider。
 - 支持服务端环境变量 API Key，或用户在当前页面临时提供 API Key。
 - 查询任务状态和结果。
@@ -19,6 +20,7 @@
 backend/
   app/
     api/routes/        # HTTP 接口
+    brains/            # DeepSeek/GLM/本地 Agent 大脑
     core/              # 配置和错误处理
     domains/           # portrait/landscape/product 等领域扩展点
     providers/         # 图像编辑模型适配层
@@ -62,6 +64,45 @@ API 文档：
 http://127.0.0.1:8000/docs
 ```
 
+## 模型分层
+
+项目将模型分为两层，避免把文本推理能力误当成图像编辑能力：
+
+| 层级 | 可选项 | 职责 |
+| --- | --- | --- |
+| Agent 大脑 | 本地规则、DeepSeek、GLM | 理解用户补充要求，优化图像编辑 prompt |
+| 修图执行器 | Pillow mock、Qwen Image | 基于原图实际生成美化结果 |
+
+DeepSeek 官方 API 当前提供文本 ChatCompletions，不直接编辑图片。默认使用 `deepseek-v4-flash`，没有使用即将下线的旧 `deepseek-chat` 名称。
+
+智谱的 GLM 文本/视觉模型输出文本，GLM-Image 官方接口是文生图；当前使用 `glm-5.1` 进行 prompt 优化，不把它伪装成原图精修模型。后续可以单独接入 GLM-5V 做照片分析，但修图执行仍需 Qwen Image 或其他 image-to-image 模型。
+
+官方文档：
+
+```text
+https://api-docs.deepseek.com/
+https://docs.bigmodel.cn/api-reference/模型-api/对话补全
+https://docs.bigmodel.cn/api-reference/模型-api/图像生成
+```
+
+### DeepSeek Agent 大脑
+
+```dotenv
+PHOTO_AGENT_BRAIN_PROVIDER=deepseek
+DEEPSEEK_API_KEY=sk-your-deepseek-key
+DEEPSEEK_MODEL=deepseek-v4-flash
+```
+
+### GLM Agent 大脑
+
+```dotenv
+PHOTO_AGENT_BRAIN_PROVIDER=glm
+ZHIPU_API_KEY=your-zhipu-api-key
+ZHIPU_MODEL=glm-5.1
+```
+
+也可以在前端选择 DeepSeek 或 GLM，并临时输入对应 API Key。Agent Key 使用 `X-Agent-API-Key` 请求头发送，不会写入 job JSON。
+
 ## 接入 Qwen Image
 
 Qwen provider 使用阿里云百炼图像编辑 HTTP API，默认模型为 `qwen-image-2.0-pro`。官方接口支持将本地图片编码为 Base64 输入，并返回有效期有限的结果图片 URL；后端会立即下载结果到本地 `data/outputs/`。
@@ -102,7 +143,7 @@ DASHSCOPE_REGION=singapore
 
 ### 方式二：用户临时提供 API Key
 
-前端选择“Qwen Image”，输入 API Key；如果服务端没有配置 Workspace ID，同时填写对应 Workspace ID。Key 通过 `X-AI-API-Key` 请求头发送，只在当前页面内存和单次后端请求中使用：
+前端选择“Qwen Image”，输入修图 API Key；如果服务端没有配置 Workspace ID，同时填写对应 Workspace ID。Key 通过 `X-AI-API-Key` 请求头发送，只在当前页面内存和单次后端请求中使用：
 
 - 不写入 job JSON。
 - 不写入浏览器 Local Storage。

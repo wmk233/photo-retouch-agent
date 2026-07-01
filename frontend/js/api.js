@@ -50,26 +50,34 @@ export function getProviderCapabilities() {
   return request("/retouch/providers");
 }
 
-function providerHeaders(provider = {}) {
+function providerHeaders(provider = {}, brain = {}) {
   const headers = { "Content-Type": "application/json" };
   if (provider.name) headers["X-AI-Provider"] = provider.name;
   if (provider.apiKey) headers["X-AI-API-Key"] = provider.apiKey;
   if (provider.workspaceId) headers["X-AI-Workspace-Id"] = provider.workspaceId;
+  if (brain.name) headers["X-Agent-Provider"] = brain.name;
+  if (brain.apiKey) headers["X-Agent-API-Key"] = brain.apiKey;
   return headers;
 }
 
-export function createJob(sourceImageId, plan, userInstruction = "", provider = {}) {
+export function createJob(
+  sourceImageId,
+  plan,
+  userInstruction = "",
+  provider = {},
+  brain = {},
+) {
   return request("/retouch/jobs", {
     method: "POST",
-    headers: providerHeaders(provider),
+    headers: providerHeaders(provider, brain),
     body: JSON.stringify({ sourceImageId, plan, userInstruction }),
   });
 }
 
-export function refineJob(jobId, userInstruction, provider = {}) {
+export function refineJob(jobId, userInstruction, provider = {}, brain = {}) {
   return request(`/retouch/jobs/${jobId}/refine`, {
     method: "POST",
-    headers: providerHeaders(provider),
+    headers: providerHeaders(provider, brain),
     body: JSON.stringify({ userInstruction }),
   });
 }

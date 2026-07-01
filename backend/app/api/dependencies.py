@@ -6,6 +6,7 @@ from app.services.storage import StorageService, storage_service
 from app.services.job_store import JobStore, job_store
 from app.services.retouch_service import RetouchService
 from app.providers.factory import ImageProviderFactory, provider_factory
+from app.brains.factory import AgentBrainFactory, agent_brain_factory
 
 
 def get_storage_service() -> StorageService:
@@ -18,6 +19,10 @@ def get_job_store() -> JobStore:
 
 def get_provider_factory() -> ImageProviderFactory:
     return provider_factory
+
+
+def get_agent_brain_factory() -> AgentBrainFactory:
+    return agent_brain_factory
 
 
 def get_retouch_service(

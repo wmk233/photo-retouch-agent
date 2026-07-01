@@ -2,7 +2,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from app.api.dependencies import get_provider_factory
+from app.api.dependencies import get_agent_brain_factory, get_provider_factory
+from app.brains.factory import AgentBrainFactory
+from app.brains.local import LocalPromptBrain
 from app.providers.factory import ImageProviderFactory
 from app.providers.mock_image_provider import MockImageProvider
 from tests.conftest import make_image_bytes
@@ -34,6 +36,31 @@ class CapturingProviderFactory(ImageProviderFactory):
         }
 
 
+class CapturingBrainFactory(AgentBrainFactory):
+    def __init__(self) -> None:
+        self.received: dict[str, str | None] = {}
+
+    def create(
+        self,
+        provider_name: str | None = None,
+        api_key: str | None = None,
+    ) -> LocalPromptBrain:
+        self.received = {
+            "provider": provider_name,
+            "api_key": api_key,
+        }
+        return LocalPromptBrain()
+
+    def capabilities(self) -> dict:
+        return {
+            "defaultBrainProvider": "local",
+            "deepseekConfigured": False,
+            "deepseekModel": "deepseek-v4-flash",
+            "glmConfigured": False,
+            "glmModel": "glm-5.1",
+        }
+
+
 def _create_plan(client: TestClient) -> tuple[str, dict]:
     upload = client.post(
         "/api/photos/upload",
@@ -54,6 +81,11 @@ def test_provider_capabilities_are_safe(client: TestClient) -> None:
         "qwenConfigured": False,
         "qwenModel": "qwen-image-2.0-pro",
         "workspaceConfigured": False,
+        "defaultBrainProvider": "local",
+        "deepseekConfigured": False,
+        "deepseekModel": "deepseek-v4-flash",
+        "glmConfigured": False,
+        "glmModel": "glm-5.1",
     }
     assert "api" not in response.text.lower()
 
@@ -63,16 +95,21 @@ def test_request_api_key_is_not_persisted(
     temp_settings,
 ) -> None:
     factory = CapturingProviderFactory()
+    brain_factory = CapturingBrainFactory()
     client.app.dependency_overrides[get_provider_factory] = lambda: factory
+    client.app.dependency_overrides[get_agent_brain_factory] = lambda: brain_factory
     image_id, plan = _create_plan(client)
-    secret = "sk-user-secret-never-store"
+    image_secret = "sk-image-secret-never-store"
+    brain_secret = "sk-brain-secret-never-store"
 
     response = client.post(
         "/api/retouch/jobs",
         headers={
             "X-AI-Provider": "qwen",
-            "X-AI-API-Key": secret,
+            "X-AI-API-Key": image_secret,
             "X-AI-Workspace-Id": "workspace123",
+            "X-Agent-Provider": "deepseek",
+            "X-Agent-API-Key": brain_secret,
         },
         json={"sourceImageId": image_id, "plan": plan, "userInstruction": ""},
     )
@@ -80,9 +117,17 @@ def test_request_api_key_is_not_persisted(
     assert response.status_code == 200
     assert factory.received == {
         "provider": "qwen",
-        "api_key": secret,
+        "api_key": image_secret,
         "workspace_id": "workspace123",
+    }
+    assert brain_factory.received == {
+        "provider": "deepseek",
+        "api_key": brain_secret,
     }
     job_files = list(Path(temp_settings.jobs_dir).glob("*.json"))
     assert job_files
-    assert all(secret not in path.read_text(encoding="utf-8") for path in job_files)
+    assert all(
+        image_secret not in path.read_text(encoding="utf-8")
+        and brain_secret not in path.read_text(encoding="utf-8")
+        for path in job_files
+    )

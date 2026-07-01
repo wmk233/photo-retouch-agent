@@ -6,7 +6,7 @@ import {
   getProviderCapabilities,
   refineJob,
   uploadPhoto,
-} from "./api.js?v=0.2.0";
+} from "./api.js?v=0.3.0";
 
 const state = {
   photo: null,
@@ -21,12 +21,21 @@ const state = {
     workspaceId: "",
     capabilities: null,
   },
+  brain: {
+    name: "local",
+    apiKey: "",
+  },
 };
 
 const $ = (selector) => document.querySelector(selector);
 
 const els = {
   status: $("#status"),
+  brainProviderSelect: $("#brainProviderSelect"),
+  brainApiKeyField: $("#brainApiKeyField"),
+  brainApiKeyInput: $("#brainApiKeyInput"),
+  brainProviderState: $("#brainProviderState"),
+  brainProviderHint: $("#brainProviderHint"),
   providerSelect: $("#providerSelect"),
   apiKeyField: $("#apiKeyField"),
   apiKeyInput: $("#apiKeyInput"),
@@ -77,6 +86,14 @@ els.apiKeyInput.addEventListener("input", () => {
 els.workspaceInput.addEventListener("input", () => {
   state.provider.workspaceId = els.workspaceInput.value;
 });
+els.brainProviderSelect.addEventListener("change", () => {
+  state.brain.name = els.brainProviderSelect.value;
+  renderBrainControls();
+});
+els.brainApiKeyInput.addEventListener("input", () => {
+  state.brain.apiKey = els.brainApiKeyInput.value;
+  renderBrainControls();
+});
 
 initializeProviderControls();
 
@@ -125,6 +142,7 @@ async function runRetouch(plan, instruction) {
       plan,
       instruction,
       providerRequest(),
+      brainRequest(),
     );
     state.currentJob = job;
     state.selectedPlan = plan;
@@ -145,6 +163,7 @@ async function handleRefine(event) {
       state.currentJob.jobId,
       instruction,
       providerRequest(),
+      brainRequest(),
     );
     state.currentJob = job;
     state.history.push(`修改：${instruction}`);
@@ -243,7 +262,11 @@ function renderResult(job, plan, instruction) {
   els.refineButton.disabled = false;
   els.executionNote.textContent = instruction
     ? `二次修改：${instruction}。基于上一版结果继续生成。`
-    : `方案：${plan?.title || job.planId}。模型：${job.modelProvider}/${job.modelName}。`;
+    : (
+      `方案：${plan?.title || job.planId}。` +
+      `Agent：${job.brainProvider}/${job.brainModel}；` +
+      `修图：${job.modelProvider}/${job.modelName}。`
+    );
 }
 
 function renderGroup([title, items, tone]) {
@@ -268,6 +291,7 @@ async function initializeProviderControls() {
     state.provider.capabilities = null;
   }
   renderProviderControls();
+  renderBrainControls();
 }
 
 function renderProviderControls() {
@@ -304,6 +328,43 @@ function providerRequest() {
   };
 }
 
+function renderBrainControls() {
+  const isLocal = state.brain.name === "local";
+  const capabilities = state.provider.capabilities;
+  els.brainApiKeyField.hidden = isLocal;
+
+  if (isLocal) {
+    els.brainProviderState.textContent = "本地规则规划";
+    els.brainProviderHint.textContent = "不调用外部文本模型";
+    return;
+  }
+
+  const hasUserKey = Boolean(state.brain.apiKey.trim());
+  const isDeepSeek = state.brain.name === "deepseek";
+  const serverConfigured = isDeepSeek
+    ? Boolean(capabilities?.deepseekConfigured)
+    : Boolean(capabilities?.glmConfigured);
+  const model = isDeepSeek
+    ? capabilities?.deepseekModel || "DeepSeek"
+    : capabilities?.glmModel || "GLM";
+
+  if (hasUserKey) {
+    els.brainProviderState.textContent = `使用本次会话 ${model} Key`;
+  } else if (serverConfigured) {
+    els.brainProviderState.textContent = `服务端已配置 ${model}`;
+  } else {
+    els.brainProviderState.textContent = `需要 ${model} API Key`;
+  }
+  els.brainProviderHint.textContent = "仅优化修图指令，不直接生成或编辑图片";
+}
+
+function brainRequest() {
+  return {
+    name: state.brain.name,
+    apiKey: state.brain.apiKey.trim(),
+  };
+}
+
 function setMeta(values) {
   [...els.photoMeta.querySelectorAll("dd")].forEach((node, index) => {
     node.textContent = values[index] || "--";
@@ -331,6 +392,8 @@ function setBusy(isBusy) {
   els.providerSelect.disabled = isBusy;
   els.apiKeyInput.disabled = isBusy;
   els.workspaceInput.disabled = isBusy;
+  els.brainProviderSelect.disabled = isBusy;
+  els.brainApiKeyInput.disabled = isBusy;
 }
 
 function setStatus(text) {

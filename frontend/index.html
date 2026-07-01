@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo Retouch Agent</title>
-    <link rel="stylesheet" href="./css/styles.css?v=0.2.0" />
+    <link rel="stylesheet" href="./css/styles.css?v=0.3.0" />
   </head>
   <body>
     <header class="topbar">
@@ -20,7 +20,29 @@
 
     <section class="provider-bar" aria-label="图像模型配置">
       <label>
-        <span>执行模型</span>
+        <span>Agent 大脑</span>
+        <select id="brainProviderSelect">
+          <option value="local">本地规则</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="glm">GLM</option>
+        </select>
+      </label>
+      <label id="brainApiKeyField" hidden>
+        <span>Agent API Key</span>
+        <input
+          id="brainApiKeyInput"
+          type="password"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="可留空使用服务端环境变量"
+        />
+      </label>
+      <div class="provider-state">
+        <strong id="brainProviderState">本地规则规划</strong>
+        <span id="brainProviderHint">优化修图指令，不直接编辑图片</span>
+      </div>
+      <label>
+        <span>修图模型</span>
         <select id="providerSelect">
           <option value="auto">自动选择</option>
           <option value="mock">本地模拟</option>
@@ -134,6 +156,6 @@
       </form>
     </footer>
 
-    <script type="module" src="./js/main.js?v=0.2.0"></script>
+    <script type="module" src="./js/main.js?v=0.3.0"></script>
   </body>
 </html>

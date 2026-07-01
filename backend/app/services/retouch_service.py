@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
+from app.brains.base import PromptBrain
+from app.brains.local import LocalPromptBrain
 from app.core.errors import bad_request, not_found
 from app.providers.base import ImageEditProvider
 from app.providers.mock_image_provider import MockImageProvider
@@ -15,10 +17,12 @@ class RetouchService:
         storage: StorageService,
         jobs: JobStore,
         provider: ImageEditProvider | None = None,
+        brain: PromptBrain | None = None,
     ) -> None:
         self.storage = storage
         self.jobs = jobs
         self.provider = provider or MockImageProvider()
+        self.brain = brain or LocalPromptBrain()
 
     def create_job(self, request: CreateRetouchJobRequest) -> RetouchJob:
         base_image_id = request.base_image_id or request.source_image_id
@@ -36,6 +40,8 @@ class RetouchService:
             user_instruction=request.user_instruction,
             model_provider=self.provider.provider_name,
             model_name=self.provider.model_name,
+            brain_provider=self.brain.provider_name,
+            brain_model=self.brain.model_name,
             status="running",
             output_image_ids=[],
             output_urls=[],
@@ -46,13 +52,18 @@ class RetouchService:
         self.jobs.save(job)
 
         try:
+            effective_plan = self.brain.optimize(
+                request.plan,
+                request.user_instruction,
+            )
+            job.plan = effective_plan
             output_image_id = f"out_{uuid4().hex[:12]}"
             output_filename = f"{output_image_id}{self.provider.output_extension}"
             output_path = self.storage.config.outputs_dir / output_filename
             self.provider.edit_image(
                 source_path=source_path,
                 output_path=output_path,
-                plan=request.plan,
+                plan=effective_plan,
                 user_instruction=request.user_instruction,
             )
             job.status = "succeeded"
@@ -66,8 +77,12 @@ class RetouchService:
 
         return self.jobs.save(job)
 
-    def with_provider(self, provider: ImageEditProvider) -> "RetouchService":
-        return RetouchService(self.storage, self.jobs, provider)
+    def with_providers(
+        self,
+        provider: ImageEditProvider,
+        brain: PromptBrain,
+    ) -> "RetouchService":
+        return RetouchService(self.storage, self.jobs, provider, brain)
 
     def get_job(self, job_id: str) -> RetouchJob:
         return self.jobs.get(job_id)

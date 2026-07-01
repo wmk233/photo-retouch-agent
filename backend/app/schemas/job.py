@@ -35,6 +35,8 @@ class RetouchJob(BaseModel):
     user_instruction: str = Field(default="", alias="userInstruction")
     model_provider: str = Field(alias="modelProvider")
     model_name: str = Field(alias="modelName")
+    brain_provider: str = Field(default="local", alias="brainProvider")
+    brain_model: str = Field(default="rule-based-planner", alias="brainModel")
     status: RetouchJobStatus
     output_image_ids: list[str] = Field(default_factory=list, alias="outputImageIds")
     output_urls: list[str] = Field(default_factory=list, alias="outputUrls")

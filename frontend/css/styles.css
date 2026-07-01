@@ -128,7 +128,7 @@ figure {
 
 .provider-bar {
   display: grid;
-  grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1fr) minmax(190px, 0.8fr) minmax(220px, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   align-items: end;
   padding: 12px clamp(16px, 3vw, 32px);
