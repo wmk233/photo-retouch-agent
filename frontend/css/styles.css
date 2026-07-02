@@ -1028,7 +1028,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .image-workbench > img,
-.after-layer img {
+.after-layer canvas {
   display: block;
   width: 100%;
   height: 100%;
@@ -1042,11 +1042,8 @@ input[type="range"]::-webkit-slider-thumb {
   clip-path: inset(0 0 0 52%);
 }
 
-.after-layer img {
-  transform: scaleX(0.992);
-  transform-origin: 50% 50%;
-  filter: brightness(1.055) saturate(1.035) contrast(1.025);
-  transition: filter 120ms ease, transform 120ms ease;
+.after-layer canvas {
+  transition: opacity 120ms ease;
 }
 
 .compare-line {

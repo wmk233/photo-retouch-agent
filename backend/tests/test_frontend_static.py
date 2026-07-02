@@ -21,3 +21,8 @@ def test_frontend_js_is_served(client: TestClient) -> None:
     assert "const categories" in response.text
     assert "updatePreview" in response.text
     assert "applyPreset" in response.text
+
+    engine_response = client.get("/js/local-retouch.mjs")
+    assert engine_response.status_code == 200
+    assert "renderLocalRetouch" in engine_response.text
+    assert "createRenderRecipe" in engine_response.text

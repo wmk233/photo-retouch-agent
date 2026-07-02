@@ -1,3 +1,5 @@
+import { renderLocalRetouch } from "./local-retouch.mjs";
+
 const categories = {
   skin: {
     title: "皮肤质感",
@@ -104,7 +106,7 @@ const elements = {
   localPanel: document.querySelector("#localPanel"),
   aiPanel: document.querySelector("#aiPanel"),
   modeNote: document.querySelector("#modeNote"),
-  afterImage: document.querySelector("#afterImage"),
+  previewCanvas: document.querySelector("#previewCanvas"),
   beforeImage: document.querySelector("#beforeImage"),
   afterLayer: document.querySelector("#afterLayer"),
   compareLine: document.querySelector("#compareLine"),
@@ -216,30 +218,18 @@ function renderCategory() {
   });
 }
 
+let renderFrame = 0;
+
+function scheduleLocalRender() {
+  if (!elements.beforeImage.complete || !elements.beforeImage.naturalWidth) return;
+  window.cancelAnimationFrame(renderFrame);
+  renderFrame = window.requestAnimationFrame(() => {
+    renderLocalRetouch(elements.previewCanvas, elements.beforeImage, state.values);
+  });
+}
+
 function updatePreview() {
-  const v = state.values;
-  const brightness =
-    1 + (v.whiten + v.skinTone + v.brightness + v.brightEyes * 0.25) / 850;
-  const saturation =
-    1 + (v.skinTone + v.iris + v.lipColor + v.lipstick + v.saturation) / 950;
-  const contrast = 1 + (v.sculpt + v.contour + v.contrast + v.clarity) / 1000;
-  const warmth = (v.warmth + v.blush + v.foundation) / 1800;
-  const soften = (v.smooth + v.wrinkle + v.acne) / 700;
-  const slim =
-    (v.slimFace + v.smallFace * 0.5 + v.slimWaist * 0.35 + v.slimBelly * 0.25) /
-    1400;
-  const vertical = 1 + (v.longLegs + v.headRatio * 0.4) / 2600;
-
-  elements.afterImage.style.filter = [
-    `brightness(${brightness.toFixed(3)})`,
-    `saturate(${saturation.toFixed(3)})`,
-    `contrast(${contrast.toFixed(3)})`,
-    `sepia(${warmth.toFixed(3)})`,
-    `blur(${Math.min(soften, 0.3).toFixed(2)}px)`,
-  ].join(" ");
-  elements.afterImage.style.transform =
-    `scaleX(${Math.max(0.94, 1 - slim).toFixed(3)}) scaleY(${vertical.toFixed(3)})`;
-
+  scheduleLocalRender();
   renderChanges();
 }
 
@@ -387,7 +377,6 @@ elements.fileInput.addEventListener("change", () => {
   if (!file) return;
   const url = URL.createObjectURL(file);
   elements.beforeImage.src = url;
-  elements.afterImage.src = url;
   elements.exportButton.href = url;
   document.querySelector(".document-name > span:nth-child(2)").textContent = file.name;
   elements.footerStatus.textContent = "新照片已载入";
@@ -397,10 +386,11 @@ elements.beforeImage.addEventListener("error", () => {
   const fallback = "/data/outputs/out_de5f8e95e54a.png";
   if (!elements.beforeImage.src.endsWith(fallback)) {
     elements.beforeImage.src = fallback;
-    elements.afterImage.src = fallback;
     elements.exportButton.href = fallback;
   }
 });
+
+elements.beforeImage.addEventListener("load", scheduleLocalRender);
 
 document.querySelectorAll("[data-preset]").forEach((button) => {
   button.addEventListener("click", () => {
@@ -438,3 +428,4 @@ elements.floatingTip.querySelector("button").addEventListener("click", () => {
 renderCategory();
 updatePreview();
 elements.compareRange.dispatchEvent(new Event("input"));
+if (elements.beforeImage.complete) scheduleLocalRender();
