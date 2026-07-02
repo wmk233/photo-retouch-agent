@@ -128,28 +128,58 @@ figure {
 
 .provider-bar {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
   gap: 12px;
-  align-items: end;
+  align-items: center;
   padding: 12px clamp(16px, 3vw, 32px);
   border-bottom: 1px solid var(--line);
   background: #fff;
 }
 
-.provider-bar label {
+.model-group {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px 12px;
+}
+
+.model-group legend {
+  padding: 0 7px;
+  font-size: 13px;
+  font-weight: 780;
+}
+
+.model-group legend span {
+  margin-right: 7px;
+  color: var(--accent-strong);
+}
+
+.model-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.model-fields label {
   display: grid;
+  flex: 1 1 170px;
   gap: 6px;
   min-width: 0;
 }
 
-.provider-bar label > span,
+.model-fields label:first-child {
+  flex-basis: 230px;
+}
+
+.model-fields label > span,
 .provider-state span {
   color: var(--muted);
   font-size: 12px;
 }
 
-.provider-bar input,
-.provider-bar select {
+.model-fields input,
+.model-fields select {
   width: 100%;
   min-width: 0;
   min-height: 38px;
@@ -160,22 +190,48 @@ figure {
   color: var(--text);
 }
 
-.provider-bar input:focus,
-.provider-bar select:focus {
+.model-fields input:focus,
+.model-fields select:focus {
   border-color: var(--accent);
   outline: 3px solid var(--accent-soft);
 }
 
 .provider-state {
-  min-height: 38px;
-  display: grid;
-  align-content: center;
-  gap: 3px;
-  padding: 0 2px;
+  min-height: 30px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-top: 9px;
 }
 
 .provider-state strong {
   font-size: 13px;
+}
+
+.model-connector {
+  color: var(--muted);
+  font-size: 20px;
+  font-weight: 760;
+  text-align: center;
+}
+
+.workflow-gate {
+  grid-column: 1 / -1;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  border-left: 3px solid #9aa6a0;
+  padding: 6px 10px;
+  background: #f7f9f8;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.workflow-gate[data-ready="true"] {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 
 .workspace {
@@ -293,7 +349,7 @@ figcaption {
 
 .summary {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   padding: 16px;
 }
@@ -434,7 +490,11 @@ figcaption {
 
 @media (max-width: 1180px) {
   .provider-bar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .model-connector {
+    display: none;
   }
 
   .workspace {
@@ -456,10 +516,25 @@ figcaption {
   .workspace,
   .dock,
   .refine,
-  .summary,
-  .meta,
-  .provider-bar {
+    .summary,
+    .meta,
+    .provider-bar {
     grid-template-columns: 1fr;
+  }
+
+  .model-fields {
+    flex-direction: column;
+  }
+
+  .model-fields label,
+  .model-fields label:first-child {
+    flex: 0 0 auto;
+  }
+
+  .provider-state {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
   }
 
   .result-box {

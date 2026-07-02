@@ -30,11 +30,11 @@ export function uploadPhoto(file) {
   });
 }
 
-export function analyzePhoto(imageId) {
+export function analyzePhoto(imageId, brain = {}, action = {}) {
   return request("/photos/analyze", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ imageId, domainType: "portrait" }),
+    headers: modelHeaders(brain, action),
+    body: JSON.stringify({ imageId, domainType: "general" }),
   });
 }
 
@@ -50,13 +50,14 @@ export function getProviderCapabilities() {
   return request("/retouch/providers");
 }
 
-function providerHeaders(provider = {}, brain = {}) {
+function modelHeaders(brain = {}, action = {}) {
   const headers = { "Content-Type": "application/json" };
-  if (provider.name) headers["X-AI-Provider"] = provider.name;
-  if (provider.apiKey) headers["X-AI-API-Key"] = provider.apiKey;
-  if (provider.workspaceId) headers["X-AI-Workspace-Id"] = provider.workspaceId;
   if (brain.name) headers["X-Agent-Provider"] = brain.name;
   if (brain.apiKey) headers["X-Agent-API-Key"] = brain.apiKey;
+  if (brain.workspaceId) headers["X-Agent-Workspace-Id"] = brain.workspaceId;
+  if (action.name) headers["X-Action-Provider"] = action.name;
+  if (action.apiKey) headers["X-Action-API-Key"] = action.apiKey;
+  if (action.workspaceId) headers["X-Action-Workspace-Id"] = action.workspaceId;
   return headers;
 }
 
@@ -64,20 +65,20 @@ export function createJob(
   sourceImageId,
   plan,
   userInstruction = "",
-  provider = {},
   brain = {},
+  action = {},
 ) {
   return request("/retouch/jobs", {
     method: "POST",
-    headers: providerHeaders(provider, brain),
+    headers: modelHeaders(brain, action),
     body: JSON.stringify({ sourceImageId, plan, userInstruction }),
   });
 }
 
-export function refineJob(jobId, userInstruction, provider = {}, brain = {}) {
+export function refineJob(jobId, userInstruction, brain = {}, action = {}) {
   return request(`/retouch/jobs/${jobId}/refine`, {
     method: "POST",
-    headers: providerHeaders(provider, brain),
+    headers: modelHeaders(brain, action),
     body: JSON.stringify({ userInstruction }),
   });
 }

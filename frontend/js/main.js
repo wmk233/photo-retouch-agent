@@ -6,7 +6,23 @@ import {
   getProviderCapabilities,
   refineJob,
   uploadPhoto,
-} from "./api.js?v=0.3.0";
+} from "./api.js?v=0.4.0";
+
+const fallbackCapabilities = {
+  brainProviders: [
+    { id: "qwen", label: "Qwen Vision", model: "qwen3-vl-plus", configured: false, visionMode: "direct", requiresApiKey: true, workspaceSupported: true },
+    { id: "glm", label: "GLM Vision", model: "glm-5v-turbo", configured: false, visionMode: "direct", requiresApiKey: true, workspaceSupported: false },
+    { id: "doubao", label: "豆包 Vision", model: "doubao-seed-2.0", configured: false, visionMode: "direct", requiresApiKey: true, workspaceSupported: false },
+    { id: "deepseek", label: "DeepSeek", model: "deepseek-v4-flash", configured: false, visionMode: "derived", requiresApiKey: true, workspaceSupported: false },
+    { id: "local", label: "本地规则", model: "rule-based-planner", configured: true, visionMode: "derived", requiresApiKey: false, workspaceSupported: false },
+  ],
+  actionProviders: [
+    { id: "qwen", label: "Qwen Image", model: "qwen-image-2.0-pro", configured: false, requiresApiKey: true, workspaceSupported: true },
+    { id: "wan", label: "Wan Image", model: "wan2.7-image-pro", configured: false, requiresApiKey: true, workspaceSupported: true },
+    { id: "seedream", label: "Seedream", model: "doubao-seedream-5.0", configured: false, requiresApiKey: true, workspaceSupported: false },
+    { id: "mock", label: "本地模拟", model: "pillow-retouch-mock", configured: true, requiresApiKey: false, workspaceSupported: false },
+  ],
+};
 
 const state = {
   photo: null,
@@ -15,15 +31,17 @@ const state = {
   selectedPlan: null,
   currentJob: null,
   history: [],
-  provider: {
-    name: "auto",
+  isBusy: false,
+  capabilities: fallbackCapabilities,
+  brain: {
+    name: "",
     apiKey: "",
     workspaceId: "",
-    capabilities: null,
   },
-  brain: {
-    name: "local",
+  action: {
+    name: "",
     apiKey: "",
+    workspaceId: "",
   },
 };
 
@@ -34,15 +52,18 @@ const els = {
   brainProviderSelect: $("#brainProviderSelect"),
   brainApiKeyField: $("#brainApiKeyField"),
   brainApiKeyInput: $("#brainApiKeyInput"),
+  brainWorkspaceField: $("#brainWorkspaceField"),
+  brainWorkspaceInput: $("#brainWorkspaceInput"),
   brainProviderState: $("#brainProviderState"),
   brainProviderHint: $("#brainProviderHint"),
-  providerSelect: $("#providerSelect"),
-  apiKeyField: $("#apiKeyField"),
-  apiKeyInput: $("#apiKeyInput"),
-  workspaceField: $("#workspaceField"),
-  workspaceInput: $("#workspaceInput"),
-  providerState: $("#providerState"),
-  providerHint: $("#providerHint"),
+  actionProviderSelect: $("#actionProviderSelect"),
+  actionApiKeyField: $("#actionApiKeyField"),
+  actionApiKeyInput: $("#actionApiKeyInput"),
+  actionWorkspaceField: $("#actionWorkspaceField"),
+  actionWorkspaceInput: $("#actionWorkspaceInput"),
+  actionProviderState: $("#actionProviderState"),
+  actionProviderHint: $("#actionProviderHint"),
+  workflowGate: $("#workflowGate"),
   fileInput: $("#fileInput"),
   uploadButton: $("#uploadButton"),
   sourceImage: $("#sourceImage"),
@@ -54,6 +75,7 @@ const els = {
   sceneType: $("#sceneType"),
   subjectSummary: $("#subjectSummary"),
   riskSummary: $("#riskSummary"),
+  analysisModelSummary: $("#analysisModelSummary"),
   analysisGroups: $("#analysisGroups"),
   planCount: $("#planCount"),
   planList: $("#planList"),
@@ -75,31 +97,32 @@ els.regenerateButton.addEventListener("click", () => {
   if (state.photo && state.selectedPlan) runRetouch(state.selectedPlan, "");
 });
 els.refineForm.addEventListener("submit", handleRefine);
-els.providerSelect.addEventListener("change", () => {
-  state.provider.name = els.providerSelect.value;
-  renderProviderControls();
-});
-els.apiKeyInput.addEventListener("input", () => {
-  state.provider.apiKey = els.apiKeyInput.value;
-  renderProviderControls();
-});
-els.workspaceInput.addEventListener("input", () => {
-  state.provider.workspaceId = els.workspaceInput.value;
-});
 els.brainProviderSelect.addEventListener("change", () => {
-  state.brain.name = els.brainProviderSelect.value;
-  renderBrainControls();
+  handleModelSelection("brain", els.brainProviderSelect.value);
+});
+els.actionProviderSelect.addEventListener("change", () => {
+  handleModelSelection("action", els.actionProviderSelect.value);
 });
 els.brainApiKeyInput.addEventListener("input", () => {
   state.brain.apiKey = els.brainApiKeyInput.value;
-  renderBrainControls();
+  renderModelControls();
+});
+els.actionApiKeyInput.addEventListener("input", () => {
+  state.action.apiKey = els.actionApiKeyInput.value;
+  renderModelControls();
+});
+els.brainWorkspaceInput.addEventListener("input", () => {
+  state.brain.workspaceId = els.brainWorkspaceInput.value;
+});
+els.actionWorkspaceInput.addEventListener("input", () => {
+  state.action.workspaceId = els.actionWorkspaceInput.value;
 });
 
-initializeProviderControls();
+initializeModelControls();
 
 async function handleUpload(event) {
   const file = event.target.files?.[0];
-  if (!file) return;
+  if (!file || !workflowReady()) return;
 
   await runTask("上传中", async () => {
     const photo = await uploadPhoto(file);
@@ -113,19 +136,22 @@ async function handleUpload(event) {
     resetAnalysis();
     resetResult();
     renderHistory();
-    els.analyzeButton.disabled = false;
     setStatus("已上传");
   });
 }
 
 async function runAnalysis() {
-  if (!state.photo) return;
+  if (!state.photo || !workflowReady()) return;
 
-  await runTask("分析中", async () => {
-    state.analysis = await analyzePhoto(state.photo.imageId);
+  await runTask("识别与分析中", async () => {
+    state.analysis = await analyzePhoto(
+      state.photo.imageId,
+      brainRequest(),
+      actionRequest(),
+    );
     state.plans = await createPlans(state.analysis);
     state.selectedPlan = state.plans[0];
-    state.history.push("生成 3 个方案");
+    state.history.push(`${state.analysis.sceneType} · ${state.plans.length} 个方案`);
     renderAnalysis();
     renderPlans();
     renderHistory();
@@ -134,15 +160,15 @@ async function runAnalysis() {
 }
 
 async function runRetouch(plan, instruction) {
-  if (!state.photo || !plan) return;
+  if (!state.photo || !plan || !workflowReady()) return;
 
   await runTask(instruction ? "修改中" : "生成中", async () => {
     const job = await createJob(
       state.photo.imageId,
       plan,
       instruction,
-      providerRequest(),
       brainRequest(),
+      actionRequest(),
     );
     state.currentJob = job;
     state.selectedPlan = plan;
@@ -156,14 +182,14 @@ async function runRetouch(plan, instruction) {
 async function handleRefine(event) {
   event.preventDefault();
   const instruction = els.instructionInput.value.trim();
-  if (!instruction || !state.currentJob) return;
+  if (!instruction || !state.currentJob || !workflowReady()) return;
 
   await runTask("修改中", async () => {
     const job = await refineJob(
       state.currentJob.jobId,
       instruction,
-      providerRequest(),
       brainRequest(),
+      actionRequest(),
     );
     state.currentJob = job;
     state.history.push(`修改：${instruction}`);
@@ -174,11 +200,43 @@ async function handleRefine(event) {
   });
 }
 
+function handleModelSelection(layer, name) {
+  if (state[layer].name === name) return;
+  state[layer].name = name;
+  state[layer].apiKey = "";
+  state[layer].workspaceId = "";
+
+  const apiKeyInput = layer === "brain" ? els.brainApiKeyInput : els.actionApiKeyInput;
+  const workspaceInput = layer === "brain" ? els.brainWorkspaceInput : els.actionWorkspaceInput;
+  apiKeyInput.value = "";
+  workspaceInput.value = "";
+  invalidateModelDependentState();
+  renderModelControls();
+  setStatus(workflowReady() ? "模型已就绪" : "请选择模型");
+}
+
+function invalidateModelDependentState() {
+  if (!state.photo || (!state.analysis && !state.currentJob)) return;
+  state.analysis = null;
+  state.plans = [];
+  state.selectedPlan = null;
+  state.currentJob = null;
+  state.history.push("模型已变更");
+  resetAnalysis();
+  resetResult();
+  renderHistory();
+}
+
 function renderPhoto(photo) {
   els.sourceImage.src = assetUrl(photo.url);
   els.sourceImage.hidden = false;
   els.sourceEmpty.hidden = true;
-  setMeta([photo.imageId, `${photo.width} × ${photo.height}`, formatBytes(photo.sizeBytes), photo.contentType]);
+  setMeta([
+    photo.imageId,
+    `${photo.width} × ${photo.height}`,
+    formatBytes(photo.sizeBytes),
+    photo.contentType,
+  ]);
 }
 
 function resetAnalysis() {
@@ -193,11 +251,8 @@ function resetResult() {
   els.resultImage.hidden = true;
   els.resultEmpty.hidden = false;
   els.executionNote.textContent = "--";
-  els.regenerateButton.disabled = true;
   els.downloadLink.classList.add("disabled");
   els.downloadLink.removeAttribute("href");
-  els.instructionInput.disabled = true;
-  els.refineButton.disabled = true;
 }
 
 function renderAnalysis() {
@@ -205,13 +260,14 @@ function renderAnalysis() {
   els.analysisEmpty.hidden = true;
   els.analysisContent.hidden = false;
   els.sceneType.textContent = analysis.sceneType;
-  els.subjectSummary.textContent = `${analysis.subjects.count} 人 · ${analysis.subjects.faceVisibility}`;
+  els.subjectSummary.textContent = `${analysis.subjects.count} 个 · ${analysis.subjects.faceVisibility}`;
   els.riskSummary.textContent = analysis.riskFlags.length ? `${analysis.riskFlags.length} 项` : "低";
+  els.analysisModelSummary.textContent = `${analysis.brainProvider} / ${analysis.brainModel}`;
 
   const groups = [
     ["光线问题", analysis.lightingIssues, "amber"],
     ["背景问题", analysis.backgroundIssues, "blue"],
-    ["人像优化", analysis.portraitSuggestions, ""],
+    ["主体优化", analysis.portraitSuggestions, ""],
     ["构图建议", analysis.compositionSuggestions, "blue"],
     ["风格建议", analysis.recommendedStyles, ""],
     ["风险标记", analysis.riskFlags.length ? analysis.riskFlags : ["暂无明显风险"], analysis.riskFlags.length ? "rose" : ""],
@@ -220,6 +276,7 @@ function renderAnalysis() {
 }
 
 function renderPlans() {
+  const ready = workflowReady() && !state.isBusy;
   els.planCount.textContent = String(state.plans.length);
   els.planList.innerHTML = state.plans
     .map(
@@ -232,7 +289,7 @@ function renderPlans() {
               ${plan.expectedChanges.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
             </div>
           </div>
-          <button type="button" data-plan-id="${escapeHtml(plan.planId)}">生成</button>
+          <button type="button" data-plan-id="${escapeHtml(plan.planId)}" ${ready ? "" : "disabled"}>生成</button>
         </article>
       `,
     )
@@ -254,18 +311,15 @@ function renderResult(job, plan, instruction) {
   els.resultImage.src = absoluteUrl;
   els.resultImage.hidden = false;
   els.resultEmpty.hidden = true;
-  els.regenerateButton.disabled = false;
   els.downloadLink.href = absoluteUrl;
-  els.downloadLink.download = `${job.outputImageIds[0]}.jpg`;
+  els.downloadLink.download = `${job.outputImageIds[0]}.png`;
   els.downloadLink.classList.remove("disabled");
-  els.instructionInput.disabled = false;
-  els.refineButton.disabled = false;
   els.executionNote.textContent = instruction
     ? `二次修改：${instruction}。基于上一版结果继续生成。`
     : (
       `方案：${plan?.title || job.planId}。` +
-      `Agent：${job.brainProvider}/${job.brainModel}；` +
-      `修图：${job.modelProvider}/${job.modelName}。`
+      `大脑：${job.brainProvider}/${job.brainModel}；` +
+      `行动：${job.modelProvider}/${job.modelName}。`
     );
 }
 
@@ -284,84 +338,137 @@ function renderHistory() {
   els.history.textContent = state.history.length ? state.history.slice(-4).join(" · ") : "等待任务";
 }
 
-async function initializeProviderControls() {
+async function initializeModelControls() {
   try {
-    state.provider.capabilities = await getProviderCapabilities();
+    state.capabilities = await getProviderCapabilities();
   } catch (error) {
-    state.provider.capabilities = null;
+    state.capabilities = fallbackCapabilities;
   }
-  renderProviderControls();
-  renderBrainControls();
+  populateModelOptions(
+    els.brainProviderSelect,
+    state.capabilities.brainProviders || fallbackCapabilities.brainProviders,
+    "brain",
+  );
+  populateModelOptions(
+    els.actionProviderSelect,
+    state.capabilities.actionProviders || fallbackCapabilities.actionProviders,
+    "action",
+  );
+  renderModelControls();
+  setStatus("请选择模型");
 }
 
-function renderProviderControls() {
-  const isMock = state.provider.name === "mock";
-  const capabilities = state.provider.capabilities;
-  els.apiKeyField.hidden = isMock;
-  els.workspaceField.hidden = isMock;
+function populateModelOptions(select, providers, layer) {
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "请选择";
+  select.replaceChildren(placeholder);
 
-  if (isMock) {
-    els.providerState.textContent = "本地 Pillow 模拟";
-    els.providerHint.textContent = "不调用外部模型，不需要 API Key";
+  providers.forEach((provider) => {
+    const option = document.createElement("option");
+    option.value = provider.id;
+    const suffix = layer === "brain" && provider.visionMode === "derived"
+      ? "（分析辅助）"
+      : provider.id === "mock"
+        ? "（演示）"
+        : "";
+    option.textContent = `${provider.label} · ${provider.model}${suffix}`;
+    select.append(option);
+  });
+}
+
+function renderModelControls() {
+  renderLayerControls("brain");
+  renderLayerControls("action");
+
+  const ready = workflowReady();
+  const brainMeta = selectedModel("brain");
+  const actionMeta = selectedModel("action");
+  els.workflowGate.dataset.ready = String(ready);
+  els.workflowGate.textContent = ready
+    ? `${brainMeta.label} + ${actionMeta.label} 已就绪`
+    : workflowGateMessage();
+  syncControlState();
+  if (state.plans.length) renderPlans();
+}
+
+function renderLayerControls(layer) {
+  const config = state[layer];
+  const meta = selectedModel(layer);
+  const isBrain = layer === "brain";
+  const apiKeyField = isBrain ? els.brainApiKeyField : els.actionApiKeyField;
+  const workspaceField = isBrain ? els.brainWorkspaceField : els.actionWorkspaceField;
+  const stateLabel = isBrain ? els.brainProviderState : els.actionProviderState;
+  const hint = isBrain ? els.brainProviderHint : els.actionProviderHint;
+
+  apiKeyField.hidden = !meta || !meta.requiresApiKey;
+  workspaceField.hidden = !meta || !meta.workspaceSupported;
+
+  if (!meta) {
+    stateLabel.textContent = "待选择";
+    hint.textContent = "--";
     return;
   }
 
-  const hasUserKey = Boolean(state.provider.apiKey.trim());
-  const serverConfigured = Boolean(capabilities?.qwenConfigured);
-  if (hasUserKey) {
-    els.providerState.textContent = "使用本次会话 API Key";
-  } else if (serverConfigured) {
-    els.providerState.textContent = `服务端已配置 ${capabilities.qwenModel}`;
-  } else if (state.provider.name === "qwen") {
-    els.providerState.textContent = "需要 Qwen API Key";
+  if (!meta.requiresApiKey) {
+    stateLabel.textContent = "可用";
+  } else if (config.apiKey.trim()) {
+    stateLabel.textContent = "使用本次会话 Key";
+  } else if (meta.configured) {
+    stateLabel.textContent = "服务端已配置";
   } else {
-    els.providerState.textContent = "无 Key 时使用本地模拟";
+    stateLabel.textContent = "需要 API Key";
   }
-  els.providerHint.textContent = "API Key 仅随生成请求发送，不会写入任务记录";
+
+  if (isBrain) {
+    hint.textContent = meta.visionMode === "direct"
+      ? `${meta.model} · 直接视觉`
+      : `${meta.model} · 结构化分析辅助`;
+  } else {
+    hint.textContent = `${meta.model} · 图像编辑`;
+  }
 }
 
-function providerRequest() {
-  return {
-    name: state.provider.name,
-    apiKey: state.provider.apiKey.trim(),
-    workspaceId: state.provider.workspaceId.trim(),
-  };
+function selectedModel(layer) {
+  const key = layer === "brain" ? "brainProviders" : "actionProviders";
+  return (state.capabilities[key] || []).find((item) => item.id === state[layer].name) || null;
 }
 
-function renderBrainControls() {
-  const isLocal = state.brain.name === "local";
-  const capabilities = state.provider.capabilities;
-  els.brainApiKeyField.hidden = isLocal;
+function layerReady(layer) {
+  const meta = selectedModel(layer);
+  if (!meta) return false;
+  if (!meta.requiresApiKey) return true;
+  return Boolean(state[layer].apiKey.trim() || meta.configured);
+}
 
-  if (isLocal) {
-    els.brainProviderState.textContent = "本地规则规划";
-    els.brainProviderHint.textContent = "不调用外部文本模型";
-    return;
+function workflowReady() {
+  return layerReady("brain") && layerReady("action");
+}
+
+function workflowGateMessage() {
+  if (!state.brain.name && !state.action.name) {
+    return "请选择 Agent 大脑和 Agent 行动";
   }
-
-  const hasUserKey = Boolean(state.brain.apiKey.trim());
-  const isDeepSeek = state.brain.name === "deepseek";
-  const serverConfigured = isDeepSeek
-    ? Boolean(capabilities?.deepseekConfigured)
-    : Boolean(capabilities?.glmConfigured);
-  const model = isDeepSeek
-    ? capabilities?.deepseekModel || "DeepSeek"
-    : capabilities?.glmModel || "GLM";
-
-  if (hasUserKey) {
-    els.brainProviderState.textContent = `使用本次会话 ${model} Key`;
-  } else if (serverConfigured) {
-    els.brainProviderState.textContent = `服务端已配置 ${model}`;
-  } else {
-    els.brainProviderState.textContent = `需要 ${model} API Key`;
-  }
-  els.brainProviderHint.textContent = "仅优化修图指令，不直接生成或编辑图片";
+  if (!state.brain.name) return "请选择 Agent 大脑";
+  if (!state.action.name) return "请选择 Agent 行动";
+  if (!layerReady("brain")) return "Agent 大脑需要 API Key";
+  if (!layerReady("action")) return "Agent 行动需要 API Key";
+  return "模型配置未就绪";
 }
 
 function brainRequest() {
   return {
     name: state.brain.name,
     apiKey: state.brain.apiKey.trim(),
+    workspaceId: state.brain.workspaceId.trim(),
+  };
+}
+
+function actionRequest() {
+  return {
+    name: state.action.name,
+    apiKey: state.action.apiKey.trim(),
+    workspaceId: state.action.workspaceId.trim(),
   };
 }
 
@@ -372,6 +479,10 @@ function setMeta(values) {
 }
 
 async function runTask(label, task) {
+  if (!workflowReady()) {
+    setStatus(workflowGateMessage());
+    return;
+  }
   setBusy(true);
   setStatus(label);
   try {
@@ -384,16 +495,25 @@ async function runTask(label, task) {
 }
 
 function setBusy(isBusy) {
-  els.uploadButton.disabled = isBusy;
-  els.analyzeButton.disabled = isBusy || !state.photo;
-  els.regenerateButton.disabled = isBusy || !state.currentJob;
-  els.refineButton.disabled = isBusy || !state.currentJob;
-  els.instructionInput.disabled = isBusy || !state.currentJob;
-  els.providerSelect.disabled = isBusy;
-  els.apiKeyInput.disabled = isBusy;
-  els.workspaceInput.disabled = isBusy;
-  els.brainProviderSelect.disabled = isBusy;
-  els.brainApiKeyInput.disabled = isBusy;
+  state.isBusy = isBusy;
+  syncControlState();
+  if (state.plans.length) renderPlans();
+}
+
+function syncControlState() {
+  const ready = workflowReady();
+  const disabled = state.isBusy;
+  els.uploadButton.disabled = disabled || !ready;
+  els.analyzeButton.disabled = disabled || !ready || !state.photo;
+  els.regenerateButton.disabled = disabled || !ready || !state.currentJob;
+  els.refineButton.disabled = disabled || !ready || !state.currentJob;
+  els.instructionInput.disabled = disabled || !ready || !state.currentJob;
+  els.brainProviderSelect.disabled = disabled;
+  els.brainApiKeyInput.disabled = disabled;
+  els.brainWorkspaceInput.disabled = disabled;
+  els.actionProviderSelect.disabled = disabled;
+  els.actionApiKeyInput.disabled = disabled;
+  els.actionWorkspaceInput.disabled = disabled;
 }
 
 function setStatus(text) {

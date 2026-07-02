@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo Retouch Agent</title>
-    <link rel="stylesheet" href="./css/styles.css?v=0.3.0" />
+    <link rel="stylesheet" href="./css/styles.css?v=0.4.0" />
   </head>
   <body>
     <header class="topbar">
@@ -15,64 +15,85 @@
           <p>照片美化 Agent MVP</p>
         </div>
       </div>
-      <div class="status" id="status">等待上传</div>
+      <div class="status" id="status">请选择模型</div>
     </header>
 
-    <section class="provider-bar" aria-label="图像模型配置">
-      <label>
-        <span>Agent 大脑</span>
-        <select id="brainProviderSelect">
-          <option value="local">本地规则</option>
-          <option value="deepseek">DeepSeek</option>
-          <option value="glm">GLM</option>
-        </select>
-      </label>
-      <label id="brainApiKeyField" hidden>
-        <span>Agent API Key</span>
-        <input
-          id="brainApiKeyInput"
-          type="password"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="可留空使用服务端环境变量"
-        />
-      </label>
-      <div class="provider-state">
-        <strong id="brainProviderState">本地规则规划</strong>
-        <span id="brainProviderHint">优化修图指令，不直接编辑图片</span>
-      </div>
-      <label>
-        <span>修图模型</span>
-        <select id="providerSelect">
-          <option value="auto">自动选择</option>
-          <option value="mock">本地模拟</option>
-          <option value="qwen">Qwen Image</option>
-        </select>
-      </label>
-      <label id="apiKeyField">
-        <span>API Key</span>
-        <input
-          id="apiKeyInput"
-          type="password"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="可留空使用服务端环境变量"
-        />
-      </label>
-      <label id="workspaceField">
-        <span>Workspace ID</span>
-        <input
-          id="workspaceInput"
-          type="text"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="可选，优先使用服务端配置"
-        />
-      </label>
-      <div class="provider-state">
-        <strong id="providerState">读取配置中</strong>
-        <span id="providerHint">API Key 仅用于本次会话，不会保存</span>
-      </div>
+    <section class="provider-bar" aria-label="Agent 模型配置">
+      <fieldset class="model-group">
+        <legend><span>1</span>Agent 大脑</legend>
+        <div class="model-fields">
+          <label>
+            <span>视觉理解模型</span>
+            <select id="brainProviderSelect">
+              <option value="">请选择</option>
+            </select>
+          </label>
+          <label id="brainApiKeyField" hidden>
+            <span>API Key</span>
+            <input
+              id="brainApiKeyInput"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="服务端未配置时填写"
+            />
+          </label>
+          <label id="brainWorkspaceField" hidden>
+            <span>Workspace ID</span>
+            <input
+              id="brainWorkspaceInput"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="可选"
+            />
+          </label>
+        </div>
+        <div class="provider-state">
+          <strong id="brainProviderState">待选择</strong>
+          <span id="brainProviderHint">--</span>
+        </div>
+      </fieldset>
+
+      <div class="model-connector" aria-hidden="true">+</div>
+
+      <fieldset class="model-group">
+        <legend><span>2</span>Agent 行动</legend>
+        <div class="model-fields">
+          <label>
+            <span>图像编辑模型</span>
+            <select id="actionProviderSelect">
+              <option value="">请选择</option>
+            </select>
+          </label>
+          <label id="actionApiKeyField" hidden>
+            <span>API Key</span>
+            <input
+              id="actionApiKeyInput"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="服务端未配置时填写"
+            />
+          </label>
+          <label id="actionWorkspaceField" hidden>
+            <span>Workspace ID</span>
+            <input
+              id="actionWorkspaceInput"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="可选"
+            />
+          </label>
+        </div>
+        <div class="provider-state">
+          <strong id="actionProviderState">待选择</strong>
+          <span id="actionProviderHint">--</span>
+        </div>
+      </fieldset>
+
+      <div class="workflow-gate" id="workflowGate">请选择 Agent 大脑和 Agent 行动</div>
     </section>
 
     <main class="workspace">
@@ -86,7 +107,7 @@
         </div>
         <div class="actions">
           <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
-          <button id="uploadButton" class="primary" type="button">选择照片</button>
+          <button id="uploadButton" class="primary" type="button" disabled>选择照片</button>
         </div>
         <figure class="image-box">
           <img id="sourceImage" alt="原图预览" hidden />
@@ -114,6 +135,7 @@
             <div><span>场景</span><strong id="sceneType">--</strong></div>
             <div><span>主体</span><strong id="subjectSummary">--</strong></div>
             <div><span>风险</span><strong id="riskSummary">--</strong></div>
+            <div><span>分析模型</span><strong id="analysisModelSummary">--</strong></div>
           </div>
           <div id="analysisGroups" class="groups"></div>
         </div>
@@ -156,6 +178,6 @@
       </form>
     </footer>
 
-    <script type="module" src="./js/main.js?v=0.3.0"></script>
+    <script type="module" src="./js/main.js?v=0.4.0"></script>
   </body>
 </html>

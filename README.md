@@ -5,10 +5,11 @@
 ## 当前能力
 
 - 上传 JPG、PNG、WebP 图片，限制 10MB。
-- 生成人像照片结构化分析。
-- 提供自然美化、精致头像、氛围风格三个 RetouchPlan。
-- 支持本地规则、DeepSeek、GLM 作为 Agent 大脑优化修图指令。
-- 支持 Pillow mock provider 和阿里百炼 Qwen Image provider。
+- 自动识别人像、风景、商品和通用照片，生成结构化分析。
+- 人像提供自然美化、精致头像、氛围风格方案；其他照片提供自然增强、清晰通透、氛围风格方案。
+- Agent 大脑支持 Qwen Vision、GLM Vision、豆包 Vision、DeepSeek 和本地规则。
+- Agent 行动支持 Qwen Image、Wan Image、Seedream 和 Pillow 本地模拟。
+- Agent 大脑和 Agent 行动必须显式选择并配置完成，工作流才可执行。
 - 支持服务端环境变量 API Key，或用户在当前页面临时提供 API Key。
 - 查询任务状态和结果。
 - 基于上一张结果继续二次修改。
@@ -70,47 +71,52 @@ http://127.0.0.1:8000/docs
 
 | 层级 | 可选项 | 职责 |
 | --- | --- | --- |
-| Agent 大脑 | 本地规则、DeepSeek、GLM | 理解用户补充要求，优化图像编辑 prompt |
-| 修图执行器 | Pillow mock、Qwen Image | 基于原图实际生成美化结果 |
+| Agent 大脑 | Qwen Vision、GLM Vision、豆包 Vision、DeepSeek、本地规则 | 识别照片内容并优化图像编辑 prompt |
+| Agent 行动 | Qwen Image、Wan Image、Seedream、Pillow mock | 接收优化后的 prompt，基于原图生成结果 |
 
-DeepSeek 官方 API 当前提供文本 ChatCompletions，不直接编辑图片。默认使用 `deepseek-v4-flash`，没有使用即将下线的旧 `deepseek-chat` 名称。
+Qwen Vision、GLM Vision 和豆包 Vision 使用图片 Base64 输入，能够直接观察照片。DeepSeek 官方 API 当前只提供文本 ChatCompletions，因此在本项目中会接收本地结构化照片分析并优化指令，界面明确标记为“分析辅助”，不会声称它直接看到了图片。
 
-智谱的 GLM 文本/视觉模型输出文本，GLM-Image 官方接口是文生图；当前使用 `glm-5.1` 进行 prompt 优化，不把它伪装成原图精修模型。后续可以单独接入 GLM-5V 做照片分析，但修图执行仍需 Qwen Image 或其他 image-to-image 模型。
+GLM 使用 `glm-5v-turbo` 负责视觉分析和 prompt 优化。视觉理解模型只输出文本，实际图片编辑仍由 Agent 行动层完成。
 
 官方文档：
 
 ```text
 https://api-docs.deepseek.com/
-https://docs.bigmodel.cn/api-reference/模型-api/对话补全
-https://docs.bigmodel.cn/api-reference/模型-api/图像生成
+https://help.aliyun.com/en/model-studio/qwen-vl-compatible-with-openai
+https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo
+https://www.volcengine.com/docs/82379/1362913
 ```
 
-### DeepSeek Agent 大脑
+### Agent 大脑
 
 ```dotenv
-PHOTO_AGENT_BRAIN_PROVIDER=deepseek
+PHOTO_AGENT_BRAIN_PROVIDER=qwen
+DASHSCOPE_API_KEY=sk-your-dashscope-key
+DASHSCOPE_WORKSPACE_ID=your-workspace-id
+DASHSCOPE_VISION_MODEL=qwen3-vl-plus
+
 DEEPSEEK_API_KEY=sk-your-deepseek-key
 DEEPSEEK_MODEL=deepseek-v4-flash
-```
 
-### GLM Agent 大脑
-
-```dotenv
-PHOTO_AGENT_BRAIN_PROVIDER=glm
 ZHIPU_API_KEY=your-zhipu-api-key
-ZHIPU_MODEL=glm-5.1
+ZHIPU_MODEL=glm-5v-turbo
+
+ARK_API_KEY=your-ark-api-key
+ARK_VISION_MODEL=doubao-seed-2-0-lite-260215
 ```
 
-也可以在前端选择 DeepSeek 或 GLM，并临时输入对应 API Key。Agent Key 使用 `X-Agent-API-Key` 请求头发送，不会写入 job JSON。
+也可以在前端临时输入对应 API Key。Agent Key 使用 `X-Agent-API-Key` 请求头发送；Qwen 大脑的临时 Workspace ID 使用 `X-Agent-Workspace-Id`。
 
-## 接入 Qwen Image
+## 接入 Agent 行动
 
-Qwen provider 使用阿里云百炼图像编辑 HTTP API，默认模型为 `qwen-image-2.0-pro`。官方接口支持将本地图片编码为 Base64 输入，并返回有效期有限的结果图片 URL；后端会立即下载结果到本地 `data/outputs/`。
+Qwen Image 和 Wan Image 使用阿里云百炼图像编辑 HTTP API；Seedream 使用火山方舟图片生成编辑 API。三者都接收 Base64 原图并返回有效期有限的结果 URL，后端会立即下载到本地 `data/outputs/`。
 
 官方文档：
 
 ```text
 https://help.aliyun.com/en/model-studio/qwen-image-edit-api
+https://help.aliyun.com/en/model-studio/wan-image-edit
+https://www.volcengine.com/docs/82379/1824692
 ```
 
 ### 方式一：服务端环境变量
@@ -129,9 +135,13 @@ DASHSCOPE_API_KEY=sk-your-api-key
 DASHSCOPE_WORKSPACE_ID=your-workspace-id
 DASHSCOPE_REGION=beijing
 DASHSCOPE_IMAGE_MODEL=qwen-image-2.0-pro
+DASHSCOPE_WAN_MODEL=wan2.7-image-pro
+
+ARK_API_KEY=your-ark-api-key
+ARK_IMAGE_MODEL=doubao-seedream-5-0-260128
 ```
 
-重启 FastAPI。前端选择“自动选择”或“Qwen Image”，API Key 输入框可以留空。
+重启 FastAPI。前端显式选择一项 Agent 大脑和一项 Agent 行动；服务端已配置对应 Key 时，页面 API Key 输入框可以留空。
 
 北京和新加坡地域的 API Key、Workspace ID 和请求地址不能混用。使用新加坡地域时：
 
@@ -143,7 +153,7 @@ DASHSCOPE_REGION=singapore
 
 ### 方式二：用户临时提供 API Key
 
-前端选择“Qwen Image”，输入修图 API Key；如果服务端没有配置 Workspace ID，同时填写对应 Workspace ID。Key 通过 `X-AI-API-Key` 请求头发送，只在当前页面内存和单次后端请求中使用：
+前端选择行动模型并输入对应 API Key。Qwen Image 或 Wan Image 可同时填写 Workspace ID。Key 通过 `X-Action-API-Key` 请求头发送，只在当前页面内存和单次后端请求中使用：
 
 - 不写入 job JSON。
 - 不写入浏览器 Local Storage。
