@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -16,7 +17,7 @@ def _optional_env(name: str) -> str | None:
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "Photo Retouch Agent API"
-    app_version: str = "0.2.0"
+    app_version: str = "0.3.0"
     max_upload_bytes: int = 10 * 1024 * 1024
     allowed_image_types: tuple[str, ...] = ("image/jpeg", "image/png", "image/webp")
     data_dir: Path = PROJECT_ROOT / "data"
@@ -62,6 +63,24 @@ class Settings:
         default_factory=lambda: float(os.getenv("PHOTO_AGENT_PROVIDER_TIMEOUT", "180"))
     )
     provider_download_limit_bytes: int = 30 * 1024 * 1024
+    api_key: str | None = field(
+        default_factory=lambda: _optional_env("PHOTO_AGENT_API_KEY"),
+        repr=False,
+    )
+    rate_limit_per_second: int = field(
+        default_factory=lambda: int(os.getenv("PHOTO_AGENT_RATE_LIMIT", "10"))
+    )
+    max_concurrent_jobs: int = field(
+        default_factory=lambda: int(os.getenv("PHOTO_AGENT_MAX_CONCURRENT", "3"))
+    )
+    database_path: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("PHOTO_AGENT_DATABASE_PATH", str(PROJECT_ROOT / "data" / "photo_retouch.db"))
+        )
+    )
+    log_level: str = field(
+        default_factory=lambda: os.getenv("PHOTO_AGENT_LOG_LEVEL", "INFO").strip().upper()
+    )
     deepseek_api_key: str | None = field(
         default_factory=lambda: _optional_env("DEEPSEEK_API_KEY"),
         repr=False,
