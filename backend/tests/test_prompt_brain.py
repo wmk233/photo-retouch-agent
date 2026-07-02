@@ -112,6 +112,56 @@ def test_visual_brain_analyzes_image_and_optimizes_plan(tmp_path: Path) -> None:
     assert optimized.expected_changes == ["面部提亮", "肤色均匀"]
 
 
+def test_visual_brain_normalizes_subject_list_from_provider(tmp_path: Path) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "message": {
+                            "content": json.dumps(
+                                {
+                                    "domainType": "portrait",
+                                    "sceneType": "证件人像",
+                                    "subjects": [
+                                        {
+                                            "type": "person",
+                                            "position": "画面中央",
+                                            "description": "正面人像",
+                                        }
+                                    ],
+                                    "lightingIssues": [],
+                                    "backgroundIssues": [],
+                                    "portraitSuggestions": ["自然提亮"],
+                                    "compositionSuggestions": ["保持构图"],
+                                    "recommendedStyles": ["自然"],
+                                    "riskFlags": [],
+                                },
+                                ensure_ascii=False,
+                            )
+                        }
+                    }
+                ]
+            },
+        )
+
+    brain = OpenAICompatiblePromptBrain(
+        provider_name="qwen",
+        api_key="sk-brain-secret",
+        endpoint="https://brain.example.test/chat/completions",
+        model_name="qwen3-vl-plus",
+        vision_mode="direct",
+        transport=httpx.MockTransport(handler),
+    )
+
+    analysis = brain.analyze("img_test", _image_path(tmp_path), _analysis())
+
+    assert analysis.subjects.count == 1
+    assert analysis.subjects.position == "画面中央"
+    assert analysis.subjects.face_visibility == "高"
+
+
 def test_derived_brain_does_not_claim_direct_image_input(tmp_path: Path) -> None:
     captured: dict = {}
 

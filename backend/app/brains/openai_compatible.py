@@ -55,7 +55,8 @@ class OpenAICompatiblePromptBrain:
             "只返回 JSON 对象，字段为 domainType、sceneType、subjects、lightingIssues、"
             "backgroundIssues、portraitSuggestions、compositionSuggestions、"
             "recommendedStyles、riskFlags。domainType 只能是 portrait、landscape、"
-            "product、general 之一。"
+            "product、general 之一。subjects 必须是单个 JSON 对象而不是数组，"
+            "且只包含 count、position、faceVisibility 三个字段。"
         )
         user_text = json.dumps(
             {
@@ -74,6 +75,10 @@ class OpenAICompatiblePromptBrain:
             image_path if self.vision_mode == "direct" else None,
         )
         enriched = self._parse_json_object(content)
+        enriched["subjects"] = self._normalize_subjects(
+            enriched.get("subjects"),
+            baseline_payload["subjects"],
+        )
         domain_type = str(enriched.get("domainType") or baseline.domain_type).lower()
         if domain_type not in {"portrait", "landscape", "product", "general"}:
             domain_type = "general"
@@ -92,6 +97,31 @@ class OpenAICompatiblePromptBrain:
             raise PromptBrainError(
                 f"{self.provider_name} returned an invalid photo analysis."
             ) from exc
+
+    @staticmethod
+    def _normalize_subjects(
+        subjects: Any,
+        baseline_subjects: dict[str, Any],
+    ) -> dict[str, Any]:
+        if isinstance(subjects, dict):
+            return {**baseline_subjects, **subjects}
+
+        if isinstance(subjects, list):
+            subject_items = [item for item in subjects if isinstance(item, dict)]
+            first_subject = subject_items[0] if subject_items else {}
+            return {
+                "count": len(subject_items) or baseline_subjects["count"],
+                "position": (
+                    first_subject.get("position")
+                    or baseline_subjects["position"]
+                ),
+                "faceVisibility": (
+                    first_subject.get("faceVisibility")
+                    or baseline_subjects["faceVisibility"]
+                ),
+            }
+
+        return baseline_subjects
 
     def optimize(
         self,
