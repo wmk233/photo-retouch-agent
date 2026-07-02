@@ -68,3 +68,22 @@ def test_retouch_plans_returns_three_portrait_plans(client: TestClient) -> None:
     assert all(plan["domainType"] == "portrait" for plan in plans)
     assert all(plan["editPrompt"] for plan in plans)
     assert plans[0]["title"] == "自然美化"
+
+
+def test_general_domain_returns_scene_agnostic_plans(client: TestClient) -> None:
+    image_id = _upload_sample(client)
+    analysis = client.post(
+        "/api/photos/analyze",
+        json={"imageId": image_id, "domainType": "general"},
+    )
+
+    assert analysis.status_code == 200
+    assert analysis.json()["domainType"] == "general"
+    plans = client.post(
+        "/api/retouch/plans",
+        json={"analysis": analysis.json()},
+    )
+
+    assert plans.status_code == 200
+    assert [plan["planId"] for plan in plans.json()] == ["natural", "clean", "mood"]
+    assert plans.json()[0]["title"] == "自然增强"

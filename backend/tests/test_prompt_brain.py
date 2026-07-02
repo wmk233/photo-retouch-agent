@@ -59,6 +59,7 @@ def test_visual_brain_analyzes_image_and_optimizes_plan(tmp_path: Path) -> None:
         if len(captured) == 1:
             content = json.dumps(
                 {
+                    "domainType": "landscape",
                     "sceneType": "旅行人像",
                     "subjects": {
                         "count": 1,
@@ -102,6 +103,7 @@ def test_visual_brain_analyzes_image_and_optimizes_plan(tmp_path: Path) -> None:
     optimized = brain.optimize(image_path, _plan(), "黑眼圈淡一点")
 
     assert analysis.scene_type == "旅行人像"
+    assert analysis.domain_type == "landscape"
     assert analysis.brain_provider == "qwen"
     assert analysis.brain_model == "qwen3-vl-plus"
     assert analysis.vision_mode == "direct"

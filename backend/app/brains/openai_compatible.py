@@ -52,9 +52,10 @@ class OpenAICompatiblePromptBrain:
             "请识别照片主体、场景、光线、背景、构图和可优化点，"
             "覆盖人像、风景、街拍、室内、商品等照片。"
             "保持客观，不推断敏感身份属性。"
-            "只返回 JSON 对象，字段为 sceneType、subjects、lightingIssues、"
+            "只返回 JSON 对象，字段为 domainType、sceneType、subjects、lightingIssues、"
             "backgroundIssues、portraitSuggestions、compositionSuggestions、"
-            "recommendedStyles、riskFlags。"
+            "recommendedStyles、riskFlags。domainType 只能是 portrait、landscape、"
+            "product、general 之一。"
         )
         user_text = json.dumps(
             {
@@ -73,11 +74,14 @@ class OpenAICompatiblePromptBrain:
             image_path if self.vision_mode == "direct" else None,
         )
         enriched = self._parse_json_object(content)
+        domain_type = str(enriched.get("domainType") or baseline.domain_type).lower()
+        if domain_type not in {"portrait", "landscape", "product", "general"}:
+            domain_type = "general"
         merged = {
             **baseline_payload,
             **enriched,
             "imageId": image_id,
-            "domainType": baseline.domain_type,
+            "domainType": domain_type,
             "brainProvider": self.provider_name,
             "brainModel": self.model_name,
             "visionMode": self.vision_mode,
