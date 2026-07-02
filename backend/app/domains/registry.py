@@ -1,3 +1,4 @@
+from __future__ import annotations
 from app.core.errors import bad_request
 from app.domains.base import PhotoAnalyzer, RetouchPlanner
 from app.domains.general.analyzer import GeneralAnalyzer
