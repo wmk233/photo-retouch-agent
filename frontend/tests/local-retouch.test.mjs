@@ -15,7 +15,8 @@ test("creates neutral recipe for empty adjustments", () => {
   assert.equal(recipe.saturation, 1);
   assert.equal(recipe.contrast, 1);
   assert.equal(recipe.faceScaleX, 1);
-  assert.equal(recipe.bodyScaleX, 1);
+  assert.equal(recipe.bellyScaleX, 1);
+  assert.equal(recipe.legScaleY, 1);
   assert.equal(recipe.eyeGlow, 0);
 });
 
@@ -98,16 +99,25 @@ test("maps every facial feature control to an independent local effect", () => {
   assert.equal(brows.browStrength, 1);
 });
 
-test("maps body controls to bounded geometry", () => {
-  const recipe = createRenderRecipe({
-    slimBelly: 100,
-    slimWaist: 100,
-    longLegs: 100,
-  });
+test("maps every body control to an independent regional warp", () => {
+  const belly = createRenderRecipe({ slimBelly: 100 });
+  const waist = createRenderRecipe({ slimWaist: 100 });
+  const arms = createRenderRecipe({ slimArms: 100 });
+  const legs = createRenderRecipe({ slimLegs: 100 });
+  const longLegs = createRenderRecipe({ longLegs: 100 });
+  const shoulders = createRenderRecipe({ shoulders: 100 });
+  const hips = createRenderRecipe({ hips: 100 });
+  const headRatio = createRenderRecipe({ headRatio: 100 });
 
-  assert.equal(recipe.bodyScaleX, 0.9);
-  assert.ok(recipe.bodyScaleY > 1);
-  assert.ok(recipe.bodyScaleY <= 1.08);
+  assert.equal(belly.bellyScaleX, 0.9);
+  assert.ok(waist.waistScaleX < 1);
+  assert.ok(arms.armScaleX < 1);
+  assert.ok(legs.legScaleX < 1);
+  assert.equal(longLegs.legScaleY, 1.1);
+  assert.equal(shoulders.shoulderScaleX, 1.08);
+  assert.ok(hips.hipScaleX > 1);
+  assert.equal(hips.hipScaleY, 0.96);
+  assert.ok(headRatio.headRatioScale < 1);
 });
 
 test("clamps invalid and excessive adjustment values", () => {
