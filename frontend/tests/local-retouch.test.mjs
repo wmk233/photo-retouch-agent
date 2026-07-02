@@ -120,6 +120,22 @@ test("maps every body control to an independent regional warp", () => {
   assert.ok(headRatio.headRatioScale < 1);
 });
 
+test("maps every makeup control to an independent local overlay", () => {
+  const foundation = createRenderRecipe({ foundation: 100 });
+  const blush = createRenderRecipe({ blush: 100 });
+  const contour = createRenderRecipe({ contour: 100 });
+  const brows = createRenderRecipe({ eyebrowMakeup: 100 });
+  const eyeliner = createRenderRecipe({ eyeliner: 100 });
+  const lipstick = createRenderRecipe({ lipstick: 100 });
+
+  assert.equal(foundation.foundationStrength, 1);
+  assert.equal(blush.blushStrength, 1);
+  assert.equal(contour.contourStrength, 1);
+  assert.equal(brows.eyebrowMakeupStrength, 1);
+  assert.equal(eyeliner.eyelinerStrength, 1);
+  assert.equal(lipstick.lipstickStrength, 1);
+});
+
 test("clamps invalid and excessive adjustment values", () => {
   const recipe = createRenderRecipe({
     whiten: 999,
