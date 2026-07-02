@@ -31,6 +31,7 @@ def temp_settings(tmp_path: Path) -> Settings:
         dashscope_endpoint=None,
         deepseek_api_key=None,
         zhipu_api_key=None,
+        ark_api_key=None,
     )
 
 
@@ -43,7 +44,13 @@ def client(temp_settings: Settings) -> Iterator[TestClient]:
     app.dependency_overrides[get_agent_brain_factory] = lambda: AgentBrainFactory(
         temp_settings
     )
-    with TestClient(app) as test_client:
+    with TestClient(
+        app,
+        headers={
+            "X-Agent-Provider": "local",
+            "X-Action-Provider": "mock",
+        },
+    ) as test_client:
         yield test_client
     app.dependency_overrides.clear()
 

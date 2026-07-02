@@ -53,6 +53,7 @@ class RetouchService:
 
         try:
             effective_plan = self.brain.optimize(
+                source_path,
                 request.plan,
                 request.user_instruction,
             )

@@ -105,6 +105,23 @@ def test_factory_rejects_qwen_without_api_key(tmp_path: Path) -> None:
     assert "API key is required" in exc_info.value.detail
 
 
+def test_factory_creates_wan_action_with_wan_parameter_profile(tmp_path: Path) -> None:
+    config = Settings(
+        data_dir=tmp_path / "data",
+        image_provider="mock",
+        dashscope_api_key="sk-server-key",
+        dashscope_workspace_id=None,
+        dashscope_endpoint="https://api.example.test/generation",
+    )
+
+    provider = ImageProviderFactory(config).create("wan")
+
+    assert isinstance(provider, QwenImageProvider)
+    assert provider.provider_name == "wan"
+    assert provider.model_name == "wan2.7-image-pro"
+    assert provider.parameter_profile == "wan"
+
+
 def test_factory_rejects_invalid_workspace_id(tmp_path: Path) -> None:
     config = Settings(
         data_dir=tmp_path / "data",

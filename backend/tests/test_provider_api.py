@@ -44,10 +44,12 @@ class CapturingBrainFactory(AgentBrainFactory):
         self,
         provider_name: str | None = None,
         api_key: str | None = None,
+        workspace_id: str | None = None,
     ) -> LocalPromptBrain:
         self.received = {
             "provider": provider_name,
             "api_key": api_key,
+            "workspace_id": workspace_id,
         }
         return LocalPromptBrain()
 
@@ -57,7 +59,7 @@ class CapturingBrainFactory(AgentBrainFactory):
             "deepseekConfigured": False,
             "deepseekModel": "deepseek-v4-flash",
             "glmConfigured": False,
-            "glmModel": "glm-5.1",
+            "glmModel": "glm-5v-turbo",
         }
 
 
@@ -76,18 +78,28 @@ def test_provider_capabilities_are_safe(client: TestClient) -> None:
     response = client.get("/api/retouch/providers")
 
     assert response.status_code == 200
-    assert response.json() == {
-        "defaultProvider": "mock",
-        "qwenConfigured": False,
-        "qwenModel": "qwen-image-2.0-pro",
-        "workspaceConfigured": False,
-        "defaultBrainProvider": "local",
-        "deepseekConfigured": False,
-        "deepseekModel": "deepseek-v4-flash",
-        "glmConfigured": False,
-        "glmModel": "glm-5.1",
-    }
-    assert "api" not in response.text.lower()
+    payload = response.json()
+    assert payload["defaultProvider"] == "mock"
+    assert payload["defaultBrainProvider"] == "local"
+    assert [item["id"] for item in payload["brainProviders"]] == [
+        "qwen",
+        "glm",
+        "doubao",
+        "deepseek",
+        "local",
+    ]
+    assert [item["id"] for item in payload["actionProviders"]] == [
+        "qwen",
+        "wan",
+        "seedream",
+        "mock",
+    ]
+    assert payload["brainProviders"][0]["visionMode"] == "direct"
+    assert next(
+        item for item in payload["brainProviders"] if item["id"] == "deepseek"
+    )["visionMode"] == "derived"
+    assert "secret" not in response.text.lower()
+    assert "apiKey" not in response.text
 
 
 def test_request_api_key_is_not_persisted(
@@ -105,11 +117,12 @@ def test_request_api_key_is_not_persisted(
     response = client.post(
         "/api/retouch/jobs",
         headers={
-            "X-AI-Provider": "qwen",
-            "X-AI-API-Key": image_secret,
-            "X-AI-Workspace-Id": "workspace123",
+            "X-Action-Provider": "qwen",
+            "X-Action-API-Key": image_secret,
+            "X-Action-Workspace-Id": "workspace123",
             "X-Agent-Provider": "deepseek",
             "X-Agent-API-Key": brain_secret,
+            "X-Agent-Workspace-Id": "brainspace",
         },
         json={"sourceImageId": image_id, "plan": plan, "userInstruction": ""},
     )
@@ -123,6 +136,7 @@ def test_request_api_key_is_not_persisted(
     assert brain_factory.received == {
         "provider": "deepseek",
         "api_key": brain_secret,
+        "workspace_id": "brainspace",
     }
     job_files = list(Path(temp_settings.jobs_dir).glob("*.json"))
     assert job_files

@@ -34,6 +34,28 @@ def test_analyze_photo_returns_404_for_missing_image(client: TestClient) -> None
     assert response.json()["detail"] == "Image not found."
 
 
+def test_analyze_requires_explicit_brain_and_action_selection(
+    client: TestClient,
+) -> None:
+    image_id = _upload_sample(client)
+
+    missing_brain = client.post(
+        "/api/photos/analyze",
+        headers={"X-Agent-Provider": ""},
+        json={"imageId": image_id},
+    )
+    missing_action = client.post(
+        "/api/photos/analyze",
+        headers={"X-Action-Provider": ""},
+        json={"imageId": image_id},
+    )
+
+    assert missing_brain.status_code == 400
+    assert "Agent brain" in missing_brain.json()["detail"]
+    assert missing_action.status_code == 400
+    assert "Agent action" in missing_action.json()["detail"]
+
+
 def test_retouch_plans_returns_three_portrait_plans(client: TestClient) -> None:
     image_id = _upload_sample(client)
     analysis = client.post("/api/photos/analyze", json={"imageId": image_id}).json()

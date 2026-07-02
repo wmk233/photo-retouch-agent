@@ -16,7 +16,7 @@ def _optional_env(name: str) -> str | None:
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "Photo Retouch Agent API"
-    app_version: str = "0.1.0"
+    app_version: str = "0.2.0"
     max_upload_bytes: int = 10 * 1024 * 1024
     allowed_image_types: tuple[str, ...] = ("image/jpeg", "image/png", "image/webp")
     data_dir: Path = PROJECT_ROOT / "data"
@@ -43,6 +43,19 @@ class Settings:
     dashscope_image_model: str = field(
         default_factory=lambda: os.getenv(
             "DASHSCOPE_IMAGE_MODEL", "qwen-image-2.0-pro"
+        ).strip()
+    )
+    dashscope_wan_model: str = field(
+        default_factory=lambda: os.getenv(
+            "DASHSCOPE_WAN_MODEL", "wan2.7-image-pro"
+        ).strip()
+    )
+    dashscope_vision_endpoint: str | None = field(
+        default_factory=lambda: _optional_env("DASHSCOPE_VISION_ENDPOINT")
+    )
+    dashscope_vision_model: str = field(
+        default_factory=lambda: os.getenv(
+            "DASHSCOPE_VISION_MODEL", "qwen3-vl-plus"
         ).strip()
     )
     provider_timeout_seconds: float = field(
@@ -73,7 +86,33 @@ class Settings:
         ).strip()
     )
     zhipu_model: str = field(
-        default_factory=lambda: os.getenv("ZHIPU_MODEL", "glm-5.1").strip()
+        default_factory=lambda: os.getenv("ZHIPU_MODEL", "glm-5v-turbo").strip()
+    )
+    ark_api_key: str | None = field(
+        default_factory=lambda: _optional_env("ARK_API_KEY"),
+        repr=False,
+    )
+    ark_chat_endpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "ARK_CHAT_ENDPOINT",
+            "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+        ).strip()
+    )
+    ark_vision_model: str = field(
+        default_factory=lambda: os.getenv(
+            "ARK_VISION_MODEL", "doubao-seed-2-0-lite-260215"
+        ).strip()
+    )
+    ark_image_endpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "ARK_IMAGE_ENDPOINT",
+            "https://ark.cn-beijing.volces.com/api/v3/images/generations",
+        ).strip()
+    )
+    ark_image_model: str = field(
+        default_factory=lambda: os.getenv(
+            "ARK_IMAGE_MODEL", "doubao-seedream-5-0-260128"
+        ).strip()
     )
 
     @property

@@ -29,3 +29,6 @@ class PhotoAnalysis(BaseModel):
     composition_suggestions: list[str] = Field(alias="compositionSuggestions")
     recommended_styles: list[str] = Field(alias="recommendedStyles")
     risk_flags: list[str] = Field(alias="riskFlags")
+    brain_provider: str = Field(default="local", alias="brainProvider")
+    brain_model: str = Field(default="rule-based-analyzer", alias="brainModel")
+    vision_mode: str = Field(default="derived", alias="visionMode")
