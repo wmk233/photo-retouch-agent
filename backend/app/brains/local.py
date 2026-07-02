@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 from app.schemas.analysis import PhotoAnalysis
@@ -9,7 +11,7 @@ class LocalPromptBrain:
     model_name = "rule-based-planner"
     vision_mode = "derived"
 
-    def analyze(
+    async def analyze(
         self,
         image_id: str,
         image_path: Path,
@@ -23,7 +25,7 @@ class LocalPromptBrain:
             }
         )
 
-    def optimize(
+    async def optimize(
         self,
         source_path: Path,
         plan: RetouchPlan,

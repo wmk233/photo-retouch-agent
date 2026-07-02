@@ -11,7 +11,7 @@ class MockImageProvider:
     model_name = "pillow-mock-retoucher"
     output_extension = ".jpg"
 
-    def edit_image(
+    async def edit_image(
         self,
         source_path: Path,
         output_path: Path,

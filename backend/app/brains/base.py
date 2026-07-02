@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Protocol
 
@@ -10,7 +12,7 @@ class PromptBrain(Protocol):
     model_name: str
     vision_mode: str
 
-    def analyze(
+    async def analyze(
         self,
         image_id: str,
         image_path: Path,
@@ -18,7 +20,7 @@ class PromptBrain(Protocol):
     ) -> PhotoAnalysis:
         """Inspect a photo or enrich a deterministic baseline analysis."""
 
-    def optimize(
+    async def optimize(
         self,
         source_path: Path,
         plan: RetouchPlan,

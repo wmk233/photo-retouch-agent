@@ -25,7 +25,7 @@ class OpenAICompatiblePromptBrain:
         vision_mode: str = "derived",
         image_url_mode: str = "data_url",
         timeout_seconds: float = 180,
-        transport: httpx.BaseTransport | None = None,
+        transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         if vision_mode not in {"direct", "derived"}:
             raise ValueError("vision_mode must be direct or derived")
@@ -41,7 +41,7 @@ class OpenAICompatiblePromptBrain:
         self.timeout_seconds = timeout_seconds
         self._transport = transport
 
-    def analyze(
+    async def analyze(
         self,
         image_id: str,
         image_path: Path,
@@ -70,7 +70,7 @@ class OpenAICompatiblePromptBrain:
             },
             ensure_ascii=False,
         )
-        content = self._complete(
+        content = await self._complete(
             system_prompt,
             user_text,
             image_path if self.vision_mode == "direct" else None,
@@ -124,7 +124,7 @@ class OpenAICompatiblePromptBrain:
 
         return baseline_subjects
 
-    def optimize(
+    async def optimize(
         self,
         source_path: Path,
         plan: RetouchPlan,
@@ -149,7 +149,7 @@ class OpenAICompatiblePromptBrain:
             },
             ensure_ascii=False,
         )
-        content = self._complete(
+        content = await self._complete(
             system_prompt,
             user_text,
             source_path if self.vision_mode == "direct" else None,
@@ -175,7 +175,7 @@ class OpenAICompatiblePromptBrain:
             }
         )
 
-    def _complete(
+    async def _complete(
         self,
         system_prompt: str,
         user_text: str,
@@ -202,12 +202,12 @@ class OpenAICompatiblePromptBrain:
         }
 
         try:
-            with httpx.Client(
+            async with httpx.AsyncClient(
                 timeout=self.timeout_seconds,
                 follow_redirects=True,
                 transport=self._transport,
             ) as client:
-                response = client.post(
+                response = await client.post(
                     self.endpoint,
                     headers={
                         "Authorization": f"Bearer {self._api_key}",

@@ -1,3 +1,4 @@
+import asyncio
 import json
 from pathlib import Path
 
@@ -50,7 +51,7 @@ def test_seedream_provider_sends_image_and_downloads_result(tmp_path: Path) -> N
         transport=httpx.MockTransport(handler),
     )
 
-    provider.edit_image(source, output, _plan(), "背景干净一点")
+    asyncio.run(provider.edit_image(source, output, _plan(), "背景干净一点"))
 
     assert captured["authorization"] == "Bearer ark-test-secret"
     assert captured["payload"]["image"].startswith("data:image/png;base64,")

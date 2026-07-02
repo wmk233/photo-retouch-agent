@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Protocol
 
@@ -9,7 +11,7 @@ class ImageEditProvider(Protocol):
     model_name: str
     output_extension: str
 
-    def edit_image(
+    async def edit_image(
         self,
         source_path: Path,
         output_path: Path,

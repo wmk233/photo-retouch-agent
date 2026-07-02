@@ -20,7 +20,7 @@ router = APIRouter(prefix="/photos", tags=["analysis"])
 
 
 @router.post("/analyze", response_model=PhotoAnalysis, response_model_by_alias=True)
-def analyze_photo(
+async def analyze_photo(
     request: AnalyzeRequest,
     storage: Annotated[StorageService, Depends(get_storage_service)],
     brain_factory: Annotated[AgentBrainFactory, Depends(get_agent_brain_factory)],
@@ -69,4 +69,4 @@ def analyze_photo(
         action_workspace_id or legacy_action_workspace_id,
     )
     baseline = analyzer.analyze(request.image_id, image_path)
-    return brain.analyze(request.image_id, image_path, baseline)
+    return await brain.analyze(request.image_id, image_path, baseline)
