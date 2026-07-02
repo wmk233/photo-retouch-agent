@@ -136,6 +136,26 @@ test("maps every makeup control to an independent local overlay", () => {
   assert.equal(lipstick.lipstickStrength, 1);
 });
 
+test("maps every tone control to a visible global or background effect", () => {
+  const brightness = createRenderRecipe({ brightness: 100 });
+  const contrast = createRenderRecipe({ contrast: 100 });
+  const warmth = createRenderRecipe({ warmth: 100 });
+  const saturation = createRenderRecipe({ saturation: 100 });
+  const clarity = createRenderRecipe({ clarity: 100 });
+  const background = createRenderRecipe({ background: 100 });
+
+  assert.ok(brightness.brightness > 1);
+  assert.equal(brightness.toneBrightnessStrength, 1);
+  assert.ok(contrast.contrast > 1);
+  assert.equal(contrast.toneContrastStrength, 1);
+  assert.ok(warmth.warmth > 0);
+  assert.equal(warmth.toneWarmthStrength, 1);
+  assert.ok(saturation.saturation > 1);
+  assert.equal(saturation.toneSaturationStrength, 1);
+  assert.equal(clarity.clarityStrength, 1);
+  assert.equal(background.backgroundStrength, 1);
+});
+
 test("clamps invalid and excessive adjustment values", () => {
   const recipe = createRenderRecipe({
     whiten: 999,
