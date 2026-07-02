@@ -5,23 +5,20 @@ export function createRenderRecipe(values = {}) {
   const brightness =
     1 +
     (amount(values, "whiten") +
-      amount(values, "skinTone") * 0.65 +
+      amount(values, "skinTone") * 0.18 +
       amount(values, "brightness") +
       amount(values, "brightEyes") * 0.2) /
       720;
   const saturation =
     1 +
-    (amount(values, "skinTone") +
-      amount(values, "iris") +
+    (amount(values, "iris") +
       amount(values, "lipColor") +
       amount(values, "lipstick") +
       amount(values, "saturation")) /
       900;
   const contrast =
     1 +
-    (amount(values, "sculpt") +
-      amount(values, "contour") +
-      amount(values, "contrast") +
+    (amount(values, "contrast") +
       amount(values, "clarity")) /
       850;
   const warmth =
@@ -29,11 +26,6 @@ export function createRenderRecipe(values = {}) {
       amount(values, "blush") * 0.6 +
       amount(values, "foundation") * 0.35) /
     1300;
-  const smoothing =
-    (amount(values, "smooth") +
-      amount(values, "wrinkle") * 0.8 +
-      amount(values, "acne")) /
-    260;
   const faceSlimming =
     (amount(values, "slimFace") + amount(values, "smallFace") * 0.75) /
     2100;
@@ -51,13 +43,21 @@ export function createRenderRecipe(values = {}) {
     saturation: clamp(saturation, 0.75, 1.45),
     contrast: clamp(contrast, 0.8, 1.4),
     warmth: clamp(warmth, 0, 0.18),
-    smoothingOpacity: clamp(smoothing, 0, 0.58),
+    skinToneStrength: amount(values, "skinTone") / 100,
+    whiteningStrength: amount(values, "whiten") / 100,
+    smoothingOpacity: clamp(amount(values, "smooth") / 240, 0, 0.42),
     smoothingRadius: clamp(
-      1.2 +
-        amount(values, "smooth") * 0.09 +
-        amount(values, "acne") * 0.05,
+      1.2 + amount(values, "smooth") * 0.075,
       1.2,
-      12,
+      9,
+    ),
+    acneOpacity: clamp(amount(values, "acne") / 260, 0, 0.38),
+    acneRadius: clamp(1 + amount(values, "acne") * 0.065, 1, 7.5),
+    wrinkleOpacity: clamp(amount(values, "wrinkle") / 250, 0, 0.4),
+    wrinkleRadius: clamp(
+      0.8 + amount(values, "wrinkle") * 0.045,
+      0.8,
+      5.3,
     ),
     faceScaleX: clamp(1 - faceSlimming, 0.92, 1),
     faceScaleY: clamp(1 - amount(values, "smallFace") / 2500, 0.96, 1),
@@ -85,14 +85,7 @@ export function createRenderRecipe(values = {}) {
       0.65,
     ),
     eyeScale: clamp(1 + amount(values, "enlargeEyes") / 1250, 1, 1.08),
-    sculpt: clamp(
-      (amount(values, "sculpt") +
-        amount(values, "noseBridge") * 0.45 +
-        amount(values, "contour") * 0.55) /
-        180,
-      0,
-      0.75,
-    ),
+    sculpt: clamp(amount(values, "sculpt") / 140, 0, 0.72),
   };
 }
 
@@ -244,6 +237,24 @@ function drawCurrentWarp(context, region, scaleX, scaleY) {
   drawScaledRegion(context, snapshot, region, scaleX, scaleY);
 }
 
+function drawFilteredRegion(
+  context,
+  source,
+  region,
+  filter,
+  opacity,
+  featherStart = 0.68,
+) {
+  if (opacity <= 0) return;
+
+  const filtered = createCanvas(source.width, source.height);
+  const filteredContext = filtered.getContext("2d");
+  filteredContext.filter = filter;
+  filteredContext.drawImage(source, 0, 0);
+  applyFeatherMask(filtered, region, featherStart, opacity);
+  context.drawImage(filtered, 0, 0);
+}
+
 function drawEyeGlow(context, width, height, recipe) {
   if (recipe.eyeGlow <= 0) return;
 
@@ -299,6 +310,30 @@ function drawSculptLight(context, width, height, recipe) {
   highlight.addColorStop(1, "rgba(255, 244, 229, 0)");
   context.fillStyle = highlight;
   context.fillRect(width * 0.25, height * 0.18, width * 0.5, height * 0.48);
+
+  const shadowOpacity = recipe.sculpt * 0.16;
+  [
+    { x: width * 0.34, y: height * 0.41 },
+    { x: width * 0.66, y: height * 0.41 },
+  ].forEach((point) => {
+    const shadow = context.createRadialGradient(
+      point.x,
+      point.y,
+      0,
+      point.x,
+      point.y,
+      width * 0.13,
+    );
+    shadow.addColorStop(0, `rgba(78, 48, 38, ${shadowOpacity})`);
+    shadow.addColorStop(1, "rgba(78, 48, 38, 0)");
+    context.fillStyle = shadow;
+    context.fillRect(
+      point.x - width * 0.15,
+      point.y - height * 0.11,
+      width * 0.3,
+      height * 0.22,
+    );
+  });
   context.restore();
 }
 
@@ -323,25 +358,79 @@ export function renderLocalRetouch(canvas, image, values = {}) {
   context.drawImage(source, 0, 0, width, height);
   context.restore();
 
-  if (recipe.smoothingOpacity > 0) {
-    const softened = createCanvas(width, height);
-    const softenedContext = softened.getContext("2d");
-    softenedContext.filter = `blur(${recipe.smoothingRadius.toFixed(1)}px)`;
-    softenedContext.drawImage(source, 0, 0, width, height);
-
-    applyFeatherMask(
-      softened,
-      {
-        x: width * 0.29,
-        y: height * 0.22,
-        width: width * 0.42,
-        height: height * 0.34,
-      },
-      0.68,
-      recipe.smoothingOpacity,
+  const skinSource = createCanvas(width, height);
+  skinSource.getContext("2d").drawImage(canvas, 0, 0);
+  drawFilteredRegion(
+    context,
+    skinSource,
+    {
+      x: width * 0.27,
+      y: height * 0.2,
+      width: width * 0.46,
+      height: height * 0.38,
+    },
+    `brightness(${(1 + recipe.skinToneStrength * 0.06).toFixed(3)}) saturate(${(
+      1 +
+      recipe.skinToneStrength * 0.1
+    ).toFixed(3)}) sepia(${(recipe.skinToneStrength * 0.035).toFixed(3)})`,
+    recipe.skinToneStrength * 0.52,
+    0.72,
+  );
+  drawFilteredRegion(
+    context,
+    skinSource,
+    {
+      x: width * 0.29,
+      y: height * 0.22,
+      width: width * 0.42,
+      height: height * 0.34,
+    },
+    `blur(${recipe.smoothingRadius.toFixed(1)}px)`,
+    recipe.smoothingOpacity,
+  );
+  drawFilteredRegion(
+    context,
+    skinSource,
+    {
+      x: width * 0.3,
+      y: height * 0.25,
+      width: width * 0.4,
+      height: height * 0.31,
+    },
+    `blur(${recipe.acneRadius.toFixed(1)}px) contrast(0.985)`,
+    recipe.acneOpacity,
+    0.62,
+  );
+  const wrinkleRegions = [
+    {
+      x: width * 0.32,
+      y: height * 0.21,
+      width: width * 0.36,
+      height: height * 0.15,
+    },
+    {
+      x: width * 0.31,
+      y: height * 0.33,
+      width: width * 0.18,
+      height: height * 0.1,
+    },
+    {
+      x: width * 0.51,
+      y: height * 0.33,
+      width: width * 0.18,
+      height: height * 0.1,
+    },
+  ];
+  wrinkleRegions.forEach((region) => {
+    drawFilteredRegion(
+      context,
+      skinSource,
+      region,
+      `blur(${recipe.wrinkleRadius.toFixed(1)}px)`,
+      recipe.wrinkleOpacity,
+      0.58,
     );
-    context.drawImage(softened, 0, 0);
-  }
+  });
 
   drawCurrentWarp(
     context,
