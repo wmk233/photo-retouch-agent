@@ -32,12 +32,14 @@ def temp_settings(tmp_path: Path) -> Settings:
         deepseek_api_key=None,
         zhipu_api_key=None,
         ark_api_key=None,
+        rate_limit_per_second=0,
+        max_concurrent_jobs=10,
     )
 
 
 @pytest.fixture()
 def client(temp_settings: Settings) -> Iterator[TestClient]:
-    app = create_app()
+    app = create_app(_settings=temp_settings)
     app.dependency_overrides[get_storage_service] = lambda: StorageService(temp_settings)
     app.dependency_overrides[get_job_store] = lambda: JobStore(temp_settings)
     app.dependency_overrides[get_provider_factory] = lambda: ImageProviderFactory(temp_settings)
