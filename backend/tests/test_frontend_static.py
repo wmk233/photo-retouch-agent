@@ -31,3 +31,8 @@ def test_frontend_js_is_served(client: TestClient) -> None:
     assert ai_response.status_code == 200
     assert "executeAiRetouch" in ai_response.text
     assert "buildRetouchInstruction" in ai_response.text
+
+    export_response = client.get("/js/export-image.mjs")
+    assert export_response.status_code == 200
+    assert "canvasToBlob" in export_response.text
+    assert "triggerBlobDownload" in export_response.text

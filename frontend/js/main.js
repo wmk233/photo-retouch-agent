@@ -10,6 +10,11 @@ import {
   executeAiRetouch,
   validateModelSelection,
 } from "./ai-retouch.mjs";
+import {
+  buildExportFilename,
+  canvasToBlob,
+  triggerBlobDownload,
+} from "./export-image.mjs";
 import { renderLocalRetouch } from "./local-retouch.mjs";
 
 const categories = {
@@ -109,11 +114,13 @@ const state = {
   selectedPreset: "natural",
   originalOnly: false,
   sourceFile: null,
+  sourceName: "portrait_01.png",
   capabilities: {
     brainProviders: [],
     actionProviders: [],
   },
   aiResultImage: null,
+  aiResultUrl: "",
   displayingAiResult: false,
   aiBusy: false,
 };
@@ -299,6 +306,7 @@ function showAiResult(url) {
     const image = new Image();
     image.addEventListener("load", () => {
       state.aiResultImage = image;
+      state.aiResultUrl = url;
       state.displayingAiResult = true;
       drawImageToPreview(image);
       resolve();
@@ -306,6 +314,33 @@ function showAiResult(url) {
     image.addEventListener("error", () => reject(new Error("AI 结果图片加载失败。")));
     image.src = url;
   });
+}
+
+async function exportCurrentImage(event) {
+  event.preventDefault();
+  const isAiResult =
+    state.mode === "ai" && state.displayingAiResult && state.aiResultUrl;
+  elements.footerStatus.textContent = "正在准备导出图片";
+
+  try {
+    let blob;
+    if (isAiResult) {
+      const response = await fetch(state.aiResultUrl);
+      if (!response.ok) throw new Error("无法读取 AI 结果图片。");
+      blob = await response.blob();
+    } else {
+      blob = await canvasToBlob(elements.previewCanvas, "image/png");
+    }
+    const fileName = buildExportFilename(
+      state.sourceName,
+      isAiResult ? "ai" : "local",
+      blob.type,
+    );
+    triggerBlobDownload(blob, fileName);
+    elements.footerStatus.textContent = `已导出 ${fileName}`;
+  } catch (error) {
+    elements.footerStatus.textContent = error.message;
+  }
 }
 
 function currentTools() {
@@ -566,7 +601,9 @@ elements.fileInput.addEventListener("change", () => {
   if (!file) return;
   const url = URL.createObjectURL(file);
   state.sourceFile = file;
+  state.sourceName = file.name;
   state.aiResultImage = null;
+  state.aiResultUrl = "";
   state.displayingAiResult = false;
   elements.beforeImage.src = url;
   elements.exportButton.href = url;
@@ -601,6 +638,7 @@ elements.brainProviderSelect.addEventListener("change", syncModelConfig);
 elements.actionProviderSelect.addEventListener("change", syncModelConfig);
 elements.brainApiKeyInput.addEventListener("input", syncModelConfig);
 elements.actionApiKeyInput.addEventListener("input", syncModelConfig);
+elements.exportButton.addEventListener("click", exportCurrentImage);
 
 elements.generateButton.addEventListener("click", async () => {
   if (state.aiBusy) return;
