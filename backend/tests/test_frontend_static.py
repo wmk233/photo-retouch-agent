@@ -26,3 +26,8 @@ def test_frontend_js_is_served(client: TestClient) -> None:
     assert engine_response.status_code == 200
     assert "renderLocalRetouch" in engine_response.text
     assert "createRenderRecipe" in engine_response.text
+
+    ai_response = client.get("/js/ai-retouch.mjs")
+    assert ai_response.status_code == 200
+    assert "executeAiRetouch" in ai_response.text
+    assert "buildRetouchInstruction" in ai_response.text

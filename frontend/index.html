@@ -193,21 +193,70 @@
             <small><b id="promptCount">0</b> / 200</small>
           </label>
 
-          <details class="model-config">
+          <details class="model-config" open>
             <summary>
               <span>
                 <i>AI</i>
                 模型配置
               </span>
-              <small>已连接</small>
+              <small id="modelConfigState">正在检测</small>
             </summary>
-            <div class="model-row">
-              <span>视觉分析</span>
-              <strong>Qwen3-VL Plus</strong>
-            </div>
-            <div class="model-row">
-              <span>图像编辑</span>
-              <strong>Qwen Image 2.0 Pro</strong>
+            <div class="model-config-body">
+              <label class="model-field">
+                <span>视觉分析</span>
+                <select id="brainProviderSelect">
+                  <option value="qwen">Qwen Vision</option>
+                </select>
+              </label>
+              <label class="model-field">
+                <span>图像编辑</span>
+                <select id="actionProviderSelect">
+                  <option value="qwen">Qwen Image</option>
+                </select>
+              </label>
+              <label class="model-field" id="brainApiKeyField">
+                <span>视觉模型 API Key</span>
+                <input
+                  id="brainApiKeyInput"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="服务端未配置时填写"
+                />
+              </label>
+              <label class="model-field" id="actionApiKeyField">
+                <span>图像模型 API Key</span>
+                <input
+                  id="actionApiKeyInput"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="服务端未配置时填写"
+                />
+              </label>
+              <label class="model-field" id="brainWorkspaceField" hidden>
+                <span>视觉 Workspace ID</span>
+                <input
+                  id="brainWorkspaceInput"
+                  type="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="可选"
+                />
+              </label>
+              <label class="model-field" id="actionWorkspaceField" hidden>
+                <span>图像 Workspace ID</span>
+                <input
+                  id="actionWorkspaceInput"
+                  type="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="可选"
+                />
+              </label>
+              <p class="session-key-note">
+                Key 仅保存在当前页面内存中，刷新后自动清空。
+              </p>
             </div>
           </details>
 
@@ -216,6 +265,7 @@
             <b>生成 AI 美化效果</b>
             <small>约 30 秒</small>
           </button>
+          <p class="ai-feedback" id="aiFeedback" aria-live="polite"></p>
         </section>
       </aside>
 
