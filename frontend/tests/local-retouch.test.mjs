@@ -19,21 +19,24 @@ test("creates neutral recipe for empty adjustments", () => {
   assert.equal(recipe.eyeGlow, 0);
 });
 
-test("maps skin controls to local pixel processing", () => {
-  const recipe = createRenderRecipe({
-    smooth: 40,
-    skinTone: 30,
-    whiten: 20,
-    acne: 10,
-    sculpt: 25,
-  });
+test("maps every skin control to an independent render effect", () => {
+  const smooth = createRenderRecipe({ smooth: 100 });
+  const skinTone = createRenderRecipe({ skinTone: 100 });
+  const whiten = createRenderRecipe({ whiten: 100 });
+  const sculpt = createRenderRecipe({ sculpt: 100 });
+  const acne = createRenderRecipe({ acne: 100 });
+  const wrinkle = createRenderRecipe({ wrinkle: 100 });
 
-  assert.ok(recipe.brightness > 1);
-  assert.ok(recipe.saturation > 1);
-  assert.ok(recipe.contrast > 1);
-  assert.ok(recipe.smoothingOpacity > 0);
-  assert.ok(recipe.smoothingRadius > 1.2);
-  assert.ok(recipe.sculpt > 0);
+  assert.ok(smooth.smoothingOpacity > 0);
+  assert.ok(smooth.smoothingRadius > 1.2);
+  assert.equal(skinTone.skinToneStrength, 1);
+  assert.equal(whiten.whiteningStrength, 1);
+  assert.ok(whiten.brightness > 1);
+  assert.ok(sculpt.sculpt > 0);
+  assert.ok(acne.acneOpacity > 0);
+  assert.ok(acne.acneRadius > 1);
+  assert.ok(wrinkle.wrinkleOpacity > 0);
+  assert.ok(wrinkle.wrinkleRadius > 0.8);
 });
 
 test("maps face controls to independent bounded geometry", () => {
