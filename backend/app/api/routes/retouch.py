@@ -75,7 +75,7 @@ def get_retouch_providers(
 
 
 @router.post("/jobs", response_model=RetouchJob, response_model_by_alias=True)
-def create_retouch_job(
+async def create_retouch_job(
     request: CreateRetouchJobRequest,
     service: Annotated[RetouchService, Depends(get_retouch_service)],
     image_factory: Annotated[ImageProviderFactory, Depends(get_provider_factory)],
@@ -111,7 +111,7 @@ def create_retouch_job(
         brain_api_key,
         brain_workspace_id,
     )
-    return service.with_providers(provider, brain).create_job(request)
+    return await service.with_providers(provider, brain).create_job(request)
 
 
 @router.get("/jobs/{job_id}", response_model=RetouchJob, response_model_by_alias=True)
@@ -123,7 +123,7 @@ def get_retouch_job(
 
 
 @router.post("/jobs/{job_id}/refine", response_model=RetouchJob, response_model_by_alias=True)
-def refine_retouch_job(
+async def refine_retouch_job(
     job_id: str,
     request: RefineRetouchJobRequest,
     service: Annotated[RetouchService, Depends(get_retouch_service)],
@@ -160,4 +160,4 @@ def refine_retouch_job(
         brain_api_key,
         brain_workspace_id,
     )
-    return service.with_providers(provider, brain).refine_job(job_id, request)
+    return await service.with_providers(provider, brain).refine_job(job_id, request)

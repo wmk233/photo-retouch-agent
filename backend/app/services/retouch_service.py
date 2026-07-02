@@ -25,7 +25,7 @@ class RetouchService:
         self.provider = provider or MockImageProvider()
         self.brain = brain or LocalPromptBrain()
 
-    def create_job(self, request: CreateRetouchJobRequest) -> RetouchJob:
+    async def create_job(self, request: CreateRetouchJobRequest) -> RetouchJob:
         base_image_id = request.base_image_id or request.source_image_id
         source_path = self.storage.resolve_image_path(base_image_id)
         if source_path is None:
@@ -53,7 +53,7 @@ class RetouchService:
         self.jobs.save(job)
 
         try:
-            effective_plan = self.brain.optimize(
+            effective_plan = await self.brain.optimize(
                 source_path,
                 request.plan,
                 request.user_instruction,
@@ -62,7 +62,7 @@ class RetouchService:
             output_image_id = f"out_{uuid4().hex[:12]}"
             output_filename = f"{output_image_id}{self.provider.output_extension}"
             output_path = self.storage.config.outputs_dir / output_filename
-            self.provider.edit_image(
+            await self.provider.edit_image(
                 source_path=source_path,
                 output_path=output_path,
                 plan=effective_plan,
@@ -89,7 +89,7 @@ class RetouchService:
     def get_job(self, job_id: str) -> RetouchJob:
         return self.jobs.get(job_id)
 
-    def refine_job(self, job_id: str, request: RefineRetouchJobRequest) -> RetouchJob:
+    async def refine_job(self, job_id: str, request: RefineRetouchJobRequest) -> RetouchJob:
         parent = self.jobs.get(job_id)
         if parent.status != "succeeded" or not parent.output_image_ids:
             raise bad_request("Only succeeded jobs with output can be refined.")
@@ -98,7 +98,7 @@ class RetouchService:
         if plan is None:
             raise bad_request("A retouch plan is required for refinement.")
 
-        return self.create_job(
+        return await self.create_job(
             CreateRetouchJobRequest(
                 source_image_id=parent.source_image_id,
                 base_image_id=parent.output_image_ids[-1],

@@ -24,7 +24,7 @@ class SeedreamImageProvider:
         model_name: str,
         timeout_seconds: float = 180,
         download_limit_bytes: int = 30 * 1024 * 1024,
-        transport: httpx.BaseTransport | None = None,
+        transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         self._api_key = api_key
         self.endpoint = endpoint
@@ -33,7 +33,7 @@ class SeedreamImageProvider:
         self.download_limit_bytes = download_limit_bytes
         self._transport = transport
 
-    def edit_image(
+    async def edit_image(
         self,
         source_path: Path,
         output_path: Path,
@@ -50,12 +50,12 @@ class SeedreamImageProvider:
             "watermark": False,
         }
 
-        with httpx.Client(
+        async with httpx.AsyncClient(
             timeout=self.timeout_seconds,
             follow_redirects=True,
             transport=self._transport,
         ) as client:
-            response = client.post(
+            response = await client.post(
                 self.endpoint,
                 headers={
                     "Authorization": f"Bearer {self._api_key}",
@@ -65,7 +65,7 @@ class SeedreamImageProvider:
             )
             result = self._parse_response(response)
             image_url = self._extract_image_url(result)
-            image_response = client.get(image_url)
+            image_response = await client.get(image_url)
             self._save_download(image_response, output_path)
 
     @staticmethod

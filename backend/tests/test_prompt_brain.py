@@ -1,3 +1,4 @@
+import asyncio
 import json
 from pathlib import Path
 
@@ -99,8 +100,8 @@ def test_visual_brain_analyzes_image_and_optimizes_plan(tmp_path: Path) -> None:
     )
     image_path = _image_path(tmp_path)
 
-    analysis = brain.analyze("img_test", image_path, _analysis())
-    optimized = brain.optimize(image_path, _plan(), "黑眼圈淡一点")
+    analysis = asyncio.run(brain.analyze("img_test", image_path, _analysis()))
+    optimized = asyncio.run(brain.optimize(image_path, _plan(), "黑眼圈淡一点"))
 
     assert analysis.scene_type == "旅行人像"
     assert analysis.domain_type == "landscape"
@@ -155,7 +156,7 @@ def test_visual_brain_normalizes_subject_list_from_provider(tmp_path: Path) -> N
         transport=httpx.MockTransport(handler),
     )
 
-    analysis = brain.analyze("img_test", _image_path(tmp_path), _analysis())
+    analysis = asyncio.run(brain.analyze("img_test", _image_path(tmp_path), _analysis()))
 
     assert analysis.subjects.count == 1
     assert analysis.subjects.position == "画面中央"
@@ -196,7 +197,7 @@ def test_derived_brain_does_not_claim_direct_image_input(tmp_path: Path) -> None
         transport=httpx.MockTransport(handler),
     )
 
-    brain.optimize(_image_path(tmp_path), _plan(), "")
+    asyncio.run(brain.optimize(_image_path(tmp_path), _plan(), ""))
 
     assert isinstance(captured["messages"][1]["content"], str)
     assert "无图片输入能力" in captured["messages"][1]["content"]

@@ -1,3 +1,4 @@
+import asyncio
 import json
 from pathlib import Path
 
@@ -64,7 +65,7 @@ def test_qwen_provider_sends_base64_and_downloads_result(tmp_path: Path) -> None
         transport=httpx.MockTransport(handler),
     )
 
-    provider.edit_image(source, output, _plan(), "肤色再亮一点")
+    asyncio.run(provider.edit_image(source, output, _plan(), "肤色再亮一点"))
 
     content = captured["payload"]["input"]["messages"][0]["content"]
     assert captured["authorization"] == "Bearer sk-test-secret"
