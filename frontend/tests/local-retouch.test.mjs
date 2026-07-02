@@ -80,6 +80,24 @@ test("maps every eye control to an independent local effect", () => {
   assert.ok(eyeAngle.eyeAngle > 0);
 });
 
+test("maps every facial feature control to an independent local effect", () => {
+  const noseBridge = createRenderRecipe({ noseBridge: 100 });
+  const slimNose = createRenderRecipe({ slimNose: 100 });
+  const teeth = createRenderRecipe({ teeth: 100 });
+  const smile = createRenderRecipe({ smile: 100 });
+  const lipVolume = createRenderRecipe({ lipVolume: 100 });
+  const lipColor = createRenderRecipe({ lipColor: 100 });
+  const brows = createRenderRecipe({ brows: 100 });
+
+  assert.equal(noseBridge.noseBridgeStrength, 1);
+  assert.ok(slimNose.noseScaleX < 1);
+  assert.equal(teeth.teethStrength, 1);
+  assert.ok(smile.smileAngle > 0);
+  assert.ok(lipVolume.lipScaleY > 1);
+  assert.equal(lipColor.lipColorStrength, 1);
+  assert.equal(brows.browStrength, 1);
+});
+
 test("maps body controls to bounded geometry", () => {
   const recipe = createRenderRecipe({
     slimBelly: 100,
