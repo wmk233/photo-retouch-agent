@@ -22,8 +22,8 @@
 
       <div class="document-name">
         <span class="status-dot"></span>
-        <span>portrait_01.png</span>
-        <small>已自动保存</small>
+        <span id="documentName">请选择照片</span>
+        <small>未加载</small>
       </div>
 
       <div class="header-actions">
@@ -36,7 +36,7 @@
           <span class="compare-icon"></span>
           查看原图
         </button>
-        <a class="export-button" id="exportButton" href="/data/uploads/img_77f62618a9b5.png" download>
+        <a class="export-button" id="exportButton" href="#" download>
           导出图片
           <span>↗</span>
         </a>
@@ -295,8 +295,8 @@
           <div class="image-workbench" id="imageWorkbench">
             <img
               id="beforeImage"
-              src="/data/uploads/img_77f62618a9b5.png"
-              alt="待美化原图"
+              src=""
+              alt="请上传照片"
             />
             <div class="after-layer" id="afterLayer">
               <canvas id="previewCanvas" aria-label="实时美化预览"></canvas>
@@ -397,6 +397,6 @@
       </div>
     </footer>
 
-    <script type="module" src="./js/main.js?v=0.5.0"></script>
+    <script type="module" src="./js/app.js?v=0.6.0"></script>
   </body>
 </html>

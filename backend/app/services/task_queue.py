@@ -20,14 +20,14 @@ class TaskQueue:
     ) -> None:
         async def _run() -> None:
             async with self._semaphore:
-                logger.info("task_started", job_id=job_id)
+                logger.info("task_started job_id=%s", job_id)
                 try:
                     await coro_factory()
                 except Exception:
-                    logger.exception("task_failed", job_id=job_id)
+                    logger.exception("task_failed job_id=%s", job_id)
 
         asyncio.create_task(_run())
-        logger.info("task_enqueued", job_id=job_id)
+        logger.info("task_enqueued job_id=%s", job_id)
 
 
 _task_queue: TaskQueue | None = None
