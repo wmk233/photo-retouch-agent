@@ -59,19 +59,35 @@ test("maps face controls to independent bounded geometry", () => {
   assert.ok(recipe.doubleChinScaleY < 1);
 });
 
-test("maps eye and body controls to bounded geometry", () => {
+test("maps every eye control to an independent local effect", () => {
+  const enlarge = createRenderRecipe({ enlargeEyes: 100 });
+  const eyeBags = createRenderRecipe({ eyeBags: 100 });
+  const darkCircles = createRenderRecipe({ darkCircles: 100 });
+  const iris = createRenderRecipe({ iris: 100 });
+  const brightEyes = createRenderRecipe({ brightEyes: 100 });
+  const eyeDistance = createRenderRecipe({ eyeDistance: 100 });
+  const eyeAngle = createRenderRecipe({ eyeAngle: 100 });
+
+  assert.equal(enlarge.eyeScale, 1.18);
+  assert.equal(eyeBags.eyeBagStrength, 1);
+  assert.equal(darkCircles.darkCircleStrength, 1);
+  assert.equal(iris.irisStrength, 1);
+  assert.ok(iris.eyeGlow > 0);
+  assert.equal(brightEyes.brightEyeStrength, 1);
+  assert.ok(brightEyes.eyeGlow > iris.eyeGlow);
+  assert.ok(eyeDistance.eyeDistanceScale > 1);
+  assert.ok(eyeDistance.eyeDistanceScale <= 1.06);
+  assert.ok(eyeAngle.eyeAngle > 0);
+});
+
+test("maps body controls to bounded geometry", () => {
   const recipe = createRenderRecipe({
-    enlargeEyes: 100,
-    iris: 100,
-    brightEyes: 100,
     slimBelly: 100,
     slimWaist: 100,
     longLegs: 100,
   });
 
   assert.equal(recipe.bodyScaleX, 0.9);
-  assert.equal(recipe.eyeScale, 1.08);
-  assert.equal(recipe.eyeGlow, 0.65);
   assert.ok(recipe.bodyScaleY > 1);
   assert.ok(recipe.bodyScaleY <= 1.08);
 });

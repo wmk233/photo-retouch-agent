@@ -6,13 +6,11 @@ export function createRenderRecipe(values = {}) {
     1 +
     (amount(values, "whiten") +
       amount(values, "skinTone") * 0.18 +
-      amount(values, "brightness") +
-      amount(values, "brightEyes") * 0.2) /
+      amount(values, "brightness")) /
       720;
   const saturation =
     1 +
-    (amount(values, "iris") +
-      amount(values, "lipColor") +
+    (amount(values, "lipColor") +
       amount(values, "lipstick") +
       amount(values, "saturation")) /
       900;
@@ -76,15 +74,27 @@ export function createRenderRecipe(values = {}) {
     ),
     bodyScaleX: clamp(1 - bodySlimming, 0.9, 1),
     bodyScaleY: clamp(1 + verticalStretch, 1, 1.08),
+    eyeScale: clamp(1 + amount(values, "enlargeEyes") / 550, 1, 1.18),
+    eyeBagStrength: amount(values, "eyeBags") / 100,
+    darkCircleStrength: amount(values, "darkCircles") / 100,
+    irisStrength: amount(values, "iris") / 100,
+    brightEyeStrength: amount(values, "brightEyes") / 100,
     eyeGlow: clamp(
-      (amount(values, "iris") +
-        amount(values, "brightEyes") +
-        amount(values, "eyeBags") * 0.25) /
-        220,
+      amount(values, "brightEyes") / 185 +
+        amount(values, "iris") / 1000,
       0,
       0.65,
     ),
-    eyeScale: clamp(1 + amount(values, "enlargeEyes") / 1250, 1, 1.08),
+    eyeDistanceScale: clamp(
+      1 + amount(values, "eyeDistance") / 1800,
+      1,
+      1.06,
+    ),
+    eyeAngle: clamp(
+      (amount(values, "eyeAngle") / 100) * (Math.PI / 45),
+      0,
+      Math.PI / 45,
+    ),
     sculpt: clamp(amount(values, "sculpt") / 140, 0, 0.72),
   };
 }
@@ -255,6 +265,49 @@ function drawFilteredRegion(
   context.drawImage(filtered, 0, 0);
 }
 
+function drawTransformedRegion(
+  context,
+  source,
+  region,
+  {
+    scaleX = 1,
+    scaleY = 1,
+    rotation = 0,
+    opacity = 1,
+  } = {},
+) {
+  if (
+    Math.abs(scaleX - 1) < 0.001 &&
+    Math.abs(scaleY - 1) < 0.001 &&
+    Math.abs(rotation) < 0.001
+  ) {
+    return;
+  }
+
+  const layer = createCanvas(source.width, source.height);
+  const layerContext = layer.getContext("2d");
+  const centerX = region.x + region.width / 2;
+  const centerY = region.y + region.height / 2;
+  layerContext.save();
+  layerContext.translate(centerX, centerY);
+  layerContext.rotate(rotation);
+  layerContext.scale(scaleX, scaleY);
+  layerContext.drawImage(
+    source,
+    region.x,
+    region.y,
+    region.width,
+    region.height,
+    -region.width / 2,
+    -region.height / 2,
+    region.width,
+    region.height,
+  );
+  layerContext.restore();
+  applyFeatherMask(layer, region, 0.62, opacity);
+  context.drawImage(layer, 0, 0);
+}
+
 function drawEyeGlow(context, width, height, recipe) {
   if (recipe.eyeGlow <= 0) return;
 
@@ -274,8 +327,8 @@ function drawEyeGlow(context, width, height, recipe) {
       eye.y,
       radius,
     );
-    gradient.addColorStop(0, `rgba(205, 236, 230, ${recipe.eyeGlow * 0.22})`);
-    gradient.addColorStop(0.35, `rgba(178, 216, 209, ${recipe.eyeGlow * 0.12})`);
+    gradient.addColorStop(0, `rgba(240, 247, 248, ${recipe.eyeGlow * 0.2})`);
+    gradient.addColorStop(0.35, `rgba(220, 234, 236, ${recipe.eyeGlow * 0.1})`);
     gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
     context.fillStyle = gradient;
     context.beginPath();
@@ -291,6 +344,119 @@ function drawEyeGlow(context, width, height, recipe) {
     context.fill();
   });
   context.restore();
+}
+
+function drawEyeRetouch(context, width, height, recipe) {
+  const eyeRegions = [
+    {
+      x: width * 0.345,
+      y: height * 0.315,
+      width: width * 0.17,
+      height: height * 0.105,
+      angle: recipe.eyeAngle,
+    },
+    {
+      x: width * 0.485,
+      y: height * 0.315,
+      width: width * 0.17,
+      height: height * 0.105,
+      angle: -recipe.eyeAngle,
+    },
+  ];
+
+  if (recipe.eyeScale > 1 || recipe.eyeAngle > 0) {
+    const eyeSource = createCanvas(width, height);
+    eyeSource.getContext("2d").drawImage(context.canvas, 0, 0);
+    eyeRegions.forEach((region) => {
+      drawTransformedRegion(context, eyeSource, region, {
+        scaleX: recipe.eyeScale,
+        scaleY: 1 + (recipe.eyeScale - 1) * 0.7,
+        rotation: region.angle,
+      });
+    });
+  }
+
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.27,
+      y: height * 0.29,
+      width: width * 0.46,
+      height: height * 0.17,
+    },
+    recipe.eyeDistanceScale,
+    1,
+  );
+
+  const detailSource = createCanvas(width, height);
+  detailSource.getContext("2d").drawImage(context.canvas, 0, 0);
+  const underEyeRegions = [
+    {
+      x: width * 0.33,
+      y: height * 0.355,
+      width: width * 0.19,
+      height: height * 0.105,
+    },
+    {
+      x: width * 0.48,
+      y: height * 0.355,
+      width: width * 0.19,
+      height: height * 0.105,
+    },
+  ];
+  underEyeRegions.forEach((region) => {
+    drawFilteredRegion(
+      context,
+      detailSource,
+      region,
+      `blur(${(1 + recipe.eyeBagStrength * 4).toFixed(
+        1,
+      )}px) brightness(${(1 + recipe.eyeBagStrength * 0.09).toFixed(3)})`,
+      recipe.eyeBagStrength * 0.36,
+      0.55,
+    );
+    drawFilteredRegion(
+      context,
+      detailSource,
+      region,
+      `brightness(${(1 + recipe.darkCircleStrength * 0.16).toFixed(
+        3,
+      )}) saturate(${(1 - recipe.darkCircleStrength * 0.06).toFixed(3)})`,
+      recipe.darkCircleStrength * 0.38,
+      0.52,
+    );
+  });
+
+  const irisRegions = [
+    {
+      x: width * 0.375,
+      y: height * 0.338,
+      width: width * 0.11,
+      height: height * 0.055,
+    },
+    {
+      x: width * 0.515,
+      y: height * 0.338,
+      width: width * 0.11,
+      height: height * 0.055,
+    },
+  ];
+  irisRegions.forEach((region) => {
+    drawFilteredRegion(
+      context,
+      detailSource,
+      region,
+      `contrast(${(1 + recipe.irisStrength * 0.28).toFixed(
+        3,
+      )}) saturate(${(1 + recipe.irisStrength * 0.2).toFixed(
+        3,
+      )}) brightness(${(1 + recipe.irisStrength * 0.035).toFixed(3)})`,
+      recipe.irisStrength * 0.55,
+      0.45,
+    );
+  });
+
+  drawEyeGlow(context, width, height, recipe);
 }
 
 function drawSculptLight(context, width, height, recipe) {
@@ -510,7 +676,7 @@ export function renderLocalRetouch(canvas, image, values = {}) {
     recipe.bodyScaleY,
   );
 
-  drawEyeGlow(context, width, height, recipe);
+  drawEyeRetouch(context, width, height, recipe);
   drawSculptLight(context, width, height, recipe);
   return recipe;
 }
