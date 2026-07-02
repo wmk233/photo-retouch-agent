@@ -25,15 +25,6 @@ export function createRenderRecipe(values = {}) {
   const faceSlimming =
     (amount(values, "slimFace") + amount(values, "smallFace") * 0.75) /
     2100;
-  const bodySlimming =
-    (amount(values, "slimBelly") +
-      amount(values, "slimWaist") +
-      amount(values, "slimArms") * 0.35 +
-      amount(values, "slimLegs") * 0.2) /
-    1700;
-  const verticalStretch =
-    (amount(values, "longLegs") + amount(values, "headRatio") * 0.45) / 1800;
-
   return {
     brightness: clamp(brightness, 0.8, 1.35),
     saturation: clamp(saturation, 0.75, 1.45),
@@ -70,8 +61,23 @@ export function createRenderRecipe(values = {}) {
       0.94,
       1,
     ),
-    bodyScaleX: clamp(1 - bodySlimming, 0.9, 1),
-    bodyScaleY: clamp(1 + verticalStretch, 1, 1.08),
+    bellyScaleX: clamp(1 - amount(values, "slimBelly") / 1000, 0.9, 1),
+    waistScaleX: clamp(1 - amount(values, "slimWaist") / 820, 0.875, 1),
+    armScaleX: clamp(1 - amount(values, "slimArms") / 1200, 0.915, 1),
+    legScaleX: clamp(1 - amount(values, "slimLegs") / 1100, 0.905, 1),
+    legScaleY: clamp(1 + amount(values, "longLegs") / 1000, 1, 1.1),
+    shoulderScaleX: clamp(
+      1 + amount(values, "shoulders") / 1250,
+      1,
+      1.08,
+    ),
+    hipScaleX: clamp(1 + amount(values, "hips") / 1400, 1, 1.075),
+    hipScaleY: clamp(1 - amount(values, "hips") / 2500, 0.96, 1),
+    headRatioScale: clamp(
+      1 - amount(values, "headRatio") / 1600,
+      0.935,
+      1,
+    ),
     eyeScale: clamp(1 + amount(values, "enlargeEyes") / 550, 1, 1.18),
     eyeBagStrength: amount(values, "eyeBags") / 100,
     darkCircleStrength: amount(values, "darkCircles") / 100,
@@ -655,6 +661,91 @@ function drawFeatureRetouch(context, width, height, recipe) {
   drawBrows(context, featureSource, width, height, recipe.browStrength);
 }
 
+function drawBodyRetouch(context, width, height, recipe) {
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.14,
+      y: height * 0.06,
+      width: width * 0.72,
+      height: height * 0.58,
+    },
+    recipe.headRatioScale,
+    recipe.headRatioScale,
+  );
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.08,
+      y: height * 0.46,
+      width: width * 0.84,
+      height: height * 0.23,
+    },
+    recipe.shoulderScaleX,
+    1,
+  );
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.17,
+      y: height * 0.54,
+      width: width * 0.66,
+      height: height * 0.35,
+    },
+    recipe.bellyScaleX,
+    1,
+  );
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.2,
+      y: height * 0.62,
+      width: width * 0.6,
+      height: height * 0.27,
+    },
+    recipe.waistScaleX,
+    1,
+  );
+  [
+    {
+      x: width * 0.035,
+      y: height * 0.52,
+      width: width * 0.28,
+      height: height * 0.46,
+    },
+    {
+      x: width * 0.685,
+      y: height * 0.52,
+      width: width * 0.28,
+      height: height * 0.46,
+    },
+  ].forEach((region) => {
+    drawCurrentWarp(context, region, recipe.armScaleX, 1);
+  });
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.16,
+      y: height * 0.72,
+      width: width * 0.68,
+      height: height * 0.25,
+    },
+    recipe.hipScaleX,
+    recipe.hipScaleY,
+  );
+  drawCurrentWarp(
+    context,
+    {
+      x: width * 0.15,
+      y: height * 0.73,
+      width: width * 0.7,
+      height: height * 0.36,
+    },
+    recipe.legScaleX,
+    recipe.legScaleY,
+  );
+}
+
 function drawSculptLight(context, width, height, recipe) {
   if (recipe.sculpt <= 0) return;
 
@@ -860,18 +951,7 @@ export function renderLocalRetouch(canvas, image, values = {}) {
     1,
     recipe.doubleChinScaleY,
   );
-  drawCurrentWarp(
-    context,
-    {
-      x: width * 0.12,
-      y: height * 0.49,
-      width: width * 0.76,
-      height: height * 0.62,
-    },
-    recipe.bodyScaleX,
-    recipe.bodyScaleY,
-  );
-
+  drawBodyRetouch(context, width, height, recipe);
   drawFeatureRetouch(context, width, height, recipe);
   drawEyeRetouch(context, width, height, recipe);
   drawSculptLight(context, width, height, recipe);
