@@ -3,181 +3,354 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo Retouch Agent</title>
-    <link rel="stylesheet" href="./css/styles.css?v=0.4.0" />
+    <meta
+      name="description"
+      content="Photo Retouch Agent 标签化人像美化工作台原型"
+    />
+    <title>Photo Retouch Agent · 人像美化工作台</title>
+    <link rel="stylesheet" href="./css/styles.css?v=0.5.0" />
   </head>
   <body>
-    <header class="topbar">
-      <div class="brand">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="Photo Retouch Agent 首页">
         <span class="brand-mark">PR</span>
-        <div>
-          <h1>Photo Retouch Agent</h1>
-          <p>照片美化 Agent MVP</p>
-        </div>
+        <span class="brand-copy">
+          <strong>Retouch Lab</strong>
+          <small>人像美化工作台</small>
+        </span>
+      </a>
+
+      <div class="document-name">
+        <span class="status-dot"></span>
+        <span>portrait_01.png</span>
+        <small>已自动保存</small>
       </div>
-      <div class="status" id="status">请选择模型</div>
+
+      <div class="header-actions">
+        <span class="prototype-pill">PROTOTYPE · V0.1</span>
+        <button class="icon-button" id="undoButton" type="button" title="撤销">
+          ↶
+        </button>
+        <button class="ghost-button" id="resetButton" type="button">重置</button>
+        <button class="ghost-button compare-button" id="compareButton" type="button">
+          <span class="compare-icon"></span>
+          查看原图
+        </button>
+        <a class="export-button" id="exportButton" href="/data/uploads/img_77f62618a9b5.png" download>
+          导出图片
+          <span>↗</span>
+        </a>
+      </div>
     </header>
 
-    <section class="provider-bar" aria-label="Agent 模型配置">
-      <fieldset class="model-group">
-        <legend><span>1</span>Agent 大脑</legend>
-        <div class="model-fields">
-          <label>
-            <span>视觉理解模型</span>
-            <select id="brainProviderSelect">
-              <option value="">请选择</option>
-            </select>
-          </label>
-          <label id="brainApiKeyField" hidden>
-            <span>API Key</span>
-            <input
-              id="brainApiKeyInput"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="服务端未配置时填写"
-            />
-          </label>
-          <label id="brainWorkspaceField" hidden>
-            <span>Workspace ID</span>
-            <input
-              id="brainWorkspaceInput"
-              type="text"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="可选"
-            />
-          </label>
-        </div>
-        <div class="provider-state">
-          <strong id="brainProviderState">待选择</strong>
-          <span id="brainProviderHint">--</span>
-        </div>
-      </fieldset>
+    <main class="editor-shell">
+      <nav class="tool-rail" aria-label="美化部位">
+        <div class="rail-label">部位</div>
+        <button class="rail-tool active" data-category="skin" type="button">
+          <span>肤</span>
+          <small>皮肤</small>
+        </button>
+        <button class="rail-tool" data-category="face" type="button">
+          <span>脸</span>
+          <small>脸型</small>
+        </button>
+        <button class="rail-tool" data-category="eyes" type="button">
+          <span>眸</span>
+          <small>眼部</small>
+        </button>
+        <button class="rail-tool" data-category="features" type="button">
+          <span>五</span>
+          <small>五官</small>
+        </button>
+        <button class="rail-tool" data-category="body" type="button">
+          <span>形</span>
+          <small>身形</small>
+        </button>
+        <button class="rail-tool" data-category="makeup" type="button">
+          <span>妆</span>
+          <small>妆容</small>
+        </button>
+        <button class="rail-tool" data-category="tone" type="button">
+          <span>调</span>
+          <small>整体</small>
+        </button>
+        <div class="rail-spacer"></div>
+        <button class="rail-tool compact" id="uploadButton" type="button">
+          <span>＋</span>
+          <small>换图</small>
+        </button>
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          hidden
+        />
+      </nav>
 
-      <div class="model-connector" aria-hidden="true">+</div>
-
-      <fieldset class="model-group">
-        <legend><span>2</span>Agent 行动</legend>
-        <div class="model-fields">
-          <label>
-            <span>图像编辑模型</span>
-            <select id="actionProviderSelect">
-              <option value="">请选择</option>
-            </select>
-          </label>
-          <label id="actionApiKeyField" hidden>
-            <span>API Key</span>
-            <input
-              id="actionApiKeyInput"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="服务端未配置时填写"
-            />
-          </label>
-          <label id="actionWorkspaceField" hidden>
-            <span>Workspace ID</span>
-            <input
-              id="actionWorkspaceInput"
-              type="text"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="可选"
-            />
-          </label>
-        </div>
-        <div class="provider-state">
-          <strong id="actionProviderState">待选择</strong>
-          <span id="actionProviderHint">--</span>
-        </div>
-      </fieldset>
-
-      <div class="workflow-gate" id="workflowGate">请选择 Agent 大脑和 Agent 行动</div>
-    </section>
-
-    <main class="workspace">
-      <section class="panel">
-        <div class="panel-head">
+      <aside class="control-panel">
+        <div class="panel-heading">
           <div>
-            <span>Source</span>
-            <h2>原图</h2>
+            <span class="eyebrow">Portrait retouch</span>
+            <h1 id="categoryTitle">皮肤质感</h1>
           </div>
-          <small>JPG / PNG / WebP · 10MB</small>
+          <button class="more-button" type="button" aria-label="更多">•••</button>
         </div>
-        <div class="actions">
-          <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
-          <button id="uploadButton" class="primary" type="button" disabled>选择照片</button>
+
+        <div class="mode-switch" role="tablist" aria-label="美化模式">
+          <button class="active" data-mode="local" type="button" role="tab">
+            <span class="mode-glyph">⌁</span>
+            实时美化
+          </button>
+          <button data-mode="ai" type="button" role="tab">
+            <span class="mode-glyph">✦</span>
+            AI 精修
+          </button>
         </div>
-        <figure class="image-box">
-          <img id="sourceImage" alt="原图预览" hidden />
-          <figcaption id="sourceEmpty">未上传</figcaption>
-        </figure>
-        <dl class="meta" id="photoMeta">
-          <div><dt>图片 ID</dt><dd>--</dd></div>
-          <div><dt>尺寸</dt><dd>--</dd></div>
-          <div><dt>大小</dt><dd>--</dd></div>
-          <div><dt>格式</dt><dd>--</dd></div>
-        </dl>
+
+        <div class="mode-note" id="modeNote">
+          <span class="local-dot"></span>
+          本地实时预览 · 图片无需上传模型
+        </div>
+
+        <section id="localPanel">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="toolSearch" type="search" placeholder="搜索美化工具" />
+          </label>
+
+          <div class="tag-section">
+            <div class="section-row">
+              <h2>快捷标签</h2>
+              <span>点击即选中</span>
+            </div>
+            <div class="tool-tags" id="quickTags"></div>
+          </div>
+
+          <div class="control-section">
+            <div class="section-row">
+              <h2>细节调整</h2>
+              <button id="resetCategoryButton" type="button">重置本组</button>
+            </div>
+            <div class="adjustments" id="adjustmentList"></div>
+          </div>
+
+          <div class="protect-card">
+            <span class="protect-icon">◎</span>
+            <div>
+              <strong>智能保护背景</strong>
+              <small>调整脸型和身形时减少背景变形</small>
+            </div>
+            <label class="switch">
+              <input id="protectBackground" type="checkbox" checked />
+              <span></span>
+            </label>
+          </div>
+        </section>
+
+        <section id="aiPanel" hidden>
+          <div class="ai-intro">
+            <span class="ai-orbit">✦</span>
+            <div>
+              <strong>AI 会理解人像后统一精修</strong>
+              <p>适合复杂光线、局部瑕疵和多项联动调整。</p>
+            </div>
+          </div>
+
+          <div class="section-row ai-section-title">
+            <h2>选择美化风格</h2>
+            <span>4 个预设</span>
+          </div>
+          <div class="preset-grid" id="presetGrid">
+            <button class="preset-card active" data-preset="natural" type="button">
+              <span class="preset-swatch natural"></span>
+              <strong>自然原生肌</strong>
+              <small>保留皮肤纹理</small>
+            </button>
+            <button class="preset-card" data-preset="clear" type="button">
+              <span class="preset-swatch clear"></span>
+              <strong>清透职业照</strong>
+              <small>明亮、干净、克制</small>
+            </button>
+            <button class="preset-card" data-preset="sculpt" type="button">
+              <span class="preset-swatch sculpt"></span>
+              <strong>立体轮廓</strong>
+              <small>增强面部光影</small>
+            </button>
+            <button class="preset-card" data-preset="warm" type="button">
+              <span class="preset-swatch warm"></span>
+              <strong>暖调氛围</strong>
+              <small>柔和肤色与背景</small>
+            </button>
+          </div>
+
+          <label class="prompt-field">
+            <span>补充你的要求</span>
+            <textarea
+              id="aiPrompt"
+              rows="4"
+              placeholder="例如：保留真实皮肤纹理，淡化眼袋，脸型不要改变太多……"
+            ></textarea>
+            <small><b id="promptCount">0</b> / 200</small>
+          </label>
+
+          <details class="model-config">
+            <summary>
+              <span>
+                <i>AI</i>
+                模型配置
+              </span>
+              <small>已连接</small>
+            </summary>
+            <div class="model-row">
+              <span>视觉分析</span>
+              <strong>Qwen3-VL Plus</strong>
+            </div>
+            <div class="model-row">
+              <span>图像编辑</span>
+              <strong>Qwen Image 2.0 Pro</strong>
+            </div>
+          </details>
+
+          <button class="generate-button" id="generateButton" type="button">
+            <span>✦</span>
+            <b>生成 AI 美化效果</b>
+            <small>约 30 秒</small>
+          </button>
+        </section>
+      </aside>
+
+      <section class="canvas-panel">
+        <div class="canvas-toolbar">
+          <div class="portrait-selector">
+            <span class="portrait-avatar">1</span>
+            <div>
+              <strong>人物 1</strong>
+              <small>已识别正面人像</small>
+            </div>
+            <button type="button">⌄</button>
+          </div>
+          <div class="canvas-status" id="canvasStatus">
+            <span></span>
+            实时预览已开启
+          </div>
+          <div class="zoom-controls">
+            <button type="button">−</button>
+            <span id="zoomValue">78%</span>
+            <button type="button">＋</button>
+            <button type="button">适合画布</button>
+          </div>
+        </div>
+
+        <div class="canvas-stage">
+          <div class="image-workbench" id="imageWorkbench">
+            <img
+              id="beforeImage"
+              src="/data/uploads/img_77f62618a9b5.png"
+              alt="待美化原图"
+            />
+            <div class="after-layer" id="afterLayer">
+              <img
+                id="afterImage"
+                src="/data/uploads/img_77f62618a9b5.png"
+                alt="实时美化预览"
+              />
+            </div>
+            <div class="compare-line" id="compareLine">
+              <span>‹ ›</span>
+            </div>
+            <span class="image-badge before-badge">原图</span>
+            <span class="image-badge after-badge">美化后</span>
+          </div>
+
+          <div class="floating-tip" id="floatingTip">
+            <span>⌁</span>
+            拖动下方滑杆查看前后对比
+            <button type="button" aria-label="关闭提示">×</button>
+          </div>
+        </div>
+
+        <div class="compare-bar">
+          <span>原图</span>
+          <input id="compareRange" type="range" min="0" max="100" value="52" />
+          <span>美化后</span>
+        </div>
       </section>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div>
-            <span>Agent</span>
-            <h2>分析与方案</h2>
+      <aside class="inspector-panel">
+        <section class="inspector-card detection-card">
+          <div class="section-row">
+            <h2>人像识别</h2>
+            <span class="success-label">质量良好</span>
           </div>
-          <button id="analyzeButton" type="button" disabled>开始分析</button>
-        </div>
-        <div id="analysisEmpty" class="empty">待分析</div>
-        <div id="analysisContent" hidden>
-          <div class="summary">
-            <div><span>场景</span><strong id="sceneType">--</strong></div>
-            <div><span>主体</span><strong id="subjectSummary">--</strong></div>
-            <div><span>风险</span><strong id="riskSummary">--</strong></div>
-            <div><span>分析模型</span><strong id="analysisModelSummary">--</strong></div>
+          <div class="face-map">
+            <div class="face-oval">
+              <i class="point p1"></i>
+              <i class="point p2"></i>
+              <i class="point p3"></i>
+              <i class="point p4"></i>
+              <i class="point p5"></i>
+              <i class="point p6"></i>
+            </div>
+            <div class="face-stats">
+              <div><span>面部</span><strong>1</strong></div>
+              <div><span>可见度</span><strong>98%</strong></div>
+              <div><span>光线</span><strong>柔和</strong></div>
+            </div>
           </div>
-          <div id="analysisGroups" class="groups"></div>
-        </div>
-        <div class="plans-title">
-          <h3>一键方案</h3>
-          <span id="planCount">0</span>
-        </div>
-        <div id="planList" class="plans"></div>
-      </section>
+        </section>
 
-      <section class="panel result-panel">
-        <div class="panel-head">
-          <div>
-            <span>Output</span>
-            <h2>结果</h2>
+        <section class="inspector-card changes-card">
+          <div class="section-row">
+            <h2>本次调整</h2>
+            <span id="changeCount">3 项</span>
           </div>
-          <div class="actions">
-            <button id="regenerateButton" type="button" disabled>重新生成</button>
-            <a id="downloadLink" class="primary disabled" href="#" download>下载</a>
+          <div class="change-list" id="changeList"></div>
+        </section>
+
+        <section class="inspector-card engine-card">
+          <div class="engine-head">
+            <span class="engine-icon">⌁</span>
+            <div>
+              <strong>实时美化引擎</strong>
+              <small>本地渲染 · 低延迟</small>
+            </div>
+            <span class="online-dot"></span>
           </div>
-        </div>
-        <div class="result-box">
-          <img id="resultImage" alt="美化结果" hidden />
-          <div id="resultEmpty" class="empty">暂无结果</div>
-        </div>
-        <p id="executionNote" class="note">--</p>
-      </section>
+          <dl>
+            <div><dt>预览延迟</dt><dd>&lt; 30ms</dd></div>
+            <div><dt>输出尺寸</dt><dd>832 × 1248</dd></div>
+            <div><dt>纹理保护</dt><dd>开启</dd></div>
+          </dl>
+        </section>
+
+        <button class="ai-shortcut" id="aiShortcut" type="button">
+          <span>✦</span>
+          <span>
+            <strong>让 AI 帮我统一优化</strong>
+            <small>基于当前参数继续精修</small>
+          </span>
+          <b>→</b>
+        </button>
+      </aside>
     </main>
 
-    <footer class="dock">
-      <div id="history" class="history">等待任务</div>
-      <form id="refineForm" class="refine">
-        <input
-          id="instructionInput"
-          type="text"
-          placeholder="例如：再自然一点，肤色再亮一些，保持风格但裁成头像"
-          disabled
-        />
-        <button id="refineButton" class="primary" type="submit" disabled>继续修改</button>
-      </form>
+    <footer class="status-bar">
+      <div>
+        <span class="ready-dot"></span>
+        <strong id="footerStatus">实时美化已就绪</strong>
+        <small>所有手动参数仅在本地预览</small>
+      </div>
+      <div class="history-strip">
+        <span>原图</span>
+        <b>→</b>
+        <span class="active" id="historyState">光滑 24 · 肤色 12 · 立体 8</span>
+      </div>
+      <div>
+        <small>RGB · sRGB</small>
+        <span>832 × 1248 px</span>
+      </div>
     </footer>
 
-    <script type="module" src="./js/main.js?v=0.4.0"></script>
+    <script type="module" src="./js/main.js?v=0.5.0"></script>
   </body>
 </html>
