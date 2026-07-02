@@ -1,7 +1,9 @@
 from __future__ import annotations
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header
+from fastapi.responses import JSONResponse
 
 from app.api.dependencies import (
     get_agent_brain_factory,
@@ -11,12 +13,14 @@ from app.api.dependencies import (
 from app.api.model_selection import require_model_selection
 from app.brains.base import PromptBrain
 from app.brains.factory import AgentBrainFactory
+from app.core.config import settings
 from app.domains.registry import domain_registry
 from app.providers.base import ImageEditProvider
 from app.providers.factory import ImageProviderFactory
 from app.schemas.job import CreateRetouchJobRequest, RefineRetouchJobRequest, RetouchJob
 from app.schemas.retouch import RetouchPlan, RetouchPlansRequest
 from app.services.retouch_service import RetouchService
+from app.services.task_queue import get_task_queue
 
 router = APIRouter(prefix="/retouch", tags=["retouch"])
 
@@ -74,7 +78,7 @@ def get_retouch_providers(
     }
 
 
-@router.post("/jobs", response_model=RetouchJob, response_model_by_alias=True)
+@router.post("/jobs", status_code=202)
 async def create_retouch_job(
     request: CreateRetouchJobRequest,
     service: Annotated[RetouchService, Depends(get_retouch_service)],
@@ -97,7 +101,7 @@ async def create_retouch_job(
     brain_workspace_id: Annotated[
         str | None, Header(alias="X-Agent-Workspace-Id")
     ] = None,
-) -> RetouchJob:
+) -> JSONResponse:
     provider, brain = _create_workflow_models(
         image_factory,
         brain_factory,
@@ -111,7 +115,33 @@ async def create_retouch_job(
         brain_api_key,
         brain_workspace_id,
     )
-    return await service.with_providers(provider, brain).create_job(request)
+    svc = service.with_providers(provider, brain)
+
+    job = await svc.create_job_queued(request)
+
+    async def _execute() -> None:
+        await svc.execute_job(job.job_id)
+
+    queue = get_task_queue(max_concurrent=settings.max_concurrent_jobs)
+    await queue.enqueue(job.job_id, _execute)
+
+    return JSONResponse(
+        status_code=202,
+        content={
+            "jobId": job.job_id,
+            "status": job.status,
+            "createdAt": job.created_at.isoformat(),
+        },
+    )
+
+
+@router.get("/jobs", response_model=list[RetouchJob], response_model_by_alias=True)
+def list_retouch_jobs(
+    service: Annotated[RetouchService, Depends(get_retouch_service)],
+    limit: int = 20,
+    offset: int = 0,
+) -> list[RetouchJob]:
+    return service.list_jobs(limit=limit, offset=offset)
 
 
 @router.get("/jobs/{job_id}", response_model=RetouchJob, response_model_by_alias=True)
@@ -122,7 +152,7 @@ def get_retouch_job(
     return service.get_job(job_id)
 
 
-@router.post("/jobs/{job_id}/refine", response_model=RetouchJob, response_model_by_alias=True)
+@router.post("/jobs/{job_id}/refine", status_code=202)
 async def refine_retouch_job(
     job_id: str,
     request: RefineRetouchJobRequest,
@@ -146,7 +176,7 @@ async def refine_retouch_job(
     brain_workspace_id: Annotated[
         str | None, Header(alias="X-Agent-Workspace-Id")
     ] = None,
-) -> RetouchJob:
+) -> JSONResponse:
     provider, brain = _create_workflow_models(
         image_factory,
         brain_factory,
@@ -160,4 +190,29 @@ async def refine_retouch_job(
         brain_api_key,
         brain_workspace_id,
     )
-    return await service.with_providers(provider, brain).refine_job(job_id, request)
+    svc = service.with_providers(provider, brain)
+
+    parent = service.get_job(job_id)
+    plan = request.plan or parent.plan
+    create_req = CreateRetouchJobRequest(
+        source_image_id=parent.source_image_id,
+        base_image_id=parent.output_image_ids[-1] if parent.output_image_ids else None,
+        plan=plan,
+        user_instruction=request.user_instruction,
+    )
+    job = await svc.create_job_queued(create_req)
+
+    async def _execute() -> None:
+        await svc.execute_job(job.job_id)
+
+    queue = get_task_queue(max_concurrent=settings.max_concurrent_jobs)
+    await queue.enqueue(job.job_id, _execute)
+
+    return JSONResponse(
+        status_code=202,
+        content={
+            "jobId": job.job_id,
+            "status": job.status,
+            "createdAt": job.created_at.isoformat(),
+        },
+    )
