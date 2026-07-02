@@ -11,10 +11,7 @@ export function createRenderRecipe(values = {}) {
   const saturation =
     1 + amount(values, "saturation") / 900;
   const contrast =
-    1 +
-    (amount(values, "contrast") +
-      amount(values, "clarity")) /
-      850;
+    1 + amount(values, "contrast") / 850;
   const warmth =
     amount(values, "warmth") / 1300;
   const faceSlimming =
@@ -111,6 +108,12 @@ export function createRenderRecipe(values = {}) {
     eyebrowMakeupStrength: amount(values, "eyebrowMakeup") / 100,
     eyelinerStrength: amount(values, "eyeliner") / 100,
     lipstickStrength: amount(values, "lipstick") / 100,
+    toneBrightnessStrength: amount(values, "brightness") / 100,
+    toneContrastStrength: amount(values, "contrast") / 100,
+    toneWarmthStrength: amount(values, "warmth") / 100,
+    toneSaturationStrength: amount(values, "saturation") / 100,
+    clarityStrength: amount(values, "clarity") / 100,
+    backgroundStrength: amount(values, "background") / 100,
     sculpt: clamp(amount(values, "sculpt") / 140, 0, 0.72),
   };
 }
@@ -935,6 +938,74 @@ function drawMakeupRetouch(context, width, height, recipe) {
   drawLipstick(context, width, height, recipe.lipstickStrength);
 }
 
+function drawToneRetouch(context, width, height, recipe) {
+  if (recipe.clarityStrength > 0) {
+    const claritySource = createCanvas(width, height);
+    claritySource.getContext("2d").drawImage(context.canvas, 0, 0);
+    const clarity = createCanvas(width, height);
+    const clarityContext = clarity.getContext("2d");
+    clarityContext.filter = `contrast(${(
+      1 +
+      recipe.clarityStrength * 0.34
+    ).toFixed(3)}) saturate(${(
+      1 +
+      recipe.clarityStrength * 0.08
+    ).toFixed(3)})`;
+    clarityContext.drawImage(claritySource, 0, 0);
+    context.save();
+    context.globalAlpha = recipe.clarityStrength * 0.34;
+    context.drawImage(clarity, 0, 0);
+    context.restore();
+  }
+
+  if (recipe.backgroundStrength <= 0) return;
+
+  const foregroundSource = createCanvas(width, height);
+  foregroundSource.getContext("2d").drawImage(context.canvas, 0, 0);
+  const softenedBackground = createCanvas(width, height);
+  const backgroundContext = softenedBackground.getContext("2d");
+  backgroundContext.filter = `blur(${(
+    1 +
+    recipe.backgroundStrength * 9
+  ).toFixed(1)}px) saturate(${(
+    1 -
+    recipe.backgroundStrength * 0.08
+  ).toFixed(3)})`;
+  backgroundContext.drawImage(foregroundSource, 0, 0);
+
+  context.save();
+  context.globalAlpha = recipe.backgroundStrength * 0.72;
+  context.drawImage(softenedBackground, 0, 0);
+  context.restore();
+
+  drawFilteredRegion(
+    context,
+    foregroundSource,
+    {
+      x: width * 0.16,
+      y: height * 0.07,
+      width: width * 0.68,
+      height: height * 0.62,
+    },
+    "none",
+    recipe.backgroundStrength * 0.96,
+    0.76,
+  );
+  drawFilteredRegion(
+    context,
+    foregroundSource,
+    {
+      x: width * 0.08,
+      y: height * 0.43,
+      width: width * 0.84,
+      height: height * 0.72,
+    },
+    "none",
+    recipe.backgroundStrength * 0.9,
+    0.72,
+  );
+}
+
 function drawSculptLight(context, width, height, recipe) {
   if (recipe.sculpt <= 0) return;
 
@@ -999,6 +1070,7 @@ export function renderLocalRetouch(canvas, image, values = {}) {
   context.filter = buildCanvasFilter(recipe);
   context.drawImage(source, 0, 0, width, height);
   context.restore();
+  drawToneRetouch(context, width, height, recipe);
 
   const skinSource = createCanvas(width, height);
   skinSource.getContext("2d").drawImage(canvas, 0, 0);
