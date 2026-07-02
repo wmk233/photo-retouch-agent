@@ -1,6 +1,22 @@
+from __future__ import annotations
+
+import time
+
 from fastapi.testclient import TestClient
 
 from tests.conftest import make_image_bytes
+
+
+def _wait_for_job(client: TestClient, job_id: str, timeout: float = 5.0) -> dict:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        response = client.get(f"/api/retouch/jobs/{job_id}")
+        assert response.status_code == 200
+        job = response.json()
+        if job["status"] in ("succeeded", "failed"):
+            return job
+        time.sleep(0.1)
+    raise TimeoutError(f"Job {job_id} did not complete within {timeout}s")
 
 
 def _create_completed_job(client: TestClient) -> dict:
@@ -12,12 +28,12 @@ def _create_completed_job(client: TestClient) -> dict:
     image_id = upload.json()["imageId"]
     analysis = client.post("/api/photos/analyze", json={"imageId": image_id})
     plans = client.post("/api/retouch/plans", json={"analysis": analysis.json()})
-    job = client.post(
+    job_resp = client.post(
         "/api/retouch/jobs",
         json={"sourceImageId": image_id, "plan": plans.json()[0], "userInstruction": ""},
     )
-    assert job.status_code == 200
-    return job.json()
+    assert job_resp.status_code == 202
+    return _wait_for_job(client, job_resp.json()["jobId"])
 
 
 def test_refine_job_uses_previous_output_as_base(client: TestClient) -> None:
@@ -29,8 +45,8 @@ def test_refine_job_uses_previous_output_as_base(client: TestClient) -> None:
         json={"userInstruction": "再自然一点，肤色再亮一些"},
     )
 
-    assert response.status_code == 200
-    refined = response.json()
+    assert response.status_code == 202
+    refined = _wait_for_job(client, response.json()["jobId"])
     assert refined["jobId"] != parent["jobId"]
     assert refined["sourceImageId"] == parent["sourceImageId"]
     assert refined["baseImageId"] == previous_output_id

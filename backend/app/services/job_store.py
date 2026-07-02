@@ -22,6 +22,20 @@ class JobStore:
             raise not_found("Retouch job not found.")
         return RetouchJob.model_validate_json(path.read_text(encoding="utf-8"))
 
+    def list_jobs(self, limit: int = 20, offset: int = 0) -> list[RetouchJob]:
+        paths = sorted(
+            self.config.jobs_dir.glob("*.json"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        jobs: list[RetouchJob] = []
+        for path in paths[offset : offset + limit]:
+            try:
+                jobs.append(RetouchJob.model_validate_json(path.read_text(encoding="utf-8")))
+            except Exception:
+                pass
+        return jobs
+
     def _job_path(self, job_id: str) -> Path:
         return self.config.jobs_dir / f"{job_id}.json"
 

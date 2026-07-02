@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+import asyncio
+import time
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -20,6 +24,18 @@ def _analysis_and_plan(client: TestClient) -> tuple[str, dict]:
     return image_id, plans.json()[0]
 
 
+def _wait_for_job(client: TestClient, job_id: str, timeout: float = 5.0) -> dict:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        response = client.get(f"/api/retouch/jobs/{job_id}")
+        assert response.status_code == 200
+        job = response.json()
+        if job["status"] in ("succeeded", "failed"):
+            return job
+        time.sleep(0.1)
+    raise TimeoutError(f"Job {job_id} did not complete within {timeout}s")
+
+
 def test_create_retouch_job_generates_output(
     client: TestClient,
     temp_settings: Settings,
@@ -31,9 +47,12 @@ def test_create_retouch_job_generates_output(
         json={"sourceImageId": image_id, "plan": plan, "userInstruction": ""},
     )
 
-    assert response.status_code == 200
-    job = response.json()
-    assert job["jobId"].startswith("job_")
+    assert response.status_code == 202
+    queued = response.json()
+    assert queued["jobId"].startswith("job_")
+    assert queued["status"] == "queued"
+
+    job = _wait_for_job(client, queued["jobId"])
     assert job["sourceImageId"] == image_id
     assert job["planId"] == "natural"
     assert job["status"] == "succeeded"
@@ -49,10 +68,7 @@ def test_get_retouch_job_returns_saved_job(client: TestClient) -> None:
         json={"sourceImageId": image_id, "plan": plan, "userInstruction": "脸部再亮一点"},
     ).json()
 
-    response = client.get(f"/api/retouch/jobs/{created['jobId']}")
-
-    assert response.status_code == 200
-    job = response.json()
+    job = _wait_for_job(client, created["jobId"])
     assert job["jobId"] == created["jobId"]
     assert job["userInstruction"] == "脸部再亮一点"
     assert job["status"] == "succeeded"

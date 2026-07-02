@@ -128,7 +128,7 @@ def test_request_api_key_is_not_persisted(
         json={"sourceImageId": image_id, "plan": plan, "userInstruction": ""},
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 202
     assert factory.received == {
         "provider": "qwen",
         "api_key": image_secret,
