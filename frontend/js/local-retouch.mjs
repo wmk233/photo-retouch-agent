@@ -145,6 +145,38 @@ function drawScaledRegion(context, source, region, scaleX, scaleY, opacity = 1) 
     destinationWidth,
     destinationHeight,
   );
+
+  const gapX = (region.width - destinationWidth) / 2;
+  const gapY = (region.height - destinationHeight) / 2;
+
+  if (gapX > 0.5) {
+    const stripW = Math.min(gapX * 2.5, region.width * 0.12);
+    context.drawImage(
+      source,
+      region.x, region.y, stripW, region.height,
+      region.x, destinationY, gapX, destinationHeight,
+    );
+    context.drawImage(
+      source,
+      region.x + region.width - stripW, region.y, stripW, region.height,
+      destinationX + destinationWidth, destinationY, gapX, destinationHeight,
+    );
+  }
+
+  if (gapY > 0.5) {
+    const stripH = Math.min(gapY * 2.5, region.height * 0.12);
+    context.drawImage(
+      source,
+      region.x, region.y, region.width, stripH,
+      destinationX, region.y, destinationWidth, gapY,
+    );
+    context.drawImage(
+      source,
+      region.x, region.y + region.height - stripH, region.width, stripH,
+      destinationX, destinationY + destinationHeight, destinationWidth, gapY,
+    );
+  }
+
   context.restore();
 }
 
