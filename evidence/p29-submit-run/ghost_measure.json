@@ -1,0 +1,105 @@
+{
+  "band": {
+    "y": [
+      520,
+      1000
+    ],
+    "x": [
+      240,
+      820
+    ]
+  },
+  "original_pale_knit_pixels": 88055,
+  "original_knit_mean_rgb": [
+    212.3,
+    188.5,
+    175.4
+  ],
+  "original_knit_desaturated_share": 0.5038,
+  "renders": {
+    "final": {
+      "pale_where_original_knit": 33254,
+      "share_of_original_knit": 0.3777,
+      "mean_rgb_where_survived": [
+        193.5,
+        186.9,
+        157.6
+      ],
+      "still_desaturated_share": 0.3033,
+      "inside_clothing_mask_pixels": 28322,
+      "inside_protected_mask_pixels": 4931,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 10163,
+        "bbox": {
+          "x0": 504,
+          "y0": 764,
+          "x1": 607,
+          "y1": 999
+        }
+      }
+    },
+    "clothing_pass": {
+      "pale_where_original_knit": 34162,
+      "share_of_original_knit": 0.388,
+      "mean_rgb_where_survived": [
+        193.9,
+        186.8,
+        158.0
+      ],
+      "still_desaturated_share": 0.2981,
+      "inside_clothing_mask_pixels": 28428,
+      "inside_protected_mask_pixels": 4931,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 10163,
+        "bbox": {
+          "x0": 504,
+          "y0": 764,
+          "x1": 607,
+          "y1": 999
+        }
+      }
+    },
+    "prev_ghost_failure": {
+      "pale_where_original_knit": 23050,
+      "share_of_original_knit": 0.2618,
+      "mean_rgb_where_survived": [
+        218.6,
+        190.5,
+        165.9
+      ],
+      "still_desaturated_share": 0.2302,
+      "inside_clothing_mask_pixels": 18075,
+      "inside_protected_mask_pixels": 4975,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 16552,
+        "bbox": {
+          "x0": 403,
+          "y0": 614,
+          "x1": 575,
+          "y1": 999
+        }
+      }
+    },
+    "prev_second_face_failure": {
+      "pale_where_original_knit": 17978,
+      "share_of_original_knit": 0.2042,
+      "mean_rgb_where_survived": [
+        218.9,
+        173.0,
+        141.2
+      ],
+      "still_desaturated_share": 0.0055,
+      "inside_clothing_mask_pixels": 12819,
+      "inside_protected_mask_pixels": 5159,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 9772,
+        "bbox": {
+          "x0": 403,
+          "y0": 628,
+          "x1": 543,
+          "y1": 744
+        }
+      }
+    }
+  }
+}

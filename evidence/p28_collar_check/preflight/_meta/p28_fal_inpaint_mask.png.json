@@ -1,0 +1,82 @@
+{
+  "kind": "native-edit-mask",
+  "maskFile": "p28_fal_inpaint_mask.png",
+  "generatedAt": "2026-10-08T12:35:33.456397+00:00",
+  "semantics": "white=repaint black=keep original pixels",
+  "size": [
+    904,
+    1190
+  ],
+  "stats": {
+    "imageWidth": 904,
+    "imageHeight": 1190,
+    "faceBox": [
+      338.54,
+      307.63,
+      596.8,
+      594.19
+    ],
+    "faceWidthPx": 256.72,
+    "faceHeightPx": 286.55,
+    "featherPx": 5.13,
+    "skinSamplePixels": 18475,
+    "protectedPixels": 81741,
+    "hairPixels": 224961,
+    "clothingPixels": 325145,
+    "editablePixels": 470242,
+    "protectedShare": 0.076,
+    "editableShare": 0.4371,
+    "identityGuardPixels": 21873,
+    "glassesGuardPixels": 20492,
+    "faceSkinPixels": 59180,
+    "parsedFacePixels": 86564,
+    "parsedFaceIslandPixels": 76235,
+    "faceCorePixels": 73094,
+    "collarSplitEnabled": true,
+    "collarSplitApplied": true,
+    "collarReclassifiedPixels": 13470,
+    "collarEditablePixels": 13470,
+    "neckSkinProtectedPixels": 4792,
+    "faceSkinShare": 0.7763,
+    "backgroundPreservePixels": 520691,
+    "backgroundEditablePixels": 61416,
+    "backgroundEditableShare": 0.1306,
+    "hairIslandsDropped": 11,
+    "clothingIslandsDropped": 9,
+    "specklePixelsDropped": 4467,
+    "protectedCoversEditable": true,
+    "identityCoversEditable": true,
+    "hairContactWithProtectedPixels": 814,
+    "parsedClassShares": {
+      "Background": 0.5411,
+      "Hair": 0.1252,
+      "Upper-clothes": 0.2532,
+      "Face": 0.0805
+    },
+    "semantic": true,
+    "legacyEllipseStyle": "P2.6 head ellipse reconstructed from the same landmarks",
+    "legacyEllipsePixels": 326404,
+    "hairIoUWithLegacyEllipse": 0.2866,
+    "hairOutsideLegacyEllipseShare": 0.4541
+  },
+  "gaps": [
+    "speckle_hair_islands_dropped: the parser tagged 11 hair island(s) below 6212 px (background slivers at the frame edge, 806 px in total); they were removed before the region was grown",
+    "speckle_garment_islands_dropped: the parser tagged 9 garment island(s) below 13435 px (background slivers at the frame edge, 3661 px in total); they were removed before the region was grown",
+    "glasses_guard_is_geometric: the parser reported no Sunglasses pixels (clear prescription glasses are not in the ATR taxonomy), so the lens band comes from the MediaPipe eye rings and is reported as geometry rather than as a classified region",
+    "parsing_boundary_is_approximate: the ATR network runs at 512x512 and is upsampled to the photo, so the hairline and the collar are accurate to roughly a few pixels -- they still need human correction before a paid generation is attempted",
+    "hairline_is_not_a_hair_matte: the hair mask is the parsed hair silhouette grown by a rim, not a per-strand matte; wispy strands against the background may fall outside it",
+    "collar_split_is_tone_based: the pixels below the chin that were moved out of the face island and into the clothing region were separated by the subject's own skin tone, not by a garment class -- a shadowed throat or a skin-toned collar is the one case that needs an eye before a paid generation"
+  ],
+  "acceptance": {
+    "passed": true,
+    "reasons": [],
+    "editablePixels": 470242,
+    "editableShare": 0.437125,
+    "backgroundShareOfEditArea": 0.1306,
+    "collarSplitApplied": true,
+    "collarEditablePixels": 13470,
+    "neckSkinProtectedPixels": 4792,
+    "identityCoversEditable": true
+  },
+  "note": "built locally from SCHP parsing + MediaPipe landmarks; no generator ran and no photo left the machine"
+}

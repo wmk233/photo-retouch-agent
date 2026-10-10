@@ -112,7 +112,7 @@ const initialValues = Object.fromEntries(
 
 export const { state, on } = createStore({
   category: "skin",
-  mode: "local",
+  mode: "ai",
   values: initialValues,
   history: [],
   selectedPreset: "natural",

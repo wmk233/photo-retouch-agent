@@ -1,0 +1,15 @@
+{
+  "taskId": "2108330225116082177",
+  "redacted": true,
+  "note": "Rh-Comfy-Auth signed websocket token, netWssUrl and clientId removed before commit: they are credentials, not metadata.",
+  "create": {
+    "code": 0,
+    "msg": "success",
+    "errorMessages": null,
+    "data": {
+      "taskId": "2108330225116082177",
+      "taskStatus": "RUNNING",
+      "promptTips": null
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+ "face_width_px": 256.72,
+ "hair_grow_rim_px": 30.8,
+ "parse_hair_px": 134720,
+ "protected_px": 81741,
+ "protected_over_parse_hair_px": 7507,
+ "protected_over_parse_hair_share_of_protected": 0.0918,
+ "grown_hair_frozen_by_protected_px": 28723,
+ "hair_mask_px": 224961,
+ "protected_over_parse_hair_bbox": [
+  333,
+  239,
+  617,
+  602
+ ],
+ "protected_over_parse_hair_mean_orig_lum": 32.0,
+ "protected_over_parse_hair_mean_res_lum": 33.5,
+ "protected_over_parse_hair_identical_le2": 0.7453,
+ "protected_over_parse_hair_mean_abs_delta": 4.36,
+ "brow_row_landmark": 397,
+ "band_frozen_parse_hair": {
+  "pixels": 4138,
+  "mean_orig_lum": 32.2,
+  "mean_res_lum": 34.1,
+  "unchanged_le2": 0.7293,
+  "unchanged_le11": 0.8975
+ },
+ "band_hair_mask": {
+  "pixels": 66499,
+  "mean_orig_lum": 30.6,
+  "mean_res_lum": 36.3,
+  "unchanged_le2": 0.0086,
+  "unchanged_le11": 0.2003
+ },
+ "band_grown_hair_minus_protected": {
+  "pixels": 63390,
+  "mean_orig_lum": 30.3,
+  "mean_res_lum": 36.3,
+  "unchanged_le2": 0.0048,
+  "unchanged_le11": 0.1747
+ },
+ "hair_mask_over_parse_clothing_px": 48654,
+ "hair_mask_over_parse_face_px": 4379,
+ "hair_mask_over_parse_face_share_of_hair": 0.0195
+}

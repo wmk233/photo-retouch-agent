@@ -29,10 +29,13 @@ class PhotoAnalysis:
     brain_provider: str = "local"
     brain_model: str = "rule-based-analyzer"
     vision_mode: str = "derived"
+    face_facts: dict | None = None
+    #: True when the analysis was served from the reuse cache, i.e. this call
+    #: did not reach the model provider and therefore cost nothing.
+    analysis_reused: bool = False
 
     def __post_init__(self) -> None:
         if not self.image_id:
             raise ValueError("image_id is required")
         if not self.domain_type:
             raise ValueError("domain_type is required")
-

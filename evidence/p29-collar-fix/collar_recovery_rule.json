@@ -1,0 +1,20 @@
+{
+  "protected_total": 75762,
+  "target_band(prot&below&face&~skin)": 805,
+  "recover_desat_ring": 286,
+  "recover_schp_cloth_ring": 167,
+  "recover_union": 330,
+  "recover_union_pale_only(luma>0.9ref)": 300,
+  "recover_union_dark(<0.35ref)": 0,
+  "recover_union_over_skin": 0,
+  "recover_union_above_chin": 0,
+  "recover_union_on_hair": 0,
+  "remaining_target_after": 644,
+  "ring_ratio_px": 5.13,
+  "union_bbox": [
+    398,
+    594,
+    562,
+    729
+  ]
+}

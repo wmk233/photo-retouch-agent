@@ -1,0 +1,134 @@
+{
+ "round": 9,
+ "kind": "free adjudication of the remaining guarded collar conflict",
+ "baseline_final": "evidence/p29-submit-run/final.png",
+ "runninghub_task": 2108330225116082177,
+ "paid_calls": 0,
+ "cost_cny": 0.0,
+ "new_task_id": null,
+ "visible_pale_cloth_in_neck_band": {
+  "rule": "final luma>140 and chroma<55 and not (hue 45-115 and sat>0.12); band x400-640,y560-760",
+  "total_px": 3186,
+  "in_release_px": 1438,
+  "in_carve_px": 172,
+  "in_guarded_px": 1154,
+  "outside_edit_region_px": 1748
+ },
+ "largest_uncovered_blobs": [
+  {
+   "px": 1067,
+   "bbox": [
+    514,
+    578,
+    51,
+    111
+   ],
+   "orig_median_rgb": [
+    208,
+    177,
+    158
+   ],
+   "final_median_rgb": [
+    207,
+    175,
+    156
+   ],
+   "note": "standing white collar fold, render left it unchanged"
+  },
+  {
+   "px": 251,
+   "bbox": [
+    472,
+    704,
+    17,
+    25
+   ],
+   "orig_median_rgb": [
+    190,
+    158,
+    142
+   ],
+   "final_median_rgb": [
+    183,
+    154,
+    133
+   ]
+  },
+  {
+   "px": 170,
+   "bbox": [
+    526,
+    726,
+    15,
+    16
+   ],
+   "orig_median_rgb": [
+    217,
+    198,
+    184
+   ],
+   "final_median_rgb": [
+    186,
+    174,
+    147
+   ],
+   "schp_class_top": 4
+  },
+  {
+   "px": 114,
+   "bbox": [
+    620,
+    747,
+    20,
+    13
+   ],
+   "orig_median_rgb": [
+    53,
+    42,
+    42
+   ],
+   "final_median_rgb": [
+    185,
+    191,
+    169
+   ]
+  }
+ ],
+ "evidence_that_residual_is_not_separable_from_skin": {
+  "orig_luma_median": {
+   "residual": 184.2,
+   "release": 204.1,
+   "carve": 190.8,
+   "guarded": 173.1,
+   "real_skin": 160.0
+  },
+  "orig_chroma_median": {
+   "residual": 52.0,
+   "release": 32.0,
+   "carve": 38.0,
+   "guarded": 55.0,
+   "real_skin": 72.0
+  },
+  "texture_laplacian_median": {
+   "residual": 4.11,
+   "release": 3.39,
+   "carve": 6.23,
+   "guarded": 4.47,
+   "real_skin": 4.33
+  },
+  "schp_labels_in_residual_blob": {
+   "11": 4243,
+   "4": 1098,
+   "0": 320
+  }
+ },
+ "gate8_flaw": {
+  "test": "final luma>160 and chroma<20 (strictly near-greyscale white)",
+  "caught_px": 10,
+  "report": "unresolvable=false",
+  "why_wrong": "the visible white cloth is warm-tinted knit shadow (chroma~52), so a neutral-greyscale detector cannot see it"
+ },
+ "gate_passed_claimed": true,
+ "gate_passed_actual": false,
+ "action": "stopped; no paid submission, no forced params"
+}

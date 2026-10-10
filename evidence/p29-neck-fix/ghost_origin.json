@@ -1,0 +1,192 @@
+{
+ "centre_ghost_column": {
+  "name": "centre grey column (chin->chest)",
+  "box": [
+   500,
+   620,
+   660,
+   930
+  ],
+  "pixels": 49600,
+  "mean_abs_delta": 65.4,
+  "identical_frac": 0.0613,
+  "changed_gt25_frac": 0.6819,
+  "orig_rgb": [
+   157.8,
+   138.0,
+   128.3
+  ],
+  "result_rgb": [
+   115.2,
+   102.8,
+   86.5
+  ],
+  "prot_frac": 0.069,
+  "hair_paint_frac": 0.269,
+  "clothing_paint_frac": 0.908,
+  "both_frac": 0.243,
+  "neither_frac": 0.066
+ },
+ "chin_smear": {
+  "name": "under-chin smear",
+  "box": [
+   340,
+   575,
+   620,
+   650
+  ],
+  "pixels": 21000,
+  "mean_abs_delta": 41.01,
+  "identical_frac": 0.3103,
+  "changed_gt25_frac": 0.465,
+  "orig_rgb": [
+   125.2,
+   99.4,
+   88.6
+  ],
+  "result_rgb": [
+   123.4,
+   91.9,
+   70.6
+  ],
+  "prot_frac": 0.36,
+  "hair_paint_frac": 0.374,
+  "clothing_paint_frac": 0.503,
+  "both_frac": 0.225,
+  "neither_frac": 0.347
+ },
+ "left_chest_converted": {
+  "name": "left chest (should be olive)",
+  "box": [
+   300,
+   780,
+   430,
+   930
+  ],
+  "pixels": 19500,
+  "mean_abs_delta": 43.33,
+  "identical_frac": 0.0001,
+  "changed_gt25_frac": 0.6499,
+  "orig_rgb": [
+   53.2,
+   42.4,
+   42.2
+  ],
+  "result_rgb": [
+   66.4,
+   40.7,
+   31.5
+  ],
+  "prot_frac": 0.0,
+  "hair_paint_frac": 1.0,
+  "clothing_paint_frac": 0.376,
+  "both_frac": 0.376,
+  "neither_frac": 0.0
+ },
+ "far_background": {
+  "name": "background right",
+  "box": [
+   760,
+   700,
+   880,
+   900
+  ],
+  "pixels": 24000,
+  "mean_abs_delta": 0.89,
+  "identical_frac": 0.9975,
+  "changed_gt25_frac": 0.0,
+  "orig_rgb": [
+   69.0,
+   39.1,
+   37.1
+  ],
+  "result_rgb": [
+   68.5,
+   38.3,
+   36.7
+  ],
+  "prot_frac": 0.0,
+  "hair_paint_frac": 0.0,
+  "clothing_paint_frac": 0.002,
+  "both_frac": 0.0,
+  "neither_frac": 0.998
+ },
+ "split::protected": {
+  "pixels": 3430,
+  "mean_abs_delta": 4.57,
+  "identical_frac": 0.8676,
+  "orig_rgb": [
+   190.7,
+   149.7,
+   127.7
+  ],
+  "result_rgb": [
+   187.3,
+   145.9,
+   124.0
+  ]
+ },
+ "split::hair_paint": {
+  "pixels": 13356,
+  "mean_abs_delta": 50.73,
+  "identical_frac": 0.0001,
+  "orig_rgb": [
+   96.2,
+   81.3,
+   76.3
+  ],
+  "result_rgb": [
+   74.9,
+   66.6,
+   48.5
+  ]
+ },
+ "split::clothing_paint_only": {
+  "pixels": 32812,
+  "mean_abs_delta": 77.72,
+  "identical_frac": 0.002,
+  "orig_rgb": [
+   179.4,
+   159.8,
+   149.6
+  ],
+  "result_rgb": [
+   124.0,
+   113.0,
+   98.0
+  ]
+ },
+ "split::both_paint": {
+  "pixels": 12073,
+  "mean_abs_delta": 54.66,
+  "identical_frac": 0.0001,
+  "orig_rgb": [
+   103.4,
+   87.4,
+   81.8
+  ],
+  "result_rgb": [
+   79.0,
+   71.1,
+   52.0
+  ]
+ },
+ "split::neither": {
+  "pixels": 2,
+  "mean_abs_delta": 45.0,
+  "identical_frac": 0.0,
+  "orig_rgb": [
+   199.0,
+   171.0,
+   153.5
+  ],
+  "result_rgb": [
+   164.5,
+   130.0,
+   110.5
+  ]
+ },
+ "old_collar_total_px": 158704,
+ "old_collar_inside_protected_px": 1065,
+ "old_collar_in_protected_still_white_frac": 0.907
+}

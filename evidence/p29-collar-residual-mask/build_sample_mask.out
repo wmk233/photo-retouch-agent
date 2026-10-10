@@ -1,0 +1,145 @@
+{
+ "tool": "evidence/p29-collar-residual-mask/build_sample_mask.py (SAMPLE ONLY; general tools untouched)",
+ "baseline_final": "evidence/p29-submit-run/final.png",
+ "original": "data/inputs/IMG_3651.jpg",
+ "rules_copied_verbatim_from_round_tool": {
+  "source_knit": "original luma > 140 and chroma < 50",
+  "render_left_it_alone": "max channel change < 10",
+  "never_release": "face oval / hair / background / new olive blouse",
+  "no_new_threshold": true
+ },
+ "rule_added_this_sample_only": "8-connectivity: a candidate pixel is released only if it lies in the same 4/8-connected blob of 'old pale knit the render did not repaint' as the already-adjudicated release",
+ "committed_release_px": 3463,
+ "sample_release_px": 3901,
+ "growth_px": 669,
+ "growth_blobs": [
+  {
+   "px": 395,
+   "bbox": [
+    523,
+    578,
+    37,
+    25
+   ]
+  },
+  {
+   "px": 96,
+   "bbox": [
+    509,
+    687,
+    15,
+    13
+   ]
+  },
+  {
+   "px": 93,
+   "bbox": [
+    510,
+    662,
+    24,
+    22
+   ]
+  },
+  {
+   "px": 54,
+   "bbox": [
+    525,
+    604,
+    17,
+    18
+   ]
+  },
+  {
+   "px": 12,
+   "bbox": [
+    509,
+    681,
+    4,
+    5
+   ]
+  },
+  {
+   "px": 10,
+   "bbox": [
+    535,
+    684,
+    5,
+    5
+   ]
+  },
+  {
+   "px": 6,
+   "bbox": [
+    503,
+    687,
+    3,
+    3
+   ]
+  },
+  {
+   "px": 2,
+   "bbox": [
+    507,
+    687,
+    2,
+    1
+   ]
+  },
+  {
+   "px": 1,
+   "bbox": [
+    510,
+    679,
+    1,
+    1
+   ]
+  }
+ ],
+ "sample_release_bbox": [
+  443,
+  577,
+  561,
+  708
+ ],
+ "release_over_forbidden_px": 0,
+ "release_over_skin_model_px": 371,
+ "release_over_face_oval_px": 0,
+ "release_over_protected_px": 611,
+ "visible_residual_px": 2785,
+ "visible_residual_outside_committed_px": 1516,
+ "visible_residual_now_covered_px": 1466,
+ "unconfirmed_px": 1319,
+ "unconfirmed_blobs": [
+  {
+   "px": 668,
+   "bbox": [
+    526,
+    617,
+    39,
+    67
+   ]
+  },
+  {
+   "px": 251,
+   "bbox": [
+    472,
+    704,
+    17,
+    25
+   ]
+  },
+  {
+   "px": 170,
+   "bbox": [
+    526,
+    726,
+    15,
+    16
+   ]
+  }
+ ],
+ "block_1067_px": 1067,
+ "block_1067_released_px": 313,
+ "block_1067_released_pct": 29.3,
+ "block_1067_unconfirmed_px": 701
+}

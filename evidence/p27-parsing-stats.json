@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-10-08T11:07:52.705668+00:00",
+  "command": "python -m tools.run_human_parsing",
+  "model": {
+    "file": "/Users/liuxiuyu/AI-beauty-style-lab/experiments/p27-human-parsing/weights/onnx/schp-atr-18.onnx",
+    "sha256": "c9f7c261d2049fb0ea694749b71df455ac8f3d34117c9f8b5157cdf685a437bd",
+    "checksumVerified": true,
+    "network": "SCHP ATR (ResNet-101, 18 classes)",
+    "upstream": "GoGoDuck912/Self-Correction-Human-Parsing",
+    "export": "pirocheto/schp-atr-18 (MIT)"
+  },
+  "image": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/data/inputs/IMG_3651.jpg",
+  "imageSize": [
+    904,
+    1190
+  ],
+  "device": "CPUExecutionProvider",
+  "timingMs": {
+    "cold": 4869.5,
+    "warm": [
+      1498.5,
+      1523.4,
+      1497.1
+    ],
+    "warmMedian": 1498.5
+  },
+  "peakRssMiB": 711.2,
+  "classShares": {
+    "Background": 0.5411,
+    "Hair": 0.1252,
+    "Upper-clothes": 0.2532,
+    "Face": 0.0805
+  },
+  "paidGenerations": 0,
+  "paidVisionCalls": 0,
+  "note": "Real pretrained-model inference on the local CPU. No training, no download, no paid provider. The PNG holds the raw ATR class ids in the photo's own coordinates.",
+  "outputs": [
+    "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/evidence/p27_labels.png"
+  ]
+}

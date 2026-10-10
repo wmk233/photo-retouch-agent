@@ -1,0 +1,203 @@
+{
+  "initial": {
+    "aiVisible": true,
+    "localHidden": true,
+    "aiTabActive": true,
+    "documentName": "请选择照片",
+    "documentMeta": "未加载",
+    "canvasStatus": "AI 造型设计 · 请先上传照片",
+    "portraitName": "未选择照片",
+    "portraitMeta": "上传后自动识别",
+    "detectionLabel": "未选择照片",
+    "faceCount": "—",
+    "visibility": "—",
+    "defaultAction": "mock",
+    "defaultBrain": "deepseek",
+    "workbenchLoaded": "0"
+  },
+  "uploaded": {
+    "documentName": "IMG_3651.jpg",
+    "documentMeta": "已加载 904×1190",
+    "portraitMeta": "照片 ID img_7bb5d3a49a73",
+    "canvasStatus": "AI 造型设计 · 照片已就绪",
+    "blob": true,
+    "natural": 904,
+    "workbenchLoaded": "1"
+  },
+  "cards": [
+    {
+      "id": "urban_short",
+      "name": "都市利落短发",
+      "mode": "template",
+      "text": "都市利落短发 风格库来源：hairstyles_female.yaml 免费模板预览 利落短发 · 干净裸妆 · 智性通勤 发型 长度：耳下到下巴之间的短发（参考长度档位：短发）；结构：顶部保留体积、两侧收紧的利落剪裁；刘海：轻薄空气感碎刘海，或直接露额展示眉眼；层次：后颈做高层次收薄，轮廓干净不厚重。参考风格「韩系羊"
+    },
+    {
+      "id": "artistic_wave",
+      "name": "艺术感长发微卷",
+      "mode": "template",
+      "text": "艺术感长发微卷 风格库来源：hairstyles_female.yaml 免费模板预览 蓬松长卷 · 个性发色 · 复古法式 发型 长度：过肩长发（参考长度档位：长发）；结构：中段起做蓬松大卷，发尾自然外翻；刘海：法式八字长刘海，修饰颧骨；层次：中高层次让发丝有空气感与重量感。参考风格「空气刘海+长发微卷」：遮高额头，"
+    },
+    {
+      "id": "bold_street",
+      "name": "先锋街头高马尾",
+      "mode": "template",
+      "text": "先锋街头高马尾 风格库来源：hairstyles_female.yaml 免费模板预览 高马尾抓髻 · 冷调发色 · 街头机能 发型 长度：长发全部上梳，露出颈部（参考长度档位：长发）；结构：高马尾或抓髻，顶部制造高体积；刘海：两侧留少量胎毛碎发修饰发际线；层次：额前与鬓角做碎层次，保持锋利凌乱感。参考风格「高马尾+空"
+    }
+  ],
+  "cost": {
+    "lead": "已选择「艺术感长发微卷」。当前图像服务商为本地模拟，不会产生任何付费请求。",
+    "design": "0 次（免费模板模式）",
+    "image": "0 次付费（本地模拟 1 次）",
+    "jobs": "1 个本地任务（不计费）",
+    "note": "本地模拟只用于验证流程，不调用 本地模拟，也不产生费用。"
+  },
+  "result": {
+    "before": "blob:http://127.0.0.1:8000/9f57b50c-b6e5-44a8-8af0-4b7a8379bc3d",
+    "after": "http://127.0.0.1:8000/data/outputs/lock_18b81daa6a6b.png",
+    "badge": "技术检查通过 · 未完成视觉验收",
+    "download": "艺术感长发微卷.png",
+    "downloadHref": "http://127.0.0.1:8000/data/outputs/lock_18b81daa6a6b.png",
+    "note": "「艺术感长发微卷」已通过机器技术校验（尺寸、身份保护、背景变化） · pillow-mock-retoucher · 严格保脸校验通过（strict）。该结果未完成人工视觉验收，局部细节可能存在瑕疵，可查看和下载，也可回到上方重新选择其他造型或提出二次修改。",
+    "history": 19,
+    "canvasStatus": "造型结果 · 艺术感长发微卷",
+    "stages": [
+      "queued:done",
+      "segmentation:done",
+      "mask_build:done",
+      "provider:done",
+      "verification:done",
+      "done:done"
+    ]
+  },
+  "diff": {
+    "pixels": 1075760,
+    "changed": 945062,
+    "ratio": 0.8785063582955306,
+    "aw": 904,
+    "ah": 1190,
+    "bw": 904,
+    "bh": 1190
+  },
+  "retouchCost": {
+    "lead": "当前图像服务商为本地模拟，本次「AI 美化」不会产生任何付费请求。",
+    "design": "0 次付费",
+    "image": "0 次付费（本地模拟 1 次）",
+    "jobs": "1 个本地任务（不计费）"
+  },
+  "retouch": {
+    "status": "AI 结果 · pillow-mock-retoucher",
+    "feedback": "rule-based-planner + pillow-mock-retoucher · 生成成功",
+    "ok": true,
+    "model": "904x1190"
+  },
+  "skinDiff": {
+    "ratio": 0.8785063582955306,
+    "w": 904,
+    "h": 1190
+  },
+  "dialogs": [
+    "confirm"
+  ],
+  "results": [
+    {
+      "label": "1 app opens with AI 造型设计 as the default entry",
+      "ok": true,
+      "detail": "\"AI 造型设计 · 请先上传照片\""
+    },
+    {
+      "label": "1b default image provider is the FREE local simulation",
+      "ok": true,
+      "detail": "action=mock brain=deepseek"
+    },
+    {
+      "label": "1c no-photo state is honest (no fake face detection)",
+      "ok": true,
+      "detail": "face=— vis=— label=未选择照片"
+    },
+    {
+      "label": "2 clicking the photo area opens the system file chooser",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "3 photo uploads, previews and is stored on the backend",
+      "ok": true,
+      "detail": "HTTP 200 · 已加载 904×1190 · 照片 ID img_7bb5d3a49a73"
+    },
+    {
+      "label": "3b frontend photo id matches the backend record",
+      "ok": true,
+      "detail": "照片 ID img_7bb5d3a49a73"
+    },
+    {
+      "label": "4 three real styling designs are produced for the uploaded photo",
+      "ok": true,
+      "detail": "urban_short, artistic_wave, bold_street"
+    },
+    {
+      "label": "4b designs are template-based (free) and carry real text",
+      "ok": true,
+      "detail": "都市利落短发 风格库来源：hairstyles_female.yaml 免费模板预览 利落短发 · 干净裸妆 · 智性通勤 发型 长度：耳下到下巴之间的短发（参"
+    },
+    {
+      "label": "5 cost dialog reports a zero-charge local run before confirming",
+      "ok": true,
+      "detail": "1 个本地任务（不计费） · 0 次付费（本地模拟 1 次）"
+    },
+    {
+      "label": "6 generation completes and the result page renders",
+      "ok": true,
+      "detail": "badge=技术检查通过 · 未完成视觉验收"
+    },
+    {
+      "label": "6b the displayed result is NOT the original photo",
+      "ok": true,
+      "detail": "after=http://127.0.0.1:8000/data/outputs/lock_18b81daa6a6b.png"
+    },
+    {
+      "label": "6c before/after + note + download link are present",
+      "ok": true,
+      "detail": "download=艺术感长发微卷.png"
+    },
+    {
+      "label": "6d history lists the finished result",
+      "ok": true,
+      "detail": "entries=19"
+    },
+    {
+      "label": "7 result file exists on the backend disk",
+      "ok": true,
+      "detail": "lock_18b81daa6a6b.png (1152137 bytes)"
+    },
+    {
+      "label": "7b result pixels genuinely differ from the original (real edit, not a copy)",
+      "ok": true,
+      "detail": "changed=87.9% of 1075760px; 904x1190 -> 904x1190"
+    },
+    {
+      "label": "8 skin AI 美化 cost dialog reports 0 paid requests",
+      "ok": true,
+      "detail": "1 个本地任务（不计费） · 0 次付费 · 0 次付费（本地模拟 1 次）"
+    },
+    {
+      "label": "8b skin AI 美化 polls a queued job to a real success (not an instant 202 error)",
+      "ok": true,
+      "detail": "AI 结果 · pillow-mock-retoucher · rule-based-planner + pillow-mock-retoucher · 生成成功"
+    },
+    {
+      "label": "8c skin AI 美化 canvas shows edited pixels, not the untouched original",
+      "ok": true,
+      "detail": "changed=87.9% · canvas 904x1190"
+    },
+    {
+      "label": "9 declining the confirm sends no paid design request",
+      "ok": true,
+      "detail": "dialogs=1 · proposals 1 -> 1"
+    },
+    {
+      "label": "10 zero page errors during the whole free flow",
+      "ok": true,
+      "detail": "errors=0"
+    }
+  ]
+}

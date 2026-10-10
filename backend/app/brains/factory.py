@@ -51,6 +51,8 @@ class AgentBrainFactory:
             "glmModel": self.config.zhipu_model,
             "doubaoConfigured": bool(self.config.ark_api_key),
             "doubaoModel": self.config.ark_vision_model,
+            "siliconflowVisionConfigured": bool(self.config.siliconflow_api_key),
+            "siliconflowVisionModel": self.config.siliconflow_vision_model,
         }
 
     def _register_builtin_plugins(self) -> None:
@@ -90,6 +92,19 @@ class AgentBrainFactory:
                     "豆包 Vision",
                     self.config.ark_vision_model,
                     bool(self.config.ark_api_key),
+                    "direct",
+                ),
+            )
+        )
+        self.register(
+            AgentBrainPlugin(
+                plugin_id="siliconflow",
+                build=self._create_siliconflow_brain,
+                capability=lambda: self._capability(
+                    "siliconflow",
+                    "SiliconFlow Vision",
+                    self.config.siliconflow_vision_model,
+                    bool(self.config.siliconflow_api_key),
                     "direct",
                 ),
             )
@@ -196,6 +211,25 @@ class AgentBrainFactory:
             ),
             endpoint=self.config.ark_chat_endpoint,
             model_name=self.config.ark_vision_model,
+            vision_mode="direct",
+            timeout_seconds=self.config.provider_timeout_seconds,
+        )
+
+    def _create_siliconflow_brain(
+        self,
+        api_key: str | None,
+        _workspace_id: str | None,
+    ) -> PromptBrain:
+        return OpenAICompatiblePromptBrain(
+            provider_name="siliconflow",
+            api_key=self._require_key(
+                api_key,
+                self.config.siliconflow_api_key,
+                "SiliconFlow",
+                "SILICONFLOW_API_KEY",
+            ),
+            endpoint=f"{self.config.siliconflow_base_url}/chat/completions",
+            model_name=self.config.siliconflow_vision_model,
             vision_mode="direct",
             timeout_seconds=self.config.provider_timeout_seconds,
         )

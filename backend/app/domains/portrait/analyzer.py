@@ -2,7 +2,8 @@ from pathlib import Path
 
 from PIL import Image, ImageStat
 
-from app.schemas.analysis import PhotoAnalysis, SubjectSummary
+from app.domains.portrait.facts import derive_face_facts
+from app.schemas.analysis import FaceFacts, PhotoAnalysis, SubjectSummary
 
 
 class PortraitAnalyzer:
@@ -82,4 +83,5 @@ class PortraitAnalyzer:
                 ]
                 if item
             ],
+            face_facts=FaceFacts(**derive_face_facts(image_path)),
         )

@@ -1,0 +1,165 @@
+{
+  "band": {
+    "y": [
+      520,
+      1000
+    ],
+    "x": [
+      240,
+      820
+    ]
+  },
+  "original_pale_knit_pixels": 88055,
+  "mask_delta": {
+    "before_protected": 75762,
+    "after_protected": 75460,
+    "released_total": 302,
+    "clothing_total": 302789,
+    "hair_total": 187091,
+    "hair_and_clothing": 13357,
+    "freed_over_skin": 302
+  },
+  "strip": {
+    "box": [
+      594,
+      729,
+      478,
+      562
+    ],
+    "strip_pixels": 11340,
+    "strip_released": 300,
+    "strip_still_protected": 4897,
+    "kept_not_released": 11040,
+    "kept_pale_in_original": 8361
+  },
+  "renders": {
+    "prev_clothing_pass": {
+      "pale_where_original_knit": 34162,
+      "share_of_original_knit": 0.388,
+      "mean_rgb_where_survived": [
+        193.9,
+        186.8,
+        158.0
+      ],
+      "inside_clothing_mask_pixels": 28604,
+      "inside_protected_mask_pixels": 4755,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 10163,
+        "bbox": {
+          "x0": 504,
+          "y0": 764,
+          "x1": 607,
+          "y1": 999
+        }
+      },
+      "fidelity": {
+        "old_guard_share_identical_to_original": 0.0207,
+        "face_rect_share_identical": 0.1059,
+        "outside_edit_share_identical": 0.1197
+      },
+      "strip_metrics": {
+        "mean_luma": 146.6,
+        "pale_pixels": 4025,
+        "mean_abs_diff_vs_original": 32.03
+      }
+    },
+    "prev_final": {
+      "pale_where_original_knit": 33254,
+      "share_of_original_knit": 0.3777,
+      "mean_rgb_where_survived": [
+        193.5,
+        186.9,
+        157.6
+      ],
+      "inside_clothing_mask_pixels": 28498,
+      "inside_protected_mask_pixels": 4755,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 10163,
+        "bbox": {
+          "x0": 504,
+          "y0": 764,
+          "x1": 607,
+          "y1": 999
+        }
+      },
+      "fidelity": {
+        "old_guard_share_identical_to_original": 0.0198,
+        "face_rect_share_identical": 0.0213,
+        "outside_edit_share_identical": 0.1186
+      },
+      "strip_metrics": {
+        "mean_luma": 146.6,
+        "pale_pixels": 4025,
+        "mean_abs_diff_vs_original": 32.03
+      }
+    },
+    "new_clothing_pass": {
+      "pale_where_original_knit": 49645,
+      "share_of_original_knit": 0.5638,
+      "mean_rgb_where_survived": [
+        223.4,
+        197.2,
+        166.6
+      ],
+      "inside_clothing_mask_pixels": 44060,
+      "inside_protected_mask_pixels": 4791,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 43781,
+        "bbox": {
+          "x0": 411,
+          "y0": 618,
+          "x1": 606,
+          "y1": 999
+        }
+      },
+      "fidelity": {
+        "old_guard_share_identical_to_original": 0.0207,
+        "face_rect_share_identical": 0.1058,
+        "outside_edit_share_identical": 0.1197
+      },
+      "strip_metrics": {
+        "mean_luma": 165.2,
+        "pale_pixels": 6330,
+        "mean_abs_diff_vs_original": 19.87
+      }
+    },
+    "new_final": {
+      "pale_where_original_knit": 48730,
+      "share_of_original_knit": 0.5534,
+      "mean_rgb_where_survived": [
+        223.6,
+        197.4,
+        166.4
+      ],
+      "inside_clothing_mask_pixels": 43939,
+      "inside_protected_mask_pixels": 4791,
+      "largest_ghost_blob_in_clothing": {
+        "pixels": 43695,
+        "bbox": {
+          "x0": 412,
+          "y0": 618,
+          "x1": 606,
+          "y1": 999
+        }
+      },
+      "fidelity": {
+        "old_guard_share_identical_to_original": 0.0196,
+        "face_rect_share_identical": 0.0198,
+        "outside_edit_share_identical": 0.1188
+      },
+      "strip_metrics": {
+        "mean_luma": 165.2,
+        "pale_pixels": 6330,
+        "mean_abs_diff_vs_original": 19.87
+      }
+    }
+  },
+  "prev_vs_new": {
+    "mean_abs_diff_sum_rgb": 63.17,
+    "changed_pixels_gt30": 396930,
+    "changed_inside_protected_mask": 1103,
+    "changed_outside_edit": 1462,
+    "prev_final_abs_diff_vs_original": 18.01,
+    "new_final_abs_diff_vs_original": 23.99
+  }
+}

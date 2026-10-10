@@ -1,0 +1,168 @@
+{
+  "photoId": "img_f1b17ea96eda",
+  "planId": "artistic_wave",
+  "hairPrompt": "Replace the hairstyle with shoulder-past long hair with soft large waves and curtain bangs, and change the hair colour from its current colour (酒红) to 酒红棕 (Burgundy Wine Brown). The rest of the hair is long, reaching past the chest, with gentle soft natural waves and slight volume. Soft feminine youthful K-pop aesthetic, real individual hair strands, natural hairline, growing naturally from the existing scalp Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+  "clothingPrompt": "Replace the garment with a vintage French outfit in cream, burgundy and muted green with soft draping. French vintage aesthetic: a soft cream or pale-floral blouse or button-down shirt with delicate detailing (lace trim or small print), high-waisted relaxed pants or A-line midi skirt, simple silk scarf or thin gold pendant, classic loafers or ballerina flats. Effortless Parisian chic, draped naturally over the body, following the original pose and body shape, with natural cloth folds, a higher natural collar closed near the collarbone, cut from the same deep olive-green cloth as the blouse, its inner lining and its folds all in that same deep olive-green tone, with fine pleats and soft vintage folds Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+  "negativePrompt": "duplicate face, extra eyes, extra mouth, extra glasses, double head, second person, bald patches, deformed hairline, plastic airbrushed skin, blurred face, reshaped or replaced facial features, a different person's face, obvious age drift, changing the number of people, a broken or damaged background, extra fingers or limbs, text, watermark, visible seam, hard cut-out edge, deep v neck, plunging neckline, exposed chest, bare cleavage, sheer mesh shoulder, statement necklace, white collar, cream collar, beige collar lining, white inner layer, pale knit at the neckline, white scarf, beige knitted scarf, white undershirt, ivory lining",
+  "gate": {
+    "style_id": "artistic_wave",
+    "style_name": "艺术感长发微卷",
+    "checkpoint": "juggernautXL_juggXIByRundiffusion.safetensors",
+    "denoise": {
+      "clothing": 0.75,
+      "hair": 0.7
+    },
+    "crop": {
+      "mask_fill_holes": false,
+      "mask_expand_pixels": 0,
+      "mask_blend_pixels": 2,
+      "context_from_mask_extend_factor": 1.2,
+      "output_target_width": 1024,
+      "output_target_height": 1024
+    },
+    "prompts": {
+      "clothing": "Replace the garment with a vintage French outfit in cream, burgundy and muted green with soft draping. French vintage aesthetic: a soft cream or pale-floral blouse or button-down shirt with delicate detailing (lace trim or small print), high-waisted relaxed pants or A-line midi skirt, simple silk scarf or thin gold pendant, classic loafers or ballerina flats. Effortless Parisian chic, draped naturally over the body, following the original pose and body shape, with natural cloth folds, a higher natural collar closed near the collarbone, cut from the same deep olive-green cloth as the blouse, its inner lining and its folds all in that same deep olive-green tone, with fine pleats and soft vintage folds Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "hair": "Replace the hairstyle with shoulder-past long hair with soft large waves and curtain bangs, and change the hair colour from its current colour (酒红) to 酒红棕 (Burgundy Wine Brown). The rest of the hair is long, reaching past the chest, with gentle soft natural waves and slight volume. Soft feminine youthful K-pop aesthetic, real individual hair strands, natural hairline, growing naturally from the existing scalp Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "negative": "duplicate face, extra eyes, extra mouth, extra glasses, double head, second person, bald patches, deformed hairline, plastic airbrushed skin, blurred face, reshaped or replaced facial features, a different person's face, obvious age drift, changing the number of people, a broken or damaged background, extra fingers or limbs, text, watermark, visible seam, hard cut-out edge, deep v neck, plunging neckline, exposed chest, bare cleavage, sheer mesh shoulder, statement necklace, white collar, cream collar, beige collar lining, white inner layer, pale knit at the neckline, white scarf, beige knitted scarf, white undershirt, ivory lining"
+    },
+    "style_id_matches_plan": true,
+    "plan_phrases": {
+      "clothing": "a",
+      "hair": "酒红"
+    },
+    "stage_records": {
+      "save_nodes": [
+        "19",
+        "20"
+      ],
+      "clothing_pass": [
+        "20"
+      ],
+      "final": [
+        "19"
+      ]
+    },
+    "checkpoint_notes": [
+      "checkpoint juggernautXL_juggXIByRundiffusion.safetensors has no inpainting UNet input; the run uses the masked-latent path (InpaintModelConditioning noise_mask + encoded original crop)"
+    ],
+    "prompt_has_plan_phrases": true,
+    "negative_prompt_terms_ok": true,
+    "collar_clause_ok": true,
+    "collar_negative_terms_ok": true,
+    "image_sizes": {
+      "original.jpg": [
+        904,
+        1190
+      ],
+      "hair_edit_mask.png": [
+        904,
+        1190
+      ],
+      "clothing_edit_mask.png": [
+        904,
+        1190
+      ],
+      "protected_identity_mask.png": [
+        904,
+        1190
+      ]
+    },
+    "mask_geometry": {
+      "hair": {
+        "raw_pixels": 187091,
+        "painted_pixels": 189900,
+        "soft_ring_pixels": 9767,
+        "painted_over_protected": 475,
+        "painted_over_facial_core": 0,
+        "crop": {
+          "x": 177,
+          "y": 21,
+          "w": 1130,
+          "h": 1130,
+          "target_w": 1024,
+          "target_h": 1024
+        },
+        "scale_x": 0.9062,
+        "scale_y": 0.9062
+      },
+      "clothing": {
+        "raw_pixels": 302789,
+        "painted_pixels": 305536,
+        "soft_ring_pixels": 8022,
+        "painted_over_protected": 503,
+        "painted_over_facial_core": 0,
+        "crop": {
+          "x": 0,
+          "y": 468,
+          "w": 904,
+          "h": 904,
+          "target_w": 1024,
+          "target_h": 1024
+        },
+        "scale_x": 1.1327,
+        "scale_y": 1.1327
+      }
+    },
+    "errors": []
+  },
+  "gateErrors": [],
+  "validateErrors": [],
+  "paidRequests": 0,
+  "checks": [
+    {
+      "label": "1 upload original photo",
+      "ok": true,
+      "detail": "id=img_f1b17ea96eda"
+    },
+    {
+      "label": "2 free local analysis (0 model calls)",
+      "ok": true,
+      "detail": "faces=None domain=portrait"
+    },
+    {
+      "label": "3 three free template looks",
+      "ok": true,
+      "detail": "urban_short, artistic_wave, bold_street"
+    },
+    {
+      "label": "4 selected proposal carries a real editPrompt",
+      "ok": true,
+      "detail": "artistic_wave"
+    },
+    {
+      "label": "5 SCHP + MediaPipe mask build",
+      "ok": true,
+      "detail": "editableShare=0.443 collarSplit=True gaps=[\"collar_margin_recovery_is_tone_based: the 302 px the chin margin had frozen with the face were released to the clothing region on the parser's garment label and on a bright-neutral-fabric test; a skin-toned collar or a white sleeve in identical light is the one case that still needs an eye before a paid generation\", 'speckle_hair_islands_dropped: the parser tagged 11 hair island(s) below 6212 px (background slivers at the frame edge, 806 px in total); they were removed before the region was grown', 'speckle_garment_islands_dropped: the parser tagged 9 garment island(s) below 13435 px (background slivers at the frame edge, 3661 px in total); they were removed before the region was grown', 'glasses_guard_is_geometric: the parser reported no Sunglasses pixels (clear prescription glasses are not in the ATR taxonomy), so the lens band comes from the MediaPipe eye rings and is reported as geometry rather than as a classified region', 'parsing_boundary_is_approximate: the ATR network runs at 512x512 and is upsampled to the photo, so the hairline and the collar are accurate to roughly a few pixels -- they still need human correction before a paid generation is attempted', 'hairline_is_not_a_hair_matte: the hair mask is the parsed hair silhouette grown by a rim, not a per-strand matte; wispy strands against the background may fall outside it', \"collar_split_is_tone_based: the pixels below the chin that were moved out of the face island and into the clothing region were separated by the subject's own skin tone, not by a garment class -- a shadowed throat or a skin-toned collar is the one case that needs an eye before a paid generation\"]"
+    },
+    {
+      "label": "6 prompts built from the SELECTED proposal (no template swap)",
+      "ok": true,
+      "detail": "style_id=artistic_wave"
+    },
+    {
+      "label": "7 hair prompt reflects the plan's hair target",
+      "ok": true,
+      "detail": "Replace the hairstyle with shoulder-past long hair with soft large waves and cur"
+    },
+    {
+      "label": "8 clothing prompt reflects the plan's outfit target",
+      "ok": true,
+      "detail": "Replace the garment with a vintage French outfit in cream"
+    },
+    {
+      "label": "9 workflow validated against the live node table",
+      "ok": true,
+      "detail": "objectInfo=yes errors=[]"
+    },
+    {
+      "label": "10 preflight gate accepts the selected plan",
+      "ok": true,
+      "detail": "denoise={'clothing': 0.75, 'hair': 0.7} frame=904x1190"
+    },
+    {
+      "label": "11 no billed request was made this run",
+      "ok": true,
+      "detail": "paidRequests=0 taskId=None"
+    }
+  ]
+}

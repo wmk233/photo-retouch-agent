@@ -1,0 +1,25 @@
+{
+ "box": [
+  200,
+  60,
+  720,
+  420
+ ],
+ "hair_mask_top_row": 120,
+ "protected_top_row": 239,
+ "parse_hair_top_row": 151,
+ "band_pixels": 187200,
+ "band_hair_mask": 66499,
+ "band_protected": 35187,
+ "band_parse_hair": 46176,
+ "band_parse_face": 31049,
+ "band_changed_gt25": 24965,
+ "band_changed_gt25_in_hair_mask": 24737,
+ "band_changed_gt25_outside_hair_mask": 228,
+ "hair_mask_over_parse_face_px": 4379,
+ "changed_gt25_in_protected_px": 647,
+ "protected_px": 81741,
+ "protected_identical_le2": 0.917,
+ "protected_identical_le11": 0.9838,
+ "protected_max_delta": 146
+}

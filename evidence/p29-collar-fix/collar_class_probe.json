@@ -1,0 +1,20 @@
+{
+  "chin_y": 594.19,
+  "oval_bottom_y": 594,
+  "prot_below_face": 5812,
+  "prot_below_face_notskin": 805,
+  "prot_below_cloth": 617,
+  "prot_below_cloth_notskin": 167,
+  "prot_below_hair": 0,
+  "prot_below_hair_notskin": 0,
+  "prot_below_bg": 2,
+  "prot_below_bg_notskin": 2,
+  "prot_below_oval_only": 0,
+  "prot_below_inoval_notskin": 0,
+  "prot_below_facecore": 5812,
+  "prot_below_cloth_notskin_pale": 121,
+  "prot_below_cloth_notskin_nearcollar": 138,
+  "prot_below_face_notskin_pale_nearcollar": 135,
+  "prot_below_face_notskin_dark": 436,
+  "ref_luma": 157.63
+}

@@ -1,0 +1,37 @@
+{
+ "face_w": 256.72,
+ "chin_y": 594.19,
+ "final_pale_px": 91120,
+ "orig_pale_px": 190351,
+ "pale_in_cloth": 89937,
+ "pale_in_protected": 353,
+ "pale_in_hair": 1010,
+ "pale_in_background": 910,
+ "pale_in_collar": 854,
+ "pale_in_skin": 689,
+ "pale_in_oval": 98,
+ "orig_pale_in_protected": 344,
+ "mask_px": {
+  "hair": 187091,
+  "cloth": 302789,
+  "prot": 75460,
+  "collar": 13233,
+  "parsed_face": 86564,
+  "face_core": 73331
+ },
+ "pale_over_garment_bbox": [
+  222,
+  380,
+  822,
+  1189
+ ],
+ "pale_over_garment_px": 90290,
+ "pale_over_cloth_rows": [
+  594,
+  1189
+ ],
+ "pale_over_cloth_cols": [
+  222,
+  822
+ ]
+}

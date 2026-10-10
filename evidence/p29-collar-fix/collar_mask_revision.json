@@ -1,0 +1,27 @@
+{
+  "before_package": "20261009T-neckfix",
+  "after_package": "20261009T-collarfix",
+  "pixels": {
+    "hair_before": 187091,
+    "hair_after": 187091,
+    "cloth_before": 302487,
+    "cloth_after": 302789,
+    "prot_before": 75762,
+    "prot_after": 75460
+  },
+  "delta": {
+    "clothing_added": 302,
+    "protected_removed": 302,
+    "clothing_lost": 0,
+    "protected_added": 0,
+    "added_bbox": [
+      478,
+      594,
+      562,
+      729
+    ],
+    "added_is_protected_removed": true,
+    "hair_unchanged": true
+  },
+  "note": "clothing gained exactly what protected lost; the hair mask is byte-for-byte identical, so the accepted hairstyle/hairline and the hair/clothing seam are untouched"
+}

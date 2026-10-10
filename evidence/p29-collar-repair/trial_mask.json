@@ -1,0 +1,22 @@
+{
+ "face_w": 256.7,
+ "chin": [
+  486.6,
+  594.2
+ ],
+ "orig_knit_px": 209309,
+ "orig_knit_in_window": 27543,
+ "core_px": 57126,
+ "window_px": 85838,
+ "candidate_px": 1143,
+ "repair_px": 862,
+ "repair_components>=400": 862,
+ "conflict_protected_px": 65,
+ "core_breakdown": {
+  "skin_final": 2148,
+  "olive_final": 10103,
+  "not_bright": 13742,
+  "hair_or_bg": 268
+ },
+ "conflict_blobs>=100": []
+}

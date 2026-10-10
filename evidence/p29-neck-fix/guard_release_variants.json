@@ -1,0 +1,20 @@
+{
+ "default": {
+  "hairFrozenByGuard": 1291,
+  "hairPixels": 187091,
+  "hairAndCloth": 13357,
+  "hairOverClothing": 8307,
+  "editablePixels": 476221,
+  "backgroundShare": 0.129,
+  "exact_pixel_overlap_with_core": 0
+ },
+ "erode001": {
+  "hairFrozenByGuard": 3634,
+  "hairPixels": 184748,
+  "hairAndCloth": 13357,
+  "hairOverClothing": 8307,
+  "editablePixels": 473878,
+  "backgroundShare": 0.1296,
+  "exact_pixel_overlap_with_core": 0
+ }
+}

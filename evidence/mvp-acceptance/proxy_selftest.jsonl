@@ -1,0 +1,1 @@
+{"path": "/chat/completions", "bytes": 57, "request": {"model": "x", "messages": [{"role": "user", "content": "hi"}]}, "status": 200, "response": {"id": "fake-1", "choices": [{"message": {"role": "assistant", "content": "{\"ok\": true}"}}], "usage": {"prompt_tokens": 7, "completion_tokens": 3, "total_tokens": 10}}}

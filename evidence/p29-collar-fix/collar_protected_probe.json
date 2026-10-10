@@ -1,0 +1,138 @@
+{
+  "faceWidthPx": 256.72,
+  "chinY": 594.19,
+  "shipProtectedPixels": 75762,
+  "afterProtectedPixels": 75762,
+  "shipClothingPixels": 302487,
+  "afterClothingPixels": 302487,
+  "families": {
+    "pale_all": {
+      "pixels": 187668,
+      "in_protected_after": 511,
+      "in_protected_ship": 511,
+      "not_skin": 187606,
+      "in_band": 187600
+    },
+    "pale_protected": {
+      "pixels": 511,
+      "in_protected_after": 511,
+      "in_protected_ship": 511,
+      "not_skin": 510,
+      "in_band": 443
+    },
+    "pale_protected_belowchin": {
+      "pixels": 216,
+      "in_protected_after": 216,
+      "in_protected_ship": 216,
+      "not_skin": 216,
+      "in_band": 216
+    },
+    "pale_protected_nearcloth": {
+      "pixels": 342,
+      "in_protected_after": 342,
+      "in_protected_ship": 342,
+      "not_skin": 342,
+      "in_band": 342
+    },
+    "pale_protected_nearcloth_notskin": {
+      "pixels": 342,
+      "in_protected_after": 342,
+      "in_protected_ship": 342,
+      "not_skin": 342,
+      "in_band": 342
+    },
+    "pale_protected_band_notskin": {
+      "pixels": 443,
+      "in_protected_after": 443,
+      "in_protected_ship": 443,
+      "not_skin": 443,
+      "in_band": 443
+    },
+    "pale_protected_belowchin_notskin": {
+      "pixels": 216,
+      "in_protected_after": 216,
+      "in_protected_ship": 216,
+      "not_skin": 216,
+      "in_band": 216
+    },
+    "pale_notskin_nearcloth_nearcollar": {
+      "pixels": 3592,
+      "in_protected_after": 156,
+      "in_protected_ship": 156,
+      "not_skin": 3592,
+      "in_band": 3592
+    },
+    "prot_notskin_nearcloth": {
+      "pixels": 724,
+      "in_protected_after": 724,
+      "in_protected_ship": 724,
+      "not_skin": 724,
+      "in_band": 588
+    },
+    "shipprot_notskin_nearcloth": {
+      "pixels": 724,
+      "in_protected_after": 724,
+      "in_protected_ship": 724,
+      "not_skin": 724,
+      "in_band": 588
+    },
+    "prot_pale_belowchin_adjcloth": {
+      "pixels": 100,
+      "in_protected_after": 100,
+      "in_protected_ship": 100,
+      "not_skin": 100,
+      "in_band": 100
+    },
+    "parsedface_prot_notskin_below": {
+      "pixels": 805,
+      "in_protected_after": 805,
+      "in_protected_ship": 805,
+      "not_skin": 805,
+      "in_band": 805
+    },
+    "collar_pale": {
+      "pixels": 10102,
+      "in_protected_after": 0,
+      "in_protected_ship": 0,
+      "not_skin": 10102,
+      "in_band": 10102
+    },
+    "parsedcloth_pale": {
+      "pixels": 174984,
+      "in_protected_after": 91,
+      "in_protected_ship": 91,
+      "not_skin": 174923,
+      "in_band": 174984
+    },
+    "prot_pale_where_parsedcloth": {
+      "pixels": 91,
+      "in_protected_after": 91,
+      "in_protected_ship": 91,
+      "not_skin": 91,
+      "in_band": 91
+    },
+    "prot_pale_where_shipcloth": {
+      "pixels": 0,
+      "in_protected_after": 0,
+      "in_protected_ship": 0,
+      "not_skin": 0,
+      "in_band": 0
+    }
+  },
+  "bands": {
+    "paleThresholds": {
+      "luma>150_chroma<30": 76,
+      "luma>150_chroma<42": 574,
+      "luma>150_chroma<55": 2302,
+      "luma>160_chroma<30": 63,
+      "luma>160_chroma<42": 539,
+      "luma>160_chroma<55": 2131,
+      "luma>170_chroma<30": 46,
+      "luma>170_chroma<42": 486,
+      "luma>170_chroma<55": 1851,
+      "luma>180_chroma<30": 32,
+      "luma>180_chroma<42": 435,
+      "luma>180_chroma<55": 1516
+    }
+  }
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from fastapi import Request, HTTPException
+from fastapi import Request
+from fastapi.responses import JSONResponse
 
 AUTH_REQUIRED_PREFIXES = (
     "/api/photos/upload",
@@ -16,6 +17,11 @@ async def auth_middleware(request: Request, call_next):
     if requires_auth and app_settings.api_key:
         api_key = request.headers.get("X-API-Key", "")
         if api_key != app_settings.api_key:
-            raise HTTPException(status_code=401, detail="Invalid or missing API key")
+            # Raising HTTPException from user middleware escapes FastAPI's
+            # exception handlers and would surface as a 500 instead of a 401.
+            return JSONResponse(
+                status_code=401,
+                content={"detail": "Invalid or missing API key"},
+            )
 
     return await call_next(request)

@@ -1,0 +1,136 @@
+{
+ "note": "before = the shipped package masks; after = SemanticMaskConfig()",
+ "mask_identity_vs_shipped_manifest": {
+  "hair_px": 224961,
+  "cloth_px": 325145,
+  "prot_px": 81741
+ },
+ "before": {
+  "hair": {
+   "pixels": 224961,
+   "over_parsed_hair": 126885,
+   "over_parsed_clothing": 48654,
+   "over_parsed_face": 4379,
+   "over_background": 45043,
+   "protected_over_parsed_hair": null
+  },
+  "cloth": {
+   "pixels": 325145,
+   "over_parsed_hair": 23225,
+   "over_parsed_clothing": 268137,
+   "over_parsed_face": 13470,
+   "over_background": 20313,
+   "protected_over_parsed_hair": null
+  },
+  "prot": {
+   "pixels": 81741,
+   "over_parsed_hair": 7507,
+   "over_parsed_clothing": 629,
+   "over_parsed_face": 73094,
+   "over_background": 511,
+   "protected_over_parsed_hair": 1.0
+  }
+ },
+ "after": {
+  "hair": {
+   "pixels": 187091,
+   "over_parsed_hair": 133101,
+   "over_parsed_clothing": 8307,
+   "over_parsed_face": 640,
+   "over_background": 45043,
+   "protected_over_parsed_hair": null
+  },
+  "cloth": {
+   "pixels": 302487,
+   "over_parsed_hair": 804,
+   "over_parsed_clothing": 268137,
+   "over_parsed_face": 13233,
+   "over_background": 20313,
+   "protected_over_parsed_hair": null
+  },
+  "prot": {
+   "pixels": 75762,
+   "over_parsed_hair": 1291,
+   "over_parsed_clothing": 629,
+   "over_parsed_face": 73331,
+   "over_background": 511,
+   "protected_over_parsed_hair": 1.0
+  }
+ },
+ "hair_overlap": {
+  "hair_and_cloth_before": 79864,
+  "hair_and_cloth_after": 13357,
+  "hair_and_prot_before": 0,
+  "hair_and_prot_after": 0,
+  "cloth_and_prot_before": 0,
+  "cloth_and_prot_after": 0
+ },
+ "ghost_attribution": {
+  "ghost_pixels": 75073,
+  "in_hair_before": 0.6862,
+  "in_hair_after": 0.6348,
+  "in_cloth_before": 0.4529,
+  "in_cloth_after": 0.3809,
+  "in_prot_before": 0.0049,
+  "in_prot_after": 0.0038,
+  "in_neither_before": 0.0053,
+  "in_neither_after": 0.0042,
+  "on_parsed_hair": 0.5818,
+  "on_parsed_clothing": 0.3199,
+  "on_parsed_face": 0.0231,
+  "on_background": 0.0751,
+  "in_old_collar": 0.0194,
+  "in_new_collar": 0.0194
+ },
+ "neck_band": {
+  "region": [
+   560,
+   1000,
+   240,
+   820
+  ],
+  "pixels_changed_gt25": 133981,
+  "ghost_before": 37922,
+  "ghost_in_hair_before": 0.743,
+  "ghost_in_hair_after": 0.6348,
+  "ghost_in_cloth_before": 0.5387,
+  "ghost_in_cloth_after": 0.3967
+ },
+ "collar": {
+  "before_px": 13233,
+  "after_px": 13233,
+  "before_over_protected": 0,
+  "after_over_protected": 0,
+  "before_editable": 13233,
+  "after_editable": 13233,
+  "dark_throat_recovered_px": 237
+ },
+ "stats_before": {
+  "hairPixels": 224961,
+  "clothingPixels": 325145,
+  "protectedPixels": 81741,
+  "editablePixels": 470242,
+  "backgroundEditablePixels": 61416,
+  "backgroundEditableShare": 0.1306,
+  "protectedCoversEditable": true,
+  "faceCoreOverlap": 0
+ },
+ "stats_after": {
+  "hairPixels": 187091,
+  "clothingPixels": 302487,
+  "editablePixels": 476221,
+  "protectedPixels": 75762,
+  "faceSkinShare": 0.7739,
+  "backgroundEditablePixels": 61416,
+  "backgroundEditableShare": 0.129,
+  "protectedCoversEditable": true,
+  "identityCoversEditable": true,
+  "collarReclassifiedPixels": 13233,
+  "neckSkinProtectedPixels": 5029,
+  "hairGuardReleasePixels": 7505,
+  "hairFrozenByGuardPixels": 1289,
+  "hairOverClothingRimPixels": 8923,
+  "clothingOverParsedHairPixels": 0
+ },
+ "facial_core_mutex_after": 0
+}

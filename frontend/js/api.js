@@ -34,7 +34,7 @@ export function analyzePhoto(imageId, brain = {}, action = {}) {
   return request("/photos/analyze", {
     method: "POST",
     headers: modelHeaders(brain, action),
-    body: JSON.stringify({ imageId, domainType: "general" }),
+    body: JSON.stringify({ imageId, domainType: "auto" }),
   });
 }
 
@@ -46,8 +46,31 @@ export function createPlans(analysis) {
   });
 }
 
+export function createStylingProposals(
+  analysis,
+  { mode = "template", brain = {}, userInstruction = "" } = {},
+) {
+  return request("/styling/proposals", {
+    method: "POST",
+    headers: modelHeaders(brain, {}),
+    body: JSON.stringify({ analysis, mode, userInstruction }),
+  });
+}
+
 export function getProviderCapabilities() {
   return request("/retouch/providers");
+}
+
+export function getStylingProviders() {
+  return request("/styling/providers");
+}
+
+export function getJob(jobId) {
+  return request(`/retouch/jobs/${jobId}`);
+}
+
+export function listJobs(limit = 20, offset = 0) {
+  return request(`/retouch/jobs?limit=${limit}&offset=${offset}`);
 }
 
 function modelHeaders(brain = {}, action = {}) {

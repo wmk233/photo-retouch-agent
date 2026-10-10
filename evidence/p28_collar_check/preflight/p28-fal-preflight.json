@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-10-08T12:35:33.707680+00:00",
+  "image": {
+    "path": "data/inputs/IMG_3651.jpg",
+    "width": 904,
+    "height": 1190,
+    "megapixels": 1.07576,
+    "sha256": "b87df5a0ac5158a7097652b4a8ea62104159699963bf9fc969d0e239da357d1d"
+  },
+  "humanParsing": {
+    "configuredPath": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/data/models/schp-atr-18.onnx",
+    "exists": true,
+    "sha256": "c9f7c261d2049fb0ea694749b71df455ac8f3d34117c9f8b5157cdf685a437bd",
+    "pinnedSha256": "c9f7c261d2049fb0ea694749b71df455ac8f3d34117c9f8b5157cdf685a437bd",
+    "matchesPinnedExport": true,
+    "onnxExternalDataPath": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/data/models/schp-atr-18.onnx.data",
+    "onnxExternalDataExists": true,
+    "onnxExternalDataSha256": "53a86d9ed61f276f0a3ddfbf2da03434f2e32b7e8f6a7aa8782b49c37842e467",
+    "labelSource": "evidence/p28_collar_check/p28_labels.png",
+    "labelMap": "evidence/p28_collar_check/p28_labels.png"
+  },
+  "mask": {
+    "path": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/evidence/p28_collar_check/preflight/p28_fal_inpaint_mask.png",
+    "sha256": "e36fa20e0ad4299e2428801e2ab5d2c8ce3a33d924b6ebe554f4280b72d259aa",
+    "semantic": true,
+    "hairPixels": 224961,
+    "hairShare": 0.209118,
+    "clothingPixels": 325145,
+    "clothingShare": 0.302247,
+    "facePixels": 86564,
+    "faceShare": 0.080468,
+    "protectedPixels": 81741,
+    "editablePixels": 470242,
+    "editableShare": 0.437125,
+    "protectedEditableOverlapPixels": 0,
+    "providerMaskCheck": {
+      "width": 904,
+      "height": 1190,
+      "editable_pixels": 470242,
+      "editable_share": 0.437125,
+      "sha256": "e36fa20e0ad4299e2428801e2ab5d2c8ce3a33d924b6ebe554f4280b72d259aa"
+    },
+    "acceptance": {
+      "passed": true,
+      "reasons": [],
+      "editablePixels": 470242,
+      "editableShare": 0.437125,
+      "backgroundShareOfEditArea": 0.1306,
+      "collarSplitApplied": true,
+      "collarEditablePixels": 13470,
+      "neckSkinProtectedPixels": 4792,
+      "identityCoversEditable": true
+    }
+  },
+  "model": {
+    "endpoint": "https://queue.fal.run/fal-ai/qwen-image-edit/inpaint",
+    "modelId": "fal-ai/qwen-image-edit/inpaint",
+    "imageSizeField": "omitted (documented optional default)",
+    "numImages": 1,
+    "outputFormat": "png"
+  },
+  "credentials": {
+    "falKeyPresent": false,
+    "source": "environment FAL_KEY / login keychain (names only)",
+    "configured": false
+  },
+  "billing": {
+    "usdPerMegapixel": 0.03,
+    "expectedRequests": 1,
+    "expectedImages": 1,
+    "estimatedCostUsd": 0.0323,
+    "note": "one queue submit, then free status/result polls; billed per generated image"
+  },
+  "requestContract": {
+    "checkedFields": [
+      "prompt",
+      "image_url",
+      "mask_url",
+      "num_images",
+      "output_format"
+    ],
+    "problems": [],
+    "notes": [
+      "mask and photo are both 904x1190; the kept pixels can be copied back at identical coordinates",
+      "image_size is omitted (the documented optional default); the output size is only accepted if the service returns the input size, otherwise verification hard-fails"
+    ],
+    "inputsAreTwoDistinctDataUris": true
+  },
+  "identityGuarantee": {
+    "faceCoreComesFromTheOriginal": true,
+    "mechanism": "restore_kept_pixels copies the photo's own pixels back wherever the mask is black, at identical coordinates; it raises on a size or mask mismatch instead of rescaling",
+    "statuses": [
+      "MASK_VALID",
+      "PIXEL_IDENTITY_PASSED",
+      "VISUAL_ACCEPTANCE_PENDING"
+    ],
+    "visualAcceptanceStillNeedsAHuman": true
+  },
+  "networkCalls": 0,
+  "paidGenerations": 0,
+  "paidVisionCalls": 0,
+  "verdict": "BLOCKED",
+  "blockers": [
+    "no fal.ai credential: FAL_KEY is unset in the environment and no fal.ai item was found in the login keychain, so the queue POST cannot be authenticated"
+  ]
+}

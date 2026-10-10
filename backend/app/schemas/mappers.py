@@ -7,13 +7,22 @@ from app.domain.analysis import (
 from app.domain.assets import PhotoAsset as DomainPhotoAsset
 from app.domain.jobs import JobStatus, RetouchJob as DomainRetouchJob
 from app.domain.retouch import RetouchPlan as DomainRetouchPlan
+from app.domain.styling import (
+    StylingProposal as DomainStylingProposal,
+    StylingReference as DomainStylingReference,
+)
 from app.schemas.analysis import (
+    FaceFacts as FaceFactsSchema,
     PhotoAnalysis as PhotoAnalysisSchema,
     SubjectSummary as SubjectSummarySchema,
 )
 from app.schemas.job import RetouchJob as RetouchJobSchema
 from app.schemas.photo import PhotoAsset as PhotoAssetSchema
 from app.schemas.retouch import RetouchPlan as RetouchPlanSchema
+from app.schemas.styling import (
+    StylingProposal as StylingProposalSchema,
+    StylingReference as StylingReferenceSchema,
+)
 
 
 def plan_to_domain(plan: RetouchPlanSchema) -> DomainRetouchPlan:
@@ -87,7 +96,7 @@ def job_to_schema(job: DomainRetouchJob) -> RetouchJobSchema:
 
 def analysis_to_domain(analysis: PhotoAnalysisSchema) -> DomainPhotoAnalysis:
     return DomainPhotoAnalysis(
-        image_id=analysis.image_id,
+            image_id=analysis.image_id,
         domain_type=analysis.domain_type,
         scene_type=analysis.scene_type,
         subjects=DomainSubjectSummary(
@@ -104,6 +113,10 @@ def analysis_to_domain(analysis: PhotoAnalysisSchema) -> DomainPhotoAnalysis:
         brain_provider=analysis.brain_provider,
         brain_model=analysis.brain_model,
         vision_mode=analysis.vision_mode,
+        face_facts=(
+            analysis.face_facts.model_dump() if analysis.face_facts else None
+        ),
+        analysis_reused=analysis.analysis_reused,
     )
 
 
@@ -126,6 +139,94 @@ def analysis_to_schema(analysis: DomainPhotoAnalysis) -> PhotoAnalysisSchema:
         brain_provider=analysis.brain_provider,
         brain_model=analysis.brain_model,
         vision_mode=analysis.vision_mode,
+        face_facts=(
+            FaceFactsSchema(**analysis.face_facts)
+            if analysis.face_facts
+            else None
+        ),
+        analysis_reused=analysis.analysis_reused,
+    )
+
+
+def styling_proposal_to_domain(
+    proposal: StylingProposalSchema,
+) -> DomainStylingProposal:
+    return DomainStylingProposal(
+        plan_id=proposal.plan_id,
+        domain_type=proposal.domain_type,
+        title=proposal.title,
+        name=proposal.name,
+        design_axis=proposal.design_axis,
+        design_direction=proposal.design_direction,
+        description=proposal.description,
+        design_reason=proposal.design_reason,
+        intensity=proposal.intensity,
+        hair_plan=proposal.hair_plan,
+        makeup_plan=proposal.makeup_plan,
+        outfit_plan=proposal.outfit_plan,
+        accessory_plan=proposal.accessory_plan,
+        palette=proposal.palette,
+        identity_anchors=tuple(proposal.identity_anchors),
+        why_it_fits=proposal.why_it_fits,
+        expected_changes=tuple(proposal.expected_changes),
+        edit_prompt=proposal.edit_prompt,
+        negative_prompt=proposal.negative_prompt,
+        reference_presets=tuple(
+            DomainStylingReference(
+                preset_id=reference.preset_id,
+                bucket=reference.bucket,
+                name=reference.name,
+                source_file=reference.source_file,
+                vocabulary_ref=reference.vocabulary_ref,
+                prompt=reference.prompt,
+            )
+            for reference in proposal.reference_presets
+        ),
+        estimated_paid_requests=proposal.estimated_paid_requests,
+        design_mode=proposal.design_mode,
+        source_provider=proposal.source_provider,
+        selected_presets=list(proposal.selected_presets),
+    )
+
+
+def styling_proposal_to_schema(
+    proposal: DomainStylingProposal,
+) -> StylingProposalSchema:
+    return StylingProposalSchema(
+        plan_id=proposal.plan_id,
+        domain_type=proposal.domain_type,
+        title=proposal.title,
+        name=proposal.name,
+        design_axis=proposal.design_axis,
+        design_direction=proposal.design_direction,
+        description=proposal.description,
+        design_reason=proposal.design_reason,
+        intensity=proposal.intensity,
+        hair_plan=proposal.hair_plan,
+        makeup_plan=proposal.makeup_plan,
+        outfit_plan=proposal.outfit_plan,
+        accessory_plan=proposal.accessory_plan,
+        palette=proposal.palette,
+        identity_anchors=list(proposal.identity_anchors),
+        why_it_fits=proposal.why_it_fits,
+        expected_changes=list(proposal.expected_changes),
+        edit_prompt=proposal.edit_prompt,
+        negative_prompt=proposal.negative_prompt,
+        reference_presets=[
+            StylingReferenceSchema(
+                preset_id=reference.preset_id,
+                bucket=reference.bucket,
+                name=reference.name,
+                source_file=reference.source_file,
+                vocabulary_ref=reference.vocabulary_ref,
+                prompt=reference.prompt,
+            )
+            for reference in proposal.reference_presets
+        ],
+        estimated_paid_requests=proposal.estimated_paid_requests,
+        design_mode=proposal.design_mode,
+        source_provider=proposal.source_provider,
+        selected_presets=list(proposal.selected_presets),
     )
 
 
@@ -153,4 +254,3 @@ def asset_to_schema(asset: DomainPhotoAsset) -> PhotoAssetSchema:
         url=asset.object_key,
         created_at=asset.created_at,
     )
-

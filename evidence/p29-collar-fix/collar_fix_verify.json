@@ -1,0 +1,73 @@
+{
+  "knob": {
+    "enabled_default": true,
+    "luma_ratio": 0.9,
+    "chroma_ceiling": 45.0,
+    "ring_ratio": 0.02,
+    "ring_px": 5.13
+  },
+  "chin_row": 594,
+  "the_805_band": 805,
+  "freed_pixels": 302,
+  "freed_bbox": [
+    478,
+    594,
+    562,
+    729
+  ],
+  "hard_gates": {
+    "freed_over_skin": 0,
+    "freed_above_chin_row": 0,
+    "freed_on_parsed_hair": 0,
+    "freed_on_identity_guard": 0,
+    "freed_on_glasses_guard": 0,
+    "neck_skin_protected_off": 59630,
+    "neck_skin_protected_on": 59630,
+    "identity_guard_protected_off": 21873,
+    "identity_guard_protected_on": 21873,
+    "glasses_guard_protected_off": 20492,
+    "glasses_guard_protected_on": 20492,
+    "hair_frozen_by_guard_off": 1291,
+    "hair_frozen_by_guard_on": 1291,
+    "hair_clothing_overlap_off": 13357,
+    "hair_clothing_overlap_on": 13357,
+    "protected_total_off": 75762,
+    "protected_total_on": 75460,
+    "editable_total_off": 476221,
+    "editable_total_on": 476523
+  },
+  "recovered_now_inside_clothing": 302,
+  "recovered_now_editable": 302,
+  "band_freed": 135,
+  "band_still_protected": 670,
+  "band_still_protected_dark": 436,
+  "ons_stats": {
+    "collarMarginRecoveryEnabled": true,
+    "collarMarginRecoveredPixels": 302,
+    "collarMarginRecoveredBrightPixels": 256,
+    "collarMarginRecoveredParsedGarmentPixels": 167,
+    "collarMarginRecoveryRefusedByGuardPixels": 0,
+    "collarMarginRecoveredEditablePixels": 302,
+    "collarMarginRecoveredStillProtectedPixels": 0
+  },
+  "off_stats": {
+    "protectedPixels": 75762,
+    "hairPixels": 187091,
+    "clothingPixels": 302487,
+    "editablePixels": 476221
+  },
+  "on_stats": {
+    "protectedPixels": 75460,
+    "clothingPixels": 302789,
+    "editablePixels": 476523
+  },
+  "gaps": [
+    "collar_margin_recovery_is_tone_based: the 302 px the chin margin had frozen with the face were released to the clothing region on the parser's garment label and on a bright-neutral-fabric test; a skin-toned collar or a white sleeve in identical light is the one case that still needs an eye before a paid generation",
+    "speckle_hair_islands_dropped: the parser tagged 11 hair island(s) below 6212 px (background slivers at the frame edge, 806 px in total); they were removed before the region was grown",
+    "speckle_garment_islands_dropped: the parser tagged 9 garment island(s) below 13435 px (background slivers at the frame edge, 3661 px in total); they were removed before the region was grown",
+    "glasses_guard_is_geometric: the parser reported no Sunglasses pixels (clear prescription glasses are not in the ATR taxonomy), so the lens band comes from the MediaPipe eye rings and is reported as geometry rather than as a classified region",
+    "parsing_boundary_is_approximate: the ATR network runs at 512x512 and is upsampled to the photo, so the hairline and the collar are accurate to roughly a few pixels -- they still need human correction before a paid generation is attempted",
+    "hairline_is_not_a_hair_matte: the hair mask is the parsed hair silhouette grown by a rim, not a per-strand matte; wispy strands against the background may fall outside it",
+    "collar_split_is_tone_based: the pixels below the chin that were moved out of the face island and into the clothing region were separated by the subject's own skin tone, not by a garment class -- a shadowed throat or a skin-toned collar is the one case that needs an eye before a paid generation"
+  ]
+}

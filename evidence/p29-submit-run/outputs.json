@@ -1,0 +1,26 @@
+[
+  {
+    "fileUrl": "https://rh-images-tos.xiaoyaoyou.com/8d1af7fe876f843049c6ed14026d6953/output/p29_elegant_clothing_pass_00001_qmtqp_1791500095.png",
+    "fileType": "png",
+    "taskCostTime": "34",
+    "nodeId": "20",
+    "thirdPartyConsumeMoney": null,
+    "consumeMoney": "0.038",
+    "consumeCoins": null,
+    "storageType": "tos",
+    "bucket": "rh-comfyui01",
+    "objectKey": "8d1af7fe876f843049c6ed14026d6953/output/p29_elegant_clothing_pass_00001_qmtqp_1791500095.png"
+  },
+  {
+    "fileUrl": "https://rh-images-tos.xiaoyaoyou.com/8d1af7fe876f843049c6ed14026d6953/output/p29_elegant_00001_gbflu_1791500103.png",
+    "fileType": "png",
+    "taskCostTime": "34",
+    "nodeId": "19",
+    "thirdPartyConsumeMoney": null,
+    "consumeMoney": "0.038",
+    "consumeCoins": null,
+    "storageType": "tos",
+    "bucket": "rh-comfyui01",
+    "objectKey": "8d1af7fe876f843049c6ed14026d6953/output/p29_elegant_00001_gbflu_1791500103.png"
+  }
+]

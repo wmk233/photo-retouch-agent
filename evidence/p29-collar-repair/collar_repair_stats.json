@@ -1,0 +1,163 @@
+{
+ "generated_at": "2026-10-09T01:08:30.357932+00:00",
+ "tool": "tools.build_collar_repair_mask",
+ "baseline_final": "evidence/p29-submit-run/final.png",
+ "original": "data/inputs/IMG_3651.jpg",
+ "labels": "evidence/p29-collar-repair/labels_fresh.png",
+ "size": [
+  904,
+  1190
+ ],
+ "face_width_px": 256.72,
+ "chin_px": [
+  486.61,
+  594.19
+ ],
+ "window_px": 55968,
+ "window_bbox": [
+  327,
+  594,
+  678,
+  752
+ ],
+ "no_edit_px": 963538,
+ "rules": {
+  "pale_fabric": "final luma > 132 and 25 < chroma < 72",
+  "source_knit": "original luma > 140 and chroma < 50",
+  "skin": "adaptive skin mask of the subject's own face sample, on the original",
+  "olive_blouse": "final hue 45-115 at saturation > 0.12 is kept",
+  "guards": "protected (identity/glasses/chin/throat) and parsed hair and background are kept",
+  "chin_band_carve": "original luma > 150 and chroma < 45 and max channel change < 10, inside the survivor band (chin -6..+160 px, +-1.0 face width), and 8-connected to the released strip",
+  "neutral_white": "final luma > 160 and chroma < 20 inside the collar band (window union carve) -- the strictly near-greyscale test for visible white cloth"
+ },
+ "still_protected_skin_px": 64736,
+ "counts": {
+  "pale_fabric_px": 120027,
+  "source_knit_px": 209309,
+  "residual_px": 3282,
+  "release_px": 3463,
+  "release_px_in_collar_class": 2583,
+  "release_px_in_clothing_class": 3291,
+  "release_px_over_still_pale_original": 3460,
+  "release_over_hair_px": 0,
+  "release_over_background_px": 0,
+  "release_over_protected_px": 172,
+  "release_from_carve_px": 172,
+  "blocked_by_identity_px": 0,
+  "dilated_over_protected_px": 172
+ },
+ "release_bbox": [
+  444,
+  588,
+  560,
+  709
+ ],
+ "release_blobs": [
+  {
+   "px": 2761,
+   "bbox": [
+    444,
+    630,
+    96,
+    80
+   ]
+  },
+  {
+   "px": 702,
+   "bbox": [
+    524,
+    588,
+    37,
+    31
+   ]
+  }
+ ],
+ "chin_band_carve_px": 172,
+ "chin_band_carve_bbox": [
+  524,
+  588,
+  557,
+  597
+ ],
+ "chin_band_carve_skin_flag_px": 3,
+ "chin_band_carve_oval_px": 0,
+ "chin_band_carve_median_orig_chroma": 38.0,
+ "chin_band_carve_note": "the one protected strip we carved: original was bright knit and the render left it unchanged, and it is 8-connected to the released strip; not on the face oval, not hair/background/olive, and the skin model flags (almost) none of it -- adjudicated fabric, not skin",
+ "pale_knit_survivor_px": 487,
+ "pale_knit_survivor_covered_px": 482,
+ "pale_knit_survivor_uncovered_px": 5,
+ "pale_knit_survivor_uncovered_blobs": [
+  {
+   "px": 5,
+   "bbox": [
+    556,
+    626,
+    2,
+    4
+   ]
+  }
+ ],
+ "neutral_white_px": 10,
+ "neutral_white_in_release_px": 0,
+ "neutral_white_uncovered_px": 10,
+ "neutral_white_uncovered_blobs": [
+  {
+   "px": 4,
+   "bbox": [
+    642,
+    738,
+    1,
+    4
+   ]
+  },
+  {
+   "px": 2,
+   "bbox": [
+    641,
+    743,
+    1,
+    2
+   ]
+  },
+  {
+   "px": 2,
+   "bbox": [
+    629,
+    752,
+    2,
+    1
+   ]
+  },
+  {
+   "px": 1,
+   "bbox": [
+    634,
+    751,
+    1,
+    1
+   ]
+  },
+  {
+   "px": 1,
+   "bbox": [
+    639,
+    752,
+    1,
+    1
+   ]
+  }
+ ],
+ "neutral_white_note": "strictly neutral white in the collar band of the FINAL (luma > 160 and chroma < 20); any such pixel is visible white cloth. All of it is inside the released strip or absent -- the coarse pale-knit rules also catch pale-olive blouse highlights (hue ~60) that are cloth, not white, which is why the neutral test exists",
+ "pale_knit_survivor_note": "old pale knit (original luma > 150, chroma < 45) the render left unchanged (max channel change < 10) in the collar band; the release (with the carve) now paints all but the reported leftovers",
+ "guarded_pale_px": 3004,
+ "guarded_pale_bbox": [
+  437,
+  594,
+  566,
+  726
+ ],
+ "guarded_pale_final_skin_like_px": 2983,
+ "guarded_pale_note": "pale cloth in the final inside the same collar band, held back by the subject's own skin guard on the original; keep-vs-remove conflict, reported for the operator to decide. Its final chroma sits in the subject's own skin band while the sweater body never does, so it cannot be separated from real skin by tone and stays protected",
+ "blocked_by_identity_bbox": null,
+ "blocked_by_identity_blobs": []
+}

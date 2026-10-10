@@ -5,10 +5,15 @@ from typing import Any
 from app.core.config import Settings, settings
 from app.core.errors import bad_request
 from app.providers.base import ImageEditProvider
+from app.providers.fal_inpainting_provider import FalInpaintingProvider
 from app.providers.mock_image_provider import MockImageProvider
 from app.providers.qwen_image_provider import QwenImageProvider
 from app.providers.registry import ImageProviderPlugin, ImageProviderRegistry
+from app.providers.runninghub_crop_stitch_provider import (
+    RunningHubCropStitchProvider,
+)
 from app.providers.seedream_image_provider import SeedreamImageProvider
+from app.providers.siliconflow_image_provider import SiliconFlowImageProvider
 
 _WORKSPACE_ID = re.compile(r"^[A-Za-z0-9_-]+$")
 
@@ -50,6 +55,13 @@ class ImageProviderFactory:
             "wanModel": self.config.dashscope_wan_model,
             "seedreamConfigured": bool(self.config.ark_api_key),
             "seedreamModel": self.config.ark_image_model,
+            "siliconflowConfigured": bool(self.config.siliconflow_api_key),
+            "siliconflowImageModel": self.config.siliconflow_image_model,
+            "falInpaintConfigured": bool(self.config.fal_key),
+            "falInpaintModel": self.config.fal_inpaint_model,
+            "runninghubConfigured": bool(self.config.runninghub_api_key),
+            "runninghubModel": self.config.runninghub_checkpoint,
+            "runninghubProviderId": "runninghub-crop-stitch",
             "workspaceConfigured": bool(
                 self.config.dashscope_workspace_id or self.config.dashscope_endpoint
             ),
@@ -104,6 +116,31 @@ class ImageProviderFactory:
         )
         self.register(
             ImageProviderPlugin(
+                plugin_id="siliconflow",
+                build=self._create_siliconflow_provider,
+                capability=lambda: self._capability(
+                    "siliconflow",
+                    "SiliconFlow Image",
+                    self.config.siliconflow_image_model,
+                    bool(self.config.siliconflow_api_key),
+                ),
+            )
+        )
+        self.register(
+            ImageProviderPlugin(
+                plugin_id="fal-inpaint",
+                aliases=("fal", "qwen-inpaint"),
+                build=self._create_fal_inpainting_provider,
+                capability=lambda: self._capability(
+                    "fal-inpaint",
+                    "fal.ai Qwen Inpaint",
+                    self.config.fal_inpaint_model,
+                    bool(self.config.fal_key),
+                ),
+            )
+        )
+        self.register(
+            ImageProviderPlugin(
                 plugin_id="mock",
                 aliases=("local",),
                 build=lambda _api_key, _workspace_id: MockImageProvider(),
@@ -115,6 +152,42 @@ class ImageProviderFactory:
                     requires_api_key=False,
                 ),
             )
+        )
+        self.register(
+            ImageProviderPlugin(
+                plugin_id="runninghub-crop-stitch",
+                aliases=("runninghub",),
+                build=self._create_runninghub_provider,
+                capability=lambda: self._capability(
+                    "runninghub-crop-stitch",
+                    "RunningHub CropAndStitch",
+                    self.config.runninghub_checkpoint,
+                    bool(self.config.runninghub_api_key),
+                ),
+            )
+        )
+
+    def _create_runninghub_provider(
+        self,
+        api_key: str | None,
+        _workspace_id: str | None,
+    ) -> ImageEditProvider:
+        resolved_key = self._require_key(
+            api_key,
+            self.config.runninghub_api_key,
+            "RunningHub",
+            "RUNNINGHUB_API_KEY",
+        )
+        return RunningHubCropStitchProvider(
+            api_key=resolved_key,
+            base_url=self.config.runninghub_base_url,
+            workflow_id=self.config.runninghub_workflow_id,
+            instance_type=self.config.runninghub_instance_type,
+            seed=self.config.runninghub_seed,
+            timeout_seconds=self.config.runninghub_timeout_seconds,
+            poll_interval_seconds=self.config.runninghub_poll_interval_seconds,
+            checkpoint=self.config.runninghub_checkpoint,
+            object_info_path=self.config.runninghub_object_info_path,
         )
 
     def _create_qwen_provider(
@@ -160,6 +233,46 @@ class ImageProviderFactory:
             model_name=self.config.ark_image_model,
             timeout_seconds=self.config.provider_timeout_seconds,
             download_limit_bytes=self.config.provider_download_limit_bytes,
+        )
+
+    def _create_siliconflow_provider(
+        self,
+        api_key: str | None,
+        _workspace_id: str | None,
+    ) -> ImageEditProvider:
+        resolved_key = self._require_key(
+            api_key,
+            self.config.siliconflow_api_key,
+            "SiliconFlow",
+            "SILICONFLOW_API_KEY",
+        )
+        return SiliconFlowImageProvider(
+            api_key=resolved_key,
+            base_url=self.config.siliconflow_base_url,
+            model_name=self.config.siliconflow_image_model,
+            timeout_seconds=self.config.provider_timeout_seconds,
+            download_limit_bytes=self.config.provider_download_limit_bytes,
+        )
+
+    def _create_fal_inpainting_provider(
+        self,
+        api_key: str | None,
+        _workspace_id: str | None,
+    ) -> ImageEditProvider:
+        resolved_key = self._require_key(
+            api_key,
+            self.config.fal_key,
+            "fal.ai",
+            "FAL_KEY",
+        )
+        return FalInpaintingProvider(
+            api_key=resolved_key,
+            endpoint=self.config.fal_inpaint_endpoint,
+            model_name=self.config.fal_inpaint_model,
+            timeout_seconds=self.config.provider_timeout_seconds,
+            download_limit_bytes=self.config.provider_download_limit_bytes,
+            poll_interval_seconds=self.config.fal_inpaint_poll_interval_seconds,
+            max_poll_seconds=self.config.fal_inpaint_max_poll_seconds,
         )
 
     @staticmethod

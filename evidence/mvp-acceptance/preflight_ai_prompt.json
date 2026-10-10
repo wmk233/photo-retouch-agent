@@ -1,0 +1,46 @@
+{
+  "imageId": "img_e753ed69f6a8",
+  "proposals": [
+    {
+      "planId": "ai_preflight_look_a",
+      "title": "预检造型A",
+      "editPrompt": "Restyle the person in the uploaded photo into the '预检造型A' look (蓬松长卷 · 暖调发色 · 法式复古). Edit this photo directly; keep the same person, do not generate a different person.\nIdentity anchors (best effort, no absolute guarantee): keep the relative position and proportion of the facial features.\nHair: change the hair from the person's current hair to 韩系羊毛卷短发 (Korean Sheep Wool Perm). 过肩长发 中段起做蓬松大卷，发尾自然外翻 法式八字长刘海 中高层次，增加体积感 Also change the hair colour from its current colour to 奶茶棕 (Milk Tea Brown). A trendy Korean-style sheep wool perm short hairstyle: chin-to-shoulder length hair with tight uniform\nsoft curls throughout, creating fluffy cloud-like volume around the head. Tight but soft curls,\nyouthful playful texture. Cute modern K-student vibe.\nMakeup: change the makeup from the current makeup to 烟熏晚妆 (Smoky Evening Look). 水光底妆 自然眉 蜜桃眼影 水润唇\nOutfit: replace the current top with 卫衣街头 (Hoodie Streetwear). 法式衬衫 真丝 奶白 细腰带收腰\nAccessories: 金色圈形耳环. Add a pair of round wire-frame eyeglasses in thin gold metal, lenses fully clear (no tint, no\nreflections covering the eyes), sitting naturally on the bridge of the nose. The glasses should\nlook realistic with subtle shadow under the frame. Do not change hair, face, makeup, or clothing.\nColour palette: 奶白 + 酒红 + 复古金.\nStylekit presets applied: hairstyle=korean_perm_short, haircolor=milk_tea_brown, makeup=smoky_evening, outfit=hoodie_streetwear, accessory=round_metal_glasses.\nStyling director's specific instructions: 换一个更蓬松的中长发型，增加头发的体积感。\nHair: change the hair from the current to a voluminous wavy bob with soft face-framing layers\nClothing: replace the current top with a cream silk blouse\n避免贴头皮、避免塑料感。",
+      "ok": true,
+      "hairPrompt": "Replace the hairstyle with 韩系羊毛卷短发 (Korean Sheep Wool Perm). 过肩长发 中段起做蓬松大卷，发尾自然外翻 法式八字长刘海 中高层次，增加体积感 Also change the hair colour from its current colour to 奶茶棕 (Milk Tea Brown). A trendy Korean-style sheep wool perm short hairstyle: chin-to-shoulder length hair with tight uniform soft curls throughout, creating fluffy cloud-like volume around the head. Tight but soft curls, youthful playful texture. Cute modern K-student vibe, real individual hair strands, natural hairline, growing naturally from the existing scalp Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "clothingPrompt": "Replace the garment with a cream silk blouse 避免贴头皮、避免塑料感。, draped naturally over the body, following the original pose and body shape, with natural cloth folds, a higher natural collar closed near the collarbone, cut from the same deep olive-green cloth as the blouse, its inner lining and its folds all in that same deep olive-green tone, with fine pleats and soft vintage folds Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "dropped": {
+        "clothing_forbidden": [],
+        "hair_forbidden": [
+          "change the hair from to a voluminous wavy bob with soft face-framing layers"
+        ]
+      }
+    },
+    {
+      "planId": "ai_preflight_look_b",
+      "title": "预检造型B",
+      "editPrompt": "Restyle the person in the uploaded photo into the '预检造型B' look (利落短发 · 冷调发色 · 极简). Edit this photo directly; keep the same person, do not generate a different person.\nIdentity anchors (best effort, no absolute guarantee): keep the relative position and proportion of the facial features.\nHair: change the hair from the person's current hair to Lob 长锁骨发 (Long Bob (Lob)). 齐耳短发 利落直线 侧分 低层次 Also change the hair colour from its current colour to 雾感灰棕 (Misty Ash Brown). A long bob (lob): hair cut to just below the shoulders or at collarbone length, blunt or slightly\nangled ends, parted in the middle or slightly off-center. Sleek straight or with very gentle natural\nwave. Modern minimalist universally flattering style.\nMakeup: change the makeup from the current makeup to 干净裸妆 (Clean Nude Makeup). 哑光 利落眉 大地色 裸色\nOutfit: replace the current top with 学院西装外套 (Preppy Blazer). 西装外套 羊毛 深灰 直筒裤\nAccessories: 银色耳钉. Add a pair of bold black square-shaped acetate eyeglasses with thick rims, clear lenses, no tint.\nFrames sit naturally on the nose bridge. Strong, modern, slightly intellectual look. Keep\neverything else unchanged.\nColour palette: 深灰 + 冷棕.\nStylekit presets applied: hairstyle=lob, haircolor=misty_ash_brown, makeup=clean_nude, outfit=prep_blazer, accessory=black_square_frames.\nStyling director's specific instructions: 改成利落短发。Hair: change the hair from the current to a sleek chin-length bob. Outfit: replace the current top with a charcoal wool blazer.",
+      "ok": true,
+      "hairPrompt": "Replace the hairstyle with lob 长锁骨发 (Long Bob (Lob)). 齐耳短发 利落直线 侧分 低层次 Also change the hair colour from its current colour to 雾感灰棕 (Misty Ash Brown). A long bob (lob): hair cut to just below the shoulders or at collarbone length, blunt or slightly angled ends, parted in the middle or slightly off-center. Sleek straight or with very gentle natural wave. Modern minimalist universally flattering style, real individual hair strands, natural hairline, growing naturally from the existing scalp Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "clothingPrompt": "Replace the garment with 学院西装外套 (Preppy Blazer). 西装外套 羊毛 深灰 直筒裤, draped naturally over the body, following the original pose and body shape, with natural cloth folds, a higher natural collar closed near the collarbone, cut from the same deep olive-green cloth as the blouse, its inner lining and its folds all in that same deep olive-green tone, with fine pleats and soft vintage folds Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "dropped": {
+        "clothing_forbidden": [],
+        "hair_forbidden": []
+      }
+    },
+    {
+      "planId": "ai_preflight_look_c",
+      "title": "预检造型C",
+      "editPrompt": "Restyle the person in the uploaded photo into the '预检造型C' look (编发 · 亮色挑染 · 波西米亚). Edit this photo directly; keep the same person, do not generate a different person.\nIdentity anchors (best effort, no absolute guarantee): keep the relative position and proportion of the facial features.\nHair: change the hair from the person's current hair to 法式纹理短发 (French Textured Crop). 长发 松散编发 中分 高层次 Also change the hair colour from its current colour to 冷茶棕 (Cool Tea Brown). A modern French textured crop hairstyle for men: the top is medium-short with visible natural messy\ntexture, slight curl and movement, swept forward into a soft fringe that falls just above the eyebrows.\nSides and back are short with a clean low fade. Soft, slightly tousled, modern and youthful.\nMakeup: change the makeup from the current makeup to 烟熏晚妆 (Smoky Evening Look). 自然 柔和眉 暖棕眼影 砖红唇\nOutfit: replace the current top with 跑步装备 (Running Outfit). 针织长裙 棉麻 燕麦色 宽檐帽\nAccessories: 木质耳环. Add a plain black cotton baseball cap worn naturally, brim facing forward, slight curve to the\nbrim, no visible logo. Hair beneath is still partially visible at the sides and back. Casual\nstreetwear feel. Lighting and shadows on the cap match the rest of the photo.\nColour palette: 燕麦 + 亚麻.\nStylekit presets applied: hairstyle=textured_crop, haircolor=cool_tea_brown, makeup=smoky_evening, outfit=running_gear, accessory=black_baseball_cap.\nStyling director's specific instructions: 改成松散编发，加亚麻挑染。",
+      "ok": true,
+      "hairPrompt": "Replace the hairstyle with 法式纹理短发 (French Textured Crop). 长发 松散编发 中分 高层次 Also change the hair colour from its current colour to 冷茶棕 (Cool Tea Brown). Sides and back are short with a clean low fade. Soft, slightly tousled, modern and youthful, real individual hair strands, natural hairline, growing naturally from the existing scalp Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "clothingPrompt": "Replace the garment with 跑步装备 (Running Outfit). 针织长裙 棉麻 燕麦色 宽檐帽, draped naturally over the body, following the original pose and body shape, with natural cloth folds, a higher natural collar closed near the collarbone, cut from the same deep olive-green cloth as the blouse, its inner lining and its folds all in that same deep olive-green tone, with fine pleats and soft vintage folds Edit only inside the supplied mask; every pixel outside it must be the original photo's own pixels.",
+      "dropped": {
+        "clothing_forbidden": [],
+        "hair_forbidden": [
+          "A modern French textured crop hairstyle for men: the top is medium-short with visible natural messy texture, slight curl and movement, swept forward into a soft fringe that falls just above the eyebrows."
+        ]
+      }
+    }
+  ],
+  "passed": true
+}

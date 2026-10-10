@@ -1,0 +1,133 @@
+{
+  "candidate_pixels": 805,
+  "pale_candidate_pixels": 135,
+  "bbox": [
+    396,
+    594,
+    552,
+    610
+  ],
+  "proximity": [
+    {
+      "ratio": 0.005,
+      "px": 1.3,
+      "near_collar": 167,
+      "near_parsed_cloth": 5,
+      "near_face_core": 805
+    },
+    {
+      "ratio": 0.01,
+      "px": 2.6,
+      "near_collar": 444,
+      "near_parsed_cloth": 15,
+      "near_face_core": 805
+    },
+    {
+      "ratio": 0.02,
+      "px": 5.1,
+      "near_collar": 669,
+      "near_parsed_cloth": 26,
+      "near_face_core": 805
+    },
+    {
+      "ratio": 0.03,
+      "px": 7.7,
+      "near_collar": 758,
+      "near_parsed_cloth": 49,
+      "near_face_core": 805
+    },
+    {
+      "ratio": 0.05,
+      "px": 12.8,
+      "near_collar": 805,
+      "near_parsed_cloth": 84,
+      "near_face_core": 805
+    },
+    {
+      "ratio": 0.08,
+      "px": 20.5,
+      "near_collar": 805,
+      "near_parsed_cloth": 128,
+      "near_face_core": 805
+    }
+  ],
+  "components": [
+    {
+      "area": 612,
+      "bbox": [
+        396,
+        594,
+        480,
+        610
+      ],
+      "cx": 433.4,
+      "cy": 598.7
+    },
+    {
+      "area": 135,
+      "bbox": [
+        526,
+        594,
+        552,
+        598
+      ],
+      "cx": 539.0,
+      "cy": 596.0
+    },
+    {
+      "area": 49,
+      "bbox": [
+        494,
+        594,
+        509,
+        598
+      ],
+      "cx": 502.7,
+      "cy": 596.7
+    },
+    {
+      "area": 3,
+      "bbox": [
+        483,
+        598,
+        485,
+        598
+      ],
+      "cx": 484.0,
+      "cy": 598.0
+    },
+    {
+      "area": 3,
+      "bbox": [
+        450,
+        604,
+        451,
+        605
+      ],
+      "cx": 450.3,
+      "cy": 604.3
+    },
+    {
+      "area": 2,
+      "bbox": [
+        489,
+        598,
+        490,
+        598
+      ],
+      "cx": 489.5,
+      "cy": 598.0
+    },
+    {
+      "area": 1,
+      "bbox": [
+        451,
+        610,
+        451,
+        610
+      ],
+      "cx": 451.0,
+      "cy": 610.0
+    }
+  ]
+}

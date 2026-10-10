@@ -1,6 +1,7 @@
 .DS_Store
 .env
 __pycache__/
+*.egg-info/
 *.py[cod]
 .pytest_cache/
 .venv/
@@ -9,4 +10,108 @@ backend/data/
 data/uploads/
 data/outputs/
 data/jobs/
+data/inputs/
+data/recovery/
+data/models/
 .idea/
+
+# Rendered mask previews may contain the subject's private photo -- keep the
+# generator, not the output. Regenerate with: python -m tools.build_edit_masks
+evidence/*.png
+evidence/**/*.png
+
+# 反推提示词的原始返回体含对真人外貌的文字描述，和原始照片同属隐私 -- 只留本地。
+# 判定与路径记录在 evidence/studio-interrogate-live-check.md，可付费重跑复现。
+evidence/interrogate-live-result.json
+
+# Local edit packages hold a copy of the subject's own photo and the masks
+# derived from it; keep the generator (tools.build_local_edit_package), not the
+# output. Regenerate with: python -m tools.build_local_edit_package --photo <img> --style <id>
+artifacts/
+
+# P2.9 audit: upstream CropAndStitch is GPL-3.0 while this repo is Apache-2.0,
+# so the verbatim upstream source/README dumps stay local-only. Provenance and
+# refetch commands live in evidence/p29-cropandstitch-audit/PROVENANCE.md.
+evidence/p29-cropandstitch-audit/inpaint_cropandstitch.py
+evidence/p29-cropandstitch-audit/upstream-README.md
+evidence/p29-cropandstitch-audit/readme-api.json
+
+# P2.9 RunningHub live check: raw third-party doc HTML dumps and the 32 MB
+# /object_info catalogue stay local-only (fetched from runninghub.cn via the
+# native ComfyUI proxy). Findings + refetch commands:
+# evidence/p29-runninghub-live-audit.md
+evidence/p29-runninghub-live/*.html
+evidence/p29-runninghub-live/*.txt
+evidence/p29-runninghub-live/*.json
+evidence/p29-runninghub-live/*.py
+# ...but keep the small derived node contract (factual API metadata).
+!evidence/p29-runninghub-live/node-contract-cropandstitch.json
+
+# P2.9 live ComfyUI probe: the 32 MB /object_info dump fetched from the GPU
+# worker stays local-only. The findings it supports are written up in
+# evidence/p29-runninghub-audit.md and evidence/p29-runninghub-live-audit.md.
+evidence/p29-live-run/*.json
+
+# P2.9 fix-run forensics: probe scripts, upstream source dumps and comparison
+# renders all embed the subject's photo (or GPL upstream code). Findings are
+# written up in evidence/p29-fix-run-report.md; keep only the derived stats.
+evidence/p29-fix-run/*
+!evidence/p29-fix-run/accept_stats.json
+
+# P2.9 neck / hairline / collar revision: the before/after renders, the cached
+# SCHP label map and the zoom crops all reproduce the subject's own photo, so
+# they stay local-only. The write-up is evidence/p29-neck-fix-report.md; keep
+# the derived stats and the offline probe scripts, which hold no image data.
+evidence/p29-neck-fix/*
+!evidence/p29-neck-fix/*.json
+!evidence/p29-neck-fix/*.py
+
+# P2.9 collar-residual single-pass repair: the frozen-final crops, mask previews
+# and zoom renders all reproduce the subject's own photo, so they stay
+# local-only. The write-up is evidence/p29-collar-repair-report.md; keep the
+# derived stats and the offline probe scripts, which hold no image data.
+evidence/p29-collar-repair/*
+!evidence/p29-collar-repair/*.json
+!evidence/p29-collar-repair/*.py
+
+# Cached segmentation / label arrays: derived from the subject's own photo, so
+# they follow the same local-only rule as the renders they were cut from.
+evidence/**/*.npy
+
+# MVP acceptance run: the screenshots, the recorder logs and the working
+# preflight package all reproduce the subject's own photo, so they stay
+# local-only. The write-up is evidence/mvp-acceptance-report.md; keep the probe
+# scripts and the derived summaries, which hold no image data.
+evidence/mvp-acceptance/*
+!evidence/mvp-acceptance/*.py
+!evidence/mvp-acceptance/*.mjs
+!evidence/mvp-acceptance/*.json
+!evidence/mvp-acceptance/*.jsonl
+
+# P2.9 collar adjudication: the 8x/10x render panels and the cached label
+# arrays reproduce the subject's own photo, so they stay local-only. The
+# write-up is evidence/p29-collar-adjudication-report.md; keep the probe
+# scripts and the derived measurements.
+evidence/p29-collar-adjudication/*
+!evidence/p29-collar-adjudication/*.py
+!evidence/p29-collar-adjudication/*.json
+
+# P2.9 collar-residual mask regeneration: same rule -- the zoom renders and the
+# cached arrays stay local-only, the write-up is
+# evidence/p29-collar-residual-mask-report.md; keep the probe scripts, the
+# derived stats and the saved console output they printed.
+evidence/p29-collar-residual-mask/*
+!evidence/p29-collar-residual-mask/*.py
+!evidence/p29-collar-residual-mask/*.json
+!evidence/p29-collar-residual-mask/*.txt
+!evidence/p29-collar-residual-mask/*.out
+!evidence/p29-collar-residual-mask/*.err
+
+# Studio workbench e2e: the shots reproduce the workbench UI together with the
+# uploaded photo, so they stay local-only; keep the script that drives them.
+evidence/studio-workbench/*
+!evidence/studio-workbench/*.mjs
+
+# macOS app packaging: the icon set and the ad-hoc signed bundle under build/
+# are intermediates that build_app.sh regenerates from make_icon.py.
+packaging/macos/build/

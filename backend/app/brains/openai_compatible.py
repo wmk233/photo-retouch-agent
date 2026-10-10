@@ -41,6 +41,24 @@ class OpenAICompatiblePromptBrain:
         self.timeout_seconds = timeout_seconds
         self._transport = transport
 
+    def provider_config(self) -> dict[str, Any]:
+        """Everything needed to build another brain for the same provider.
+
+        Used to hand the same credentials/endpoint to a more specialised brain
+        (e.g. the styling planner). The API key is returned only so the sibling
+        object can authenticate; callers must never log or serialise it.
+        """
+        return {
+            "provider_name": self.provider_name,
+            "api_key": self._api_key,
+            "endpoint": self.endpoint,
+            "model_name": self.model_name,
+            "vision_mode": self.vision_mode,
+            "image_url_mode": self.image_url_mode,
+            "timeout_seconds": self.timeout_seconds,
+            "transport": self._transport,
+        }
+
     async def analyze(
         self,
         image_id: str,
@@ -58,6 +76,8 @@ class OpenAICompatiblePromptBrain:
             "recommendedStyles、riskFlags。domainType 只能是 portrait、landscape、"
             "product、general 之一。subjects 必须是单个 JSON 对象而不是数组，"
             "且只包含 count、position、faceVisibility 三个字段。"
+            "baselineAnalysis.faceFacts 是本地已测量的可见外形事实，只能原样沿用，"
+            "不要改写、补写或据此推断人物的性别、年龄、职业等隐私属性。"
         )
         user_text = json.dumps(
             {
@@ -91,6 +111,8 @@ class OpenAICompatiblePromptBrain:
             "brainProvider": self.provider_name,
             "brainModel": self.model_name,
             "visionMode": self.vision_mode,
+            # faceFacts are measured locally from the pixels, never by the model.
+            "faceFacts": baseline_payload.get("faceFacts"),
         }
         try:
             return PhotoAnalysis.model_validate(merged)
@@ -175,11 +197,35 @@ class OpenAICompatiblePromptBrain:
             }
         )
 
+    async def complete_vision_json(
+        self,
+        *,
+        system_prompt: str,
+        user_text: str,
+        image_path: Path,
+        temperature: float = 0.2,
+    ) -> dict[str, Any]:
+        """One vision turn whose answer must be a single JSON object.
+
+        ``analyze`` and ``optimize`` each hard-code their own business schema on
+        top of this call. The studio's prompt interrogator needs the same
+        "look at the picture, answer in JSON" turn without inheriting either
+        schema, so the primitive is public instead of a private helper.
+        """
+        content = await self._complete(
+            system_prompt,
+            user_text,
+            image_path,
+            temperature,
+        )
+        return self._parse_json_object(content)
+
     async def _complete(
         self,
         system_prompt: str,
         user_text: str,
         image_path: Path | None,
+        temperature: float = 0.2,
     ) -> str:
         user_content: str | list[dict[str, Any]] = user_text
         if image_path is not None:
@@ -197,7 +243,7 @@ class OpenAICompatiblePromptBrain:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_content},
             ],
-            "temperature": 0.2,
+            "temperature": temperature,
             "stream": False,
         }
 

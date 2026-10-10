@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-10-09T07:01:17.162Z",
+  "results": [
+    {
+      "label": "1 AI intro states DeepSeek never sees the original image",
+      "ok": true,
+      "detail": "上传本人照片 → AI 设计发型／服装／妆容三套方案 → 选一套生成改造效果。当前 DeepSeek 没有图像输入能力，它不会直接看你的原图，而是依据本地程序测量的 FaceFacts（脸型、五官比例、肤色、是否戴眼镜等）进行设计。图像生成"
+    },
+    {
+      "label": "2 cost note states the FULL flow is 3 paid calls (not 2)",
+      "ok": true,
+      "detail": "AI 个性化设计：完整流程含 1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划，共 3 次付费模型调用；该照片已有有效分析缓存时复用分析，只计 2 次。无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计，并未直"
+    },
+    {
+      "label": "2b cost note states the model designs from local FaceFacts without seeing the photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "3 AI design button no longer claims only 2 calls",
+      "ok": true,
+      "detail": "AI 设计三套造型（本步 2 次 · 全程最多 3 次）"
+    },
+    {
+      "label": "3b template button still advertises 0 calls",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "4 DeepSeek brain selected for the guard check",
+      "ok": true,
+      "detail": "brain=deepseek"
+    },
+    {
+      "label": "5 clicking AI design blocks on a real confirm (never auto-confirmed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "5a confirm copy states the complete flow is at most 3 paid requests",
+      "ok": true,
+      "detail": "「AI 设计三套造型」会调用付费模型「DeepSeek」，完整流程最多 3 次付费请求（1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划）。"
+    },
+    {
+      "label": "5b confirm copy states the model never sees the photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "6 cancelling the confirm submits nothing and says so",
+      "ok": true,
+      "detail": "已取消 AI 设计，没有提交任何付费请求。可改用「免费模板预览」（0 次模型调用，不产生费用）。"
+    },
+    {
+      "label": "6b no analyze/design/generation request was sent while cancelling",
+      "ok": true,
+      "detail": "paidCalls=1"
+    },
+    {
+      "label": "7 real cost dialog is present, closed and modal",
+      "ok": true,
+      "detail": "buttons=costCancelButton:取消 | costConfirmButton:确认并开始生成"
+    },
+    {
+      "label": "7b dialog keeps an explicit cancel + confirm and the no-auto-retry warning",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "8 dialog opens only after the user clicks generate",
+      "ok": true,
+      "detail": "1 个本地任务（不计费） · 图像生成 0 次付费（本地模拟 1 次）"
+    },
+    {
+      "label": "9 cancelling the dialog closes it and submits nothing",
+      "ok": true,
+      "detail": "paidCalls=3"
+    }
+  ],
+  "panelNote": "AI 个性化设计：完整流程含 1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划，共 3 次付费模型调用；该照片已有有效分析缓存时复用分析，只计 2 次。无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计，并未直接做视觉看图分析。免费模板预览 0 次调用。出图只对选中的一套发起 1 次图像编辑请求。",
+  "confirmMessage": "「AI 设计三套造型」会调用付费模型「DeepSeek」，完整流程最多 3 次付费请求（1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划）。\n无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计。\n\n只有你现在点击「确定」才会提交，本轮不会自动重试。是否继续？",
+  "dialog": {
+    "lead": "已选择「都市利落短发」。当前图像服务商为本地模拟，不会产生任何付费请求。",
+    "design": "0 次（免费模板模式）",
+    "image": "0 次付费（本地模拟 1 次）",
+    "jobs": "1 个本地任务（不计费）"
+  },
+  "paidCalls": [
+    {
+      "type": "req",
+      "url": "http://127.0.0.1:8000/api/retouch/jobs?limit=20&offset=0",
+      "method": "GET"
+    },
+    {
+      "type": "req",
+      "url": "http://127.0.0.1:8000/api/photos/analyze",
+      "method": "POST"
+    },
+    {
+      "type": "req",
+      "url": "http://127.0.0.1:8000/api/styling/proposals",
+      "method": "POST"
+    }
+  ]
+}

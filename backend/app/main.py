@@ -11,6 +11,8 @@ from app.api.routes.analyze import router as analyze_router
 from app.api.routes.health import router as health_router
 from app.api.routes.photos import router as photos_router
 from app.api.routes.retouch import router as retouch_router
+from app.api.routes.studio import router as studio_router
+from app.api.routes.styling import router as styling_router
 from app.core.config import settings
 from app.core.logging import setup_logging
 
@@ -41,6 +43,8 @@ def create_app(_settings: Settings | None = None) -> FastAPI:
     app.include_router(photos_router, prefix="/api")
     app.include_router(analyze_router, prefix="/api")
     app.include_router(retouch_router, prefix="/api")
+    app.include_router(styling_router, prefix="/api")
+    app.include_router(studio_router, prefix="/api")
     if _settings.frontend_dir.exists():
         app.mount("/", StaticFiles(directory=_settings.frontend_dir, html=True), name="frontend")
     return app

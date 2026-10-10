@@ -1,0 +1,91 @@
+{
+ "face_width_px": 256.722,
+ "chin_y": 594.19,
+ "skin_sample_px": 18475,
+ "below_chin_face_px": 19045,
+ "below_chin_tone_sweep": [
+  {
+   "skin_y_ratio": 0.65,
+   "skin_px": 5007,
+   "collar_px": 14038
+  },
+  {
+   "skin_y_ratio": 0.55,
+   "skin_px": 5579,
+   "collar_px": 13466
+  },
+  {
+   "skin_y_ratio": 0.45,
+   "skin_px": 6003,
+   "collar_px": 13042
+  },
+  {
+   "skin_y_ratio": 0.35,
+   "skin_px": 6341,
+   "collar_px": 12704
+  },
+  {
+   "skin_y_ratio": 0.25,
+   "skin_px": 6381,
+   "collar_px": 12664
+  },
+  {
+   "skin_y_ratio": 0.15,
+   "skin_px": 6381,
+   "collar_px": 12664
+  }
+ ],
+ "collar_now_px": 14038,
+ "collar_now_luma": {
+  "mean": 177.26,
+  "p05": 66.0,
+  "p50": 197.0,
+  "ref_lum": 157.63,
+  "share_above_0.35ref": 0.9686,
+  "share_above_0.65ref": 0.8565
+ },
+ "collar_now_rgb_distance_to_skin": {
+  "mean": 93.26,
+  "p50": 90.63,
+  "share_within_60": 0.1062
+ },
+ "collar_now_over_oval_px": 0,
+ "collar_now_below_oval_px": 14038,
+ "hair_mask_px": 224961,
+ "hair_mask_over_clothing_px": 48654,
+ "hair_mask_over_hair_px": 126885,
+ "hair_mask_over_bg_px": 45043,
+ "hair_mask_over_face_px": 4379,
+ "spill_distance_from_parsed_hair_px": {
+  "share_le_2": 0.0703,
+  "share_le_5": 0.1738,
+  "share_le_8": 0.2841,
+  "share_le_14": 0.4901,
+  "share_le_20": 0.6758,
+  "share_le_31": 0.9825
+ },
+ "spill_max_distance_px": 32.67,
+ "spill_p50_distance_px": 14.32,
+ "rule_hair_over_clothing_rim_0.02": {
+  "hair_px": 191792,
+  "over_clothing_px": 10657,
+  "over_bg_px": 49543,
+  "over_face_px": 4379,
+  "over_protected_px": 0
+ },
+ "rule_hair_over_clothing_rim_0.04": {
+  "hair_px": 202856,
+  "over_clothing_px": 21721,
+  "over_bg_px": 49543,
+  "over_face_px": 4379,
+  "over_protected_px": 0
+ },
+ "protected_px": 81741,
+ "protected_over_parsed_hair_px": 7507,
+ "protected_over_parsed_face_px": 73094,
+ "protected_over_bg_px": 511,
+ "frozen_hair_rows": [
+  239,
+  602
+ ]
+}

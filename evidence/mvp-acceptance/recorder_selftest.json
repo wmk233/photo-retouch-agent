@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "fetchStatus": 404,
+  "xhrStatus": 404,
+  "captured": [
+    {
+      "url": "/api/retouch/jobs?limit=20&offset=0",
+      "method": "GET",
+      "status": 200,
+      "jsonOk": true,
+      "bytes": 111178
+    },
+    {
+      "url": "/api/photos/analyze",
+      "method": "GET",
+      "status": 404,
+      "jsonOk": true,
+      "bytes": 22
+    },
+    {
+      "url": "/api/styling/proposals",
+      "method": "GET",
+      "status": 404,
+      "jsonOk": true,
+      "bytes": 22
+    }
+  ]
+}

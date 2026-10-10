@@ -1,0 +1,138 @@
+[
+ {
+  "result": "artifacts/p29-run/result_0.png",
+  "size": [
+   904,
+   1190
+  ],
+  "all": {
+   "pixels": 1075760,
+   "mean": 46.581,
+   "max": 240,
+   "identical": "6.562%",
+   "within_1": "48.874%",
+   "within_11": "58.344%",
+   "over_25": 372900
+  },
+  "edit(soft)": {
+   "pixels": 481607,
+   "mean": 102.763,
+   "max": 240,
+   "identical": "0.016%",
+   "within_1": "0.272%",
+   "within_11": "7.088%",
+   "over_25": 372741
+  },
+  "outside edit": {
+   "pixels": 594153,
+   "mean": 1.041,
+   "max": 62,
+   "identical": "11.869%",
+   "within_1": "88.269%",
+   "within_11": "99.891%",
+   "over_25": 159
+  },
+  "painted(>0.5)": {
+   "pixels": 473123,
+   "mean": 104.415,
+   "max": 240,
+   "identical": "0.004%",
+   "within_1": "0.047%",
+   "within_11": "5.832%",
+   "over_25": 371791
+  },
+  "outside painted": {
+   "pixels": 602637,
+   "mean": 1.176,
+   "max": 164,
+   "identical": "11.711%",
+   "within_1": "87.207%",
+   "within_11": "99.571%",
+   "over_25": 1109
+  },
+  "protected identity": {
+   "pixels": 81741,
+   "mean": 2.577,
+   "max": 177,
+   "identical": "2.094%",
+   "within_1": "65.330%",
+   "within_11": "97.464%",
+   "over_25": 1376
+  },
+  "non_identical_pixels_outside_painted": 532060,
+  "over_25_outside_painted_bbox": [
+   0,
+   122,
+   903,
+   1177
+  ]
+ },
+ {
+  "result": "artifacts/p29-fix-run/result_0.png",
+  "size": [
+   904,
+   1190
+  ],
+  "all": {
+   "pixels": 1075760,
+   "mean": 27.638,
+   "max": 212,
+   "identical": "6.643%",
+   "within_1": "49.435%",
+   "within_11": "60.783%",
+   "over_25": 319897
+  },
+  "edit(soft)": {
+   "pixels": 481607,
+   "mean": 60.479,
+   "max": 212,
+   "identical": "0.079%",
+   "within_1": "0.981%",
+   "within_11": "12.490%",
+   "over_25": 319897
+  },
+  "outside edit": {
+   "pixels": 594153,
+   "mean": 1.018,
+   "max": 23,
+   "identical": "11.964%",
+   "within_1": "88.712%",
+   "within_11": "99.928%",
+   "over_25": 0
+  },
+  "painted(>0.5)": {
+   "pixels": 473123,
+   "mean": 61.477,
+   "max": 212,
+   "identical": "0.021%",
+   "within_1": "0.317%",
+   "within_11": "11.093%",
+   "over_25": 319609
+  },
+  "outside painted": {
+   "pixels": 602637,
+   "mean": 1.072,
+   "max": 121,
+   "identical": "11.842%",
+   "within_1": "87.997%",
+   "within_11": "99.793%",
+   "over_25": 288
+  },
+  "protected identity": {
+   "pixels": 81741,
+   "mean": 1.932,
+   "max": 146,
+   "identical": "2.260%",
+   "within_1": "66.082%",
+   "within_11": "98.381%",
+   "over_25": 647
+  },
+  "non_identical_pixels_outside_painted": 531271,
+  "over_25_outside_painted_bbox": [
+   377,
+   242,
+   737,
+   844
+  ]
+ }
+]

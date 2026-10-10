@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Photo Retouch Agent 标签化人像美化工作台原型"
+      content="图片工作台 — 生图工作台 + 美颜工作台（AI 个人形象设计与人像美化）"
     />
-    <title>Photo Retouch Agent · 人像美化工作台</title>
-    <link rel="stylesheet" href="./css/styles.css?v=0.5.0" />
+    <title>美颜工作台 · 图片工作台</title>
+    <link rel="stylesheet" href="./css/styles.css?v=0.6.2" />
   </head>
   <body>
     <header class="app-header">
-      <a class="brand" href="/" aria-label="Photo Retouch Agent 首页">
-        <span class="brand-mark">PR</span>
+      <a class="brand" href="./index.html" aria-label="图片工作台 首页">
+        <span class="brand-mark">图</span>
         <span class="brand-copy">
-          <strong>Retouch Lab</strong>
-          <small>人像美化工作台</small>
+          <strong>图片工作台</strong>
+          <small>美颜工作台 · AI 造型设计</small>
         </span>
       </a>
 
       <div class="document-name">
         <span class="status-dot"></span>
         <span id="documentName">请选择照片</span>
-        <small>未加载</small>
+        <small id="documentMeta">未加载</small>
       </div>
 
       <div class="header-actions">
+        <nav class="workbench-switch" aria-label="工作台切换">
+          <a class="workbench-tab" href="./studio.html">生图工作台</a>
+          <a class="workbench-tab is-active" href="./index.html" aria-current="page">美颜工作台</a>
+        </nav>
         <span class="prototype-pill">PROTOTYPE · V0.1</span>
         <button class="icon-button" id="undoButton" type="button" title="撤销">
           ↶
@@ -97,22 +101,22 @@
         </div>
 
         <div class="mode-switch" role="tablist" aria-label="美化模式">
-          <button class="active" data-mode="local" type="button" role="tab">
+          <button data-mode="local" type="button" role="tab">
             <span class="mode-glyph">⌁</span>
-            实时美化
+            皮肤美化
           </button>
-          <button data-mode="ai" type="button" role="tab">
+          <button class="active" data-mode="ai" type="button" role="tab">
             <span class="mode-glyph">✦</span>
-            AI 精修
+            AI 造型设计
           </button>
         </div>
 
         <div class="mode-note" id="modeNote">
           <span class="local-dot"></span>
-          本地实时预览 · 图片无需上传模型
+          AI 造型设计 · 生成前会确认费用
         </div>
 
-        <section id="localPanel">
+        <section id="localPanel" hidden>
           <label class="search-box">
             <span>⌕</span>
             <input id="toolSearch" type="search" placeholder="搜索美化工具" />
@@ -147,15 +151,99 @@
           </div>
         </section>
 
-        <section id="aiPanel" hidden>
+        <section id="aiPanel">
           <div class="ai-intro">
             <span class="ai-orbit">✦</span>
             <div>
-              <strong>AI 会理解人像后统一精修</strong>
-              <p>适合复杂光线、局部瑕疵和多项联动调整。</p>
+              <strong>AI 根据你的照片设计三套造型</strong>
+              <p>上传本人照片 → AI 设计发型／服装／妆容三套方案 → 选一套生成改造效果。当前 DeepSeek 没有图像输入能力，它不会直接看你的原图，而是依据本地程序测量的 FaceFacts（脸型、五官比例、肤色、是否戴眼镜等）进行设计。图像生成默认使用本地模拟（不计费），切换到真实模型时会先确认费用。</p>
             </div>
           </div>
 
+          <div class="section-row ai-section-title">
+            <h2>AI 整体形象设计</h2>
+            <span id="stylingSource">正在读取风格库…</span>
+          </div>
+          <div class="styling-toolbar">
+            <button class="styling-design-button" id="stylingDesignButton" type="button">
+              <span>✦</span>
+              <b>AI 设计三套造型（本步 2 次 · 全程最多 3 次）</b>
+            </button>
+            <button class="styling-template-button" id="stylingTemplateButton" type="button">
+              <span>◈</span>
+              <b>免费模板预览（0 次调用）</b>
+            </button>
+            <small id="stylingCostNote" class="styling-cost">
+              AI 设计：完整流程含 1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划，共 3 次付费模型调用；该照片已有有效分析缓存时复用分析，只计 2 次。无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计，并未直接做视觉看图分析。免费模板预览 0 次调用。出图只对选中的一套发起 1 次图像编辑请求。
+            </small>
+          </div>
+          <div class="styling-grid" id="stylingGrid" hidden></div>
+          <div class="styling-refine" id="stylingRefine" hidden>
+            <label class="prompt-field">
+              <span>对选中的造型提出修改</span>
+              <textarea
+                id="stylingInstruction"
+                rows="2"
+                placeholder="例如：头发再短一点 / 衣服换成皮衣 / 妆再大胆一点"
+              ></textarea>
+            </label>
+            <button class="styling-refine-button" id="stylingRefineButton" type="button">
+              二次修改选中造型
+            </button>
+          </div>
+          <p class="ai-feedback" id="stylingFeedback" aria-live="polite"></p>
+
+          <div class="styling-generation" id="stylingGeneration" hidden>
+            <div class="section-row ai-section-title">
+              <h2>生成进度</h2>
+              <span id="generationStageNote">等待开始</span>
+            </div>
+            <ol class="generation-steps" id="generationSteps">
+              <li data-gen-stage="queued"><i></i>准备照片</li>
+              <li data-gen-stage="segmentation"><i></i>自动分割</li>
+              <li data-gen-stage="mask_build"><i></i>生成蒙版</li>
+              <li data-gen-stage="provider"><i></i>RunningHub 处理</li>
+              <li data-gen-stage="verification"><i></i>结果校验</li>
+              <li data-gen-stage="done"><i></i>完成</li>
+            </ol>
+          </div>
+
+          <div class="styling-result" id="stylingResult" hidden>
+            <div class="section-row ai-section-title">
+              <h2>改造结果</h2>
+              <span class="verification-badge" id="resultVerification"></span>
+            </div>
+            <div class="result-compare">
+              <figure>
+                <img id="resultBeforeImage" alt="原图" />
+                <figcaption>原图</figcaption>
+              </figure>
+              <figure>
+                <img id="resultAfterImage" alt="改造结果" />
+                <figcaption id="resultAfterCaption">改造结果</figcaption>
+              </figure>
+            </div>
+            <p class="result-note" id="resultNote"></p>
+            <div class="result-actions">
+              <a class="result-download" id="resultDownload" href="#" download>下载结果</a>
+              <button class="result-reselect" id="resultReselect" type="button">
+                重新选择其他造型
+              </button>
+            </div>
+          </div>
+
+          <div class="styling-history" id="stylingHistoryPanel">
+            <div class="section-row ai-section-title">
+              <h2>历史结果</h2>
+              <button class="history-refresh" id="historyRefresh" type="button">刷新</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </div>
+
+          <div class="section-row ai-section-title">
+            <h2>皮肤质感精修（可选）</h2>
+            <span>AI 美化</span>
+          </div>
           <div class="section-row ai-section-title">
             <h2>选择美化风格</h2>
             <span>4 个预设</span>
@@ -274,14 +362,14 @@
           <div class="portrait-selector">
             <span class="portrait-avatar">1</span>
             <div>
-              <strong>人物 1</strong>
-              <small>已识别正面人像</small>
+              <strong id="portraitName">未选择照片</strong>
+              <small id="portraitMeta">上传后自动识别</small>
             </div>
             <button type="button">⌄</button>
           </div>
           <div class="canvas-status" id="canvasStatus">
             <span></span>
-            实时预览已开启
+            尚未选择照片
           </div>
           <div class="zoom-controls">
             <button type="button">−</button>
@@ -292,7 +380,12 @@
         </div>
 
         <div class="canvas-stage">
-          <div class="image-workbench" id="imageWorkbench">
+          <div class="image-workbench" id="imageWorkbench" data-loaded="0">
+            <div class="workbench-empty" id="workbenchEmpty">
+              <span class="workbench-empty-icon">＋</span>
+              <strong>点击选择照片</strong>
+              <small>或把照片拖到这里 · 支持 JPG / PNG / WEBP</small>
+            </div>
             <img
               id="beforeImage"
               src=""
@@ -326,7 +419,7 @@
         <section class="inspector-card detection-card">
           <div class="section-row">
             <h2>人像识别</h2>
-            <span class="success-label">质量良好</span>
+            <span class="success-label" id="detectionLabel">未选择照片</span>
           </div>
           <div class="face-map">
             <div class="face-oval">
@@ -338,9 +431,9 @@
               <i class="point p6"></i>
             </div>
             <div class="face-stats">
-              <div><span>面部</span><strong>1</strong></div>
-              <div><span>可见度</span><strong>98%</strong></div>
-              <div><span>光线</span><strong>柔和</strong></div>
+              <div><span>面部</span><strong id="detectionFaceCount">—</strong></div>
+              <div><span>可见度</span><strong id="detectionVisibility">—</strong></div>
+              <div><span>光线</span><strong id="detectionLight">—</strong></div>
             </div>
           </div>
         </section>
@@ -397,6 +490,33 @@
       </div>
     </footer>
 
-    <script type="module" src="./js/app.js?v=0.6.0"></script>
+    <dialog class="cost-dialog" id="costDialog">
+      <h2>确认生成费用</h2>
+      <p class="cost-dialog-lead" id="costDialogLead"></p>
+      <dl class="cost-breakdown">
+        <div>
+          <dt id="costDesignLabel">AI 造型设计</dt>
+          <dd id="costDesignValue">0 次</dd>
+        </div>
+        <div>
+          <dt id="costImageLabel">图像生成</dt>
+          <dd id="costImageValue">1 次</dd>
+        </div>
+        <div>
+          <dt>预计付费任务数</dt>
+          <dd id="costJobCount">1</dd>
+        </div>
+      </dl>
+      <p class="cost-dialog-note" id="costDialogNote"></p>
+      <p class="cost-dialog-warning">
+        同一任务最多提交 1 次付费请求；提交结果不确定时只会查询是否已建单，绝不自动重试。
+      </p>
+      <menu class="cost-dialog-actions">
+        <button type="button" id="costCancelButton">取消</button>
+        <button type="button" id="costConfirmButton">确认并开始生成</button>
+      </menu>
+    </dialog>
+
+    <script type="module" src="./js/app.js?v=0.8.3"></script>
   </body>
 </html>

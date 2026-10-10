@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-10-08T10:44:01.434009+00:00",
+  "command": "python -m tools.build_edit_masks",
+  "image": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/data/inputs/IMG_3651.jpg",
+  "model": "/Users/liuxiuyu/AI-beauty-style-lab/repos/photo-retouch-agent/data/models/face_landmarker.task",
+  "paidGenerations": 0,
+  "paidVisionCalls": 0,
+  "note": "Local geometry only. hair/clothing bands are heuristic ellipses and rectangles, NOT segmentation results. No generator was run.",
+  "stats": {
+    "imageWidth": 904,
+    "imageHeight": 1190,
+    "faceBox": [
+      338.54,
+      307.63,
+      596.8,
+      594.19
+    ],
+    "faceWidthPx": 256.72,
+    "faceHeightPx": 286.55,
+    "featherPx": 5.13,
+    "skinSamplePixels": 18475,
+    "protectedPixels": 57256,
+    "hairPixels": 269148,
+    "clothingPixels": 512568,
+    "editablePixels": 743330,
+    "protectedShare": 0.0532,
+    "editableShare": 0.691,
+    "identityGuardPixels": 21873,
+    "faceSkinPixels": 55969,
+    "identityCoversEditable": true
+  },
+  "gaps": [
+    "hair_band_is_geometric: no hair-segmentation model is available in this environment, so the hair region is an ellipse around the head and not a hair matte; its boundary is a heuristic, not a measured hairline",
+    "clothing_band_is_geometric: no human-parsing/segmentation model is available here, so the clothing rectangle also covers neck, arms and background pixels that share the band"
+  ],
+  "outputs": [
+    "p26_original.png",
+    "p26_protected.png",
+    "p26_editable.png",
+    "p26_overlay.png"
+  ]
+}

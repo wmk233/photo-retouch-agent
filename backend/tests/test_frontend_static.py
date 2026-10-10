@@ -5,13 +5,29 @@ def test_frontend_index_is_served(client: TestClient) -> None:
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "Photo Retouch Agent" in response.text
+    assert "图片工作台" in response.text
+    assert "./studio.html" in response.text
     assert './js/app.js' in response.text
     assert 'data-mode="local"' in response.text
     assert 'data-mode="ai"' in response.text
     assert 'data-category="skin"' in response.text
     assert 'id="compareRange"' in response.text
     assert 'id="generateButton"' in response.text
+
+
+def test_frontend_studio_page_is_served(client: TestClient) -> None:
+    response = client.get("/studio.html")
+
+    assert response.status_code == 200
+    assert "生图工作台" in response.text
+    assert "./index.html" in response.text
+    assert './css/studio.css' in response.text
+    assert './js/studio.js' in response.text
+    assert 'id="promptInput"' in response.text
+    assert 'id="confirmAccept"' in response.text
+    assert 'id="interrogateButton"' in response.text
+    assert 'id="interrogateModelSelect"' in response.text
+    assert 'id="interrogateFocus"' in response.text
 
 
 def test_frontend_js_is_served(client: TestClient) -> None:

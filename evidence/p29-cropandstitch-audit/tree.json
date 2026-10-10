@@ -1,0 +1,456 @@
+{
+  "sha": "8584b08d851762965df898b421a39075fc5357ae",
+  "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/8584b08d851762965df898b421a39075fc5357ae",
+  "tree": [
+    {
+      "path": ".github",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "58b01b037e063afa4191c125a962d8714599aad9",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/58b01b037e063afa4191c125a962d8714599aad9"
+    },
+    {
+      "path": ".github/workflows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4d4a3d76137c50262434845f75e9a6c37003e4f7",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/4d4a3d76137c50262434845f75e9a6c37003e4f7"
+    },
+    {
+      "path": ".github/workflows/publish.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ce20ae0a4b2f7a28d04f6b37d7e659d24998ac5",
+      "size": 647,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/6ce20ae0a4b2f7a28d04f6b37d7e659d24998ac5"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9699f999c6a330cf83b301d3c14c02426f8a7ff1",
+      "size": 762,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/9699f999c6a330cf83b301d3c14c02426f8a7ff1"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "69b447c4e10019401ddc57a526a3fa7f30a3ca6d",
+      "size": 12905,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/69b447c4e10019401ddc57a526a3fa7f30a3ca6d"
+    },
+    {
+      "path": "__init__.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "d24dd44d381507953fc59f7a593c36f94179bf85",
+      "size": 480,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/d24dd44d381507953fc59f7a593c36f94179bf85"
+    },
+    {
+      "path": "example_workflows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8839e76174a60ec57ae39fa3ff92b1e038c0f985",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/8839e76174a60ec57ae39fa3ff92b1e038c0f985"
+    },
+    {
+      "path": "example_workflows/inpaint_flux.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "779e858aae4f325417af8a7e3ea542116033db8a",
+      "size": 991434,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/779e858aae4f325417af8a7e3ea542116033db8a"
+    },
+    {
+      "path": "example_workflows/inpaint_flux.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c7b0b144c9269604a291ab6f43df8a9543c09b3",
+      "size": 20738,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/5c7b0b144c9269604a291ab6f43df8a9543c09b3"
+    },
+    {
+      "path": "example_workflows/inpaint_hires.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "20937a7db38cfc32703b18d9982ffbf93ec26eca",
+      "size": 337844,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/20937a7db38cfc32703b18d9982ffbf93ec26eca"
+    },
+    {
+      "path": "example_workflows/inpaint_hires.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "20d813fbec772da6a8546a4be733aa96b215b484",
+      "size": 23864,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/20d813fbec772da6a8546a4be733aa96b215b484"
+    },
+    {
+      "path": "example_workflows/inpaint_sd15.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "47d1d55979aafd24230cf363511711403198dc42",
+      "size": 558727,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/47d1d55979aafd24230cf363511711403198dc42"
+    },
+    {
+      "path": "example_workflows/inpaint_sd15.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5da82533ef903632772ba2b57ee7b4ed9f09cff1",
+      "size": 13121,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/5da82533ef903632772ba2b57ee7b4ed9f09cff1"
+    },
+    {
+      "path": "inpaint_cropandstitch.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea413236190ca522b8c5277254831169bbd0152e",
+      "size": 99875,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/ea413236190ca522b8c5277254831169bbd0152e"
+    },
+    {
+      "path": "inpaint_flux.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "94b17ca1dbd8946d184b5bb6d57c2bb88cf54188",
+      "size": 4262468,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/94b17ca1dbd8946d184b5bb6d57c2bb88cf54188"
+    },
+    {
+      "path": "inpaint_hires.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2535d6ee71451af3d20d2c6ba04cb496e1c6fc74",
+      "size": 1996430,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/2535d6ee71451af3d20d2c6ba04cb496e1c6fc74"
+    },
+    {
+      "path": "inpaint_sd15.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c1eee02127042db572995263597f1e59eae6ad6d",
+      "size": 4780948,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/c1eee02127042db572995263597f1e59eae6ad6d"
+    },
+    {
+      "path": "js",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0d924c6d3da8b7a11f1a4ce939e77cba056184e3",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/0d924c6d3da8b7a11f1a4ce939e77cba056184e3"
+    },
+    {
+      "path": "js/showcontrol.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e32e809bd7dba8641478a42bca81f30c4344f9a",
+      "size": 8719,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/8e32e809bd7dba8641478a42bca81f30c4344f9a"
+    },
+    {
+      "path": "pyproject.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8cdb40f220d369469eed9f55add78c4434532698",
+      "size": 810,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/8cdb40f220d369469eed9f55add78c4434532698"
+    },
+    {
+      "path": "run_tests.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "702bdbfeee8f4ea490f913f769ced4bc6bc8eff4",
+      "size": 1055,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/702bdbfeee8f4ea490f913f769ced4bc6bc8eff4"
+    },
+    {
+      "path": "testimgs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d0d7d2f1689d7157607376475d31ae1179fac942",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/d0d7d2f1689d7157607376475d31ae1179fac942"
+    },
+    {
+      "path": "testimgs/clipspace",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "12d98998d12d60d909bddb17164a5ffb4ee647ce",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/12d98998d12d60d909bddb17164a5ffb4ee647ce"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-105444.59999999404.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1e10288b81782ee9eea053dabe5ec8c8c1ada593",
+      "size": 41613,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/1e10288b81782ee9eea053dabe5ec8c8c1ada593"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-1670481.1000000015.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "268f29301139f55368713d5938789838edbb9fea",
+      "size": 88017,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/268f29301139f55368713d5938789838edbb9fea"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-2116156.8999999985.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abaf91c208f185743352e9e9644285c0190f4b50",
+      "size": 76675,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/abaf91c208f185743352e9e9644285c0190f4b50"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-213955.39999999944.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5e57c0c10a1bcb6fb5b802909c0f70ad7dabe42",
+      "size": 15157,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/e5e57c0c10a1bcb6fb5b802909c0f70ad7dabe42"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-219964.40000000596.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2a014cf0555e9950577c256bff7dc2af4cd1b73",
+      "size": 13056,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/d2a014cf0555e9950577c256bff7dc2af4cd1b73"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-225116.5.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b6aceba6c3617dffb0c42da8d154cead7e7af60",
+      "size": 11911,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/6b6aceba6c3617dffb0c42da8d154cead7e7af60"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-248882.59999999404.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b6aceba6c3617dffb0c42da8d154cead7e7af60",
+      "size": 11911,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/6b6aceba6c3617dffb0c42da8d154cead7e7af60"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-3225001.799999997.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c8382731364ecc53208590066219a09ce472a930",
+      "size": 19929,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/c8382731364ecc53208590066219a09ce472a930"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-3255269.599999994.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a3a271ec49098da5c535bb6a8131f7c54708ca7",
+      "size": 16829,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/5a3a271ec49098da5c535bb6a8131f7c54708ca7"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-3492848.299999997.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1583665156a7cc5226c9dd74b3024d1f4369a4c0",
+      "size": 23102,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/1583665156a7cc5226c9dd74b3024d1f4369a4c0"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-3535755.200000003.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "56c7187e577af3b7cfba3fe0543d09d191e0426e",
+      "size": 12727,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/56c7187e577af3b7cfba3fe0543d09d191e0426e"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-5472479.200000003.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d1820e31ac7229bdf273463ce74c8c695701e94e",
+      "size": 13191,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/d1820e31ac7229bdf273463ce74c8c695701e94e"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-5485412.599999994.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ebdb6568ad3237d97b0d953ce0a5d94ce3822352",
+      "size": 15282,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/ebdb6568ad3237d97b0d953ce0a5d94ce3822352"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-562340.6999999881.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f656ba844773c69001a8cf2427f88a5f0dfd69ae",
+      "size": 17050,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/f656ba844773c69001a8cf2427f88a5f0dfd69ae"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-576288.900000006.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d992796f44de0691719aa3fd65566defd6ab88da",
+      "size": 16426,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/d992796f44de0691719aa3fd65566defd6ab88da"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-588013.599999994.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "53a281c0381d93c60185a8013aba5a35ece25042",
+      "size": 17326,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/53a281c0381d93c60185a8013aba5a35ece25042"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-69973.90000000596.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6c392a5050397130419a7ee8dac622ea0fc86032",
+      "size": 16656,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/6c392a5050397130419a7ee8dac622ea0fc86032"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-84438.39999999106.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbc1449ba5884d1393278fddcb5d2b4651e22c0c",
+      "size": 11966,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/cbc1449ba5884d1393278fddcb5d2b4651e22c0c"
+    },
+    {
+      "path": "testimgs/clipspace/clipspace-mask-991989.900000006.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b6aceba6c3617dffb0c42da8d154cead7e7af60",
+      "size": 11911,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/6b6aceba6c3617dffb0c42da8d154cead7e7af60"
+    },
+    {
+      "path": "testimgs/example.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b7f3c9cbbe6d8750c4a9eaf65d6ae4d2f108f79",
+      "size": 8589,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/7b7f3c9cbbe6d8750c4a9eaf65d6ae4d2f108f79"
+    },
+    {
+      "path": "tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ae29eb73d545f7d276937a47e1fc763f627b4947",
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/trees/ae29eb73d545f7d276937a47e1fc763f627b4947"
+    },
+    {
+      "path": "tests/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d4839a6b14c11e64143d1d200c2d4733595ffc6c",
+      "size": 16,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/d4839a6b14c11e64143d1d200c2d4733595ffc6c"
+    },
+    {
+      "path": "tests/test_context_areas.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "19330fa3feea120ca33e55f566829e5ba3367aad",
+      "size": 5826,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/19330fa3feea120ca33e55f566829e5ba3367aad"
+    },
+    {
+      "path": "tests/test_crop_and_stitch.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a63bc0bfd684c47c09a48aec721a11b1e487a13d",
+      "size": 11838,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/a63bc0bfd684c47c09a48aec721a11b1e487a13d"
+    },
+    {
+      "path": "tests/test_input_shielding.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d59f32093f855ddb5ed389b540f9517758a6d80",
+      "size": 14683,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/1d59f32093f855ddb5ed389b540f9517758a6d80"
+    },
+    {
+      "path": "tests/test_nodes_pipeline.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4bcfd981e5b3b0bbc69af3d6fef9ca480bd6c90",
+      "size": 19863,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/f4bcfd981e5b3b0bbc69af3d6fef9ca480bd6c90"
+    },
+    {
+      "path": "tests/test_processor_cpu.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3a62b15ee03967a16121eac74a58839ed563e2c8",
+      "size": 10573,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/3a62b15ee03967a16121eac74a58839ed563e2c8"
+    },
+    {
+      "path": "tests/test_processor_gpu.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c9380982ea5bfa9be5e79033271e24833c5690a3",
+      "size": 10045,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/c9380982ea5bfa9be5e79033271e24833c5690a3"
+    },
+    {
+      "path": "tests/test_workflows.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1ed943b9643194b25d3e76a0bc866dd328ccf661",
+      "size": 7624,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/1ed943b9643194b25d3e76a0bc866dd328ccf661"
+    },
+    {
+      "path": "tests/workflow_runner.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e6e774a55563ef810098f6c93ae0ad1f7465484",
+      "size": 18553,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/5e6e774a55563ef810098f6c93ae0ad1f7465484"
+    },
+    {
+      "path": "testscpu.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "646d4fb5ac4d1e1645e02c529d04a57eddb5bee3",
+      "size": 983489,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/646d4fb5ac4d1e1645e02c529d04a57eddb5bee3"
+    },
+    {
+      "path": "testsgpu.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f77f020d1b32ef21e5bb8e54833736e36688fc9d",
+      "size": 983628,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/f77f020d1b32ef21e5bb8e54833736e36688fc9d"
+    },
+    {
+      "path": "windlereye.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "df2730e6b224ac9d909d848b554db7d7f66c0473",
+      "size": 56200,
+      "url": "https://api.github.com/repos/lquesada/ComfyUI-Inpaint-CropAndStitch/git/blobs/df2730e6b224ac9d909d848b554db7d7f66c0473"
+    }
+  ],
+  "truncated": false
+}

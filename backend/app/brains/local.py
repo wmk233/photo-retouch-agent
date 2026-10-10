@@ -31,12 +31,8 @@ class LocalPromptBrain:
         plan: RetouchPlan,
         user_instruction: str,
     ) -> RetouchPlan:
-        if not user_instruction.strip():
-            return plan
-        return plan.model_copy(
-            update={
-                "edit_prompt": (
-                    f"{plan.edit_prompt}\n用户补充要求：{user_instruction.strip()}"
-                )
-            }
-        )
+        # The supplementary instruction is not folded into ``edit_prompt`` here.
+        # Every image provider already appends it once, as the last hop before
+        # the request is sent (``_build_prompt``), so adding it again would put
+        # the same sentence into the model request twice.
+        return plan

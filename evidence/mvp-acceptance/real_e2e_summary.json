@@ -1,0 +1,92 @@
+{
+  "startedAt": "2026-10-09T07:13:38.284Z",
+  "app": "http://127.0.0.1:8001/",
+  "photo": "data/inputs/IMG_3651.jpg",
+  "choiceIndex": 1,
+  "confirmedPaid": true,
+  "steps": [
+    {
+      "at": "2026-10-09T07:13:41.513Z",
+      "label": "app loaded",
+      "url": "http://127.0.0.1:8001/"
+    },
+    {
+      "at": "2026-10-09T07:13:41.719Z",
+      "label": "capabilities ok",
+      "deepseekConfigured": true,
+      "deepseekModel": "deepseek-v4-flash",
+      "runninghubConfigured": true,
+      "runninghubProviderId": "runninghub-crop-stitch",
+      "stylingAiFlowRequests": 3
+    },
+    {
+      "at": "2026-10-09T07:13:41.721Z",
+      "label": "DOM + provider options ok"
+    },
+    {
+      "at": "2026-10-09T07:13:41.927Z",
+      "label": "photo uploaded",
+      "photo": "data/inputs/IMG_3651.jpg"
+    },
+    {
+      "at": "2026-10-09T07:13:42.310Z",
+      "label": "providers selected",
+      "brain": "deepseek",
+      "action": "runninghub-crop-stitch"
+    },
+    {
+      "at": "2026-10-09T07:13:45.715Z",
+      "label": "design confirm shown",
+      "message": "「AI 设计三套造型」会调用付费模型「DeepSeek」，完整流程最多 3 次付费请求（1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划）。\n无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计。\n\n只有你现在点击「确定」才会提交，本轮不会自动重试。是否继续？"
+    },
+    {
+      "at": "2026-10-09T07:13:45.718Z",
+      "label": "design confirm accepted by operator flag"
+    },
+    {
+      "at": "2026-10-09T07:14:34.053Z",
+      "label": "three looks rendered"
+    }
+  ],
+  "proposals": [],
+  "chosenPlan": null,
+  "costDialog": null,
+  "designConfirmMessage": "「AI 设计三套造型」会调用付费模型「DeepSeek」，完整流程最多 3 次付费请求（1 次人物事实分析 + 1 次造型设计 + 1 次出图提示词规划）。\n无图像输入能力的模型（如 DeepSeek）不会看到原图，只依据本地程序测量的 FaceFacts 设计。\n\n只有你现在点击「确定」才会提交，本轮不会自动重试。是否继续？",
+  "job": null,
+  "result": null,
+  "sideEffects": {
+    "capabilities": {
+      "deepseekConfigured": true,
+      "deepseekModel": "deepseek-v4-flash",
+      "runninghubConfigured": true,
+      "runninghubProviderId": "runninghub-crop-stitch",
+      "stylingAiFlowRequests": 3
+    },
+    "preflight": {
+      "missing": [],
+      "brainHasDeepseek": true,
+      "actionHasRunninghub": true,
+      "brainOpts": [
+        "qwen",
+        "glm",
+        "doubao",
+        "siliconflow",
+        "deepseek",
+        "local"
+      ],
+      "actOpts": [
+        "qwen",
+        "wan",
+        "seedream",
+        "siliconflow",
+        "fal-inpaint",
+        "mock",
+        "runninghub-crop-stitch"
+      ]
+    }
+  },
+  "failures": [
+    "no /styling/proposals response captured"
+  ],
+  "finishedAt": "2026-10-09T07:14:34.359Z"
+}

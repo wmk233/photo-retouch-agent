@@ -1,0 +1,496 @@
+{
+  "task_id": "2108330225116082177",
+  "regions": {
+    "protected_identity": 75762,
+    "facial_core": 73331,
+    "feature_guard_eyes_nose_mouth_teeth": 21873,
+    "glasses_guard": 20492,
+    "hair_edit_mask": 187091,
+    "clothing_edit_mask": 302487,
+    "parsed_background": 582107,
+    "outside_both_stitch_crops": 98103
+  },
+  "mask_match_vs_shipped_package": {
+    "hair_edit_mask": 1.0,
+    "clothing_edit_mask": 1.0,
+    "protected_identity": 1.0
+  },
+  "renders": {
+    "final": {
+      "path": "evidence/p29-submit-run/final.png",
+      "size": [
+        904,
+        1190
+      ],
+      "size_matches_original": true,
+      "shift": {
+        "best_dx": 0,
+        "best_dy": 0,
+        "best_mae": 0.443,
+        "zero_shift_mae": 0.443
+      },
+      "regions": {
+        "protected_identity": {
+          "pixels": 75762,
+          "byte_identical": 0.019812,
+          "identical_le2": 0.919828,
+          "changed_gt25": 583,
+          "max_abs_delta": 145,
+          "mean_abs_delta": 1.912
+        },
+        "facial_core": {
+          "pixels": 73331,
+          "byte_identical": 0.016637,
+          "identical_le2": 0.926389,
+          "changed_gt25": 417,
+          "max_abs_delta": 98,
+          "mean_abs_delta": 1.76
+        },
+        "feature_guard_eyes_nose_mouth_teeth": {
+          "pixels": 21873,
+          "byte_identical": 0.01335,
+          "identical_le2": 0.931605,
+          "changed_gt25": 12,
+          "max_abs_delta": 52,
+          "mean_abs_delta": 1.47
+        },
+        "glasses_guard": {
+          "pixels": 20492,
+          "byte_identical": 0.026108,
+          "identical_le2": 0.947882,
+          "changed_gt25": 0,
+          "max_abs_delta": 22,
+          "mean_abs_delta": 1.394
+        },
+        "hair_edit_mask": {
+          "pixels": 187091,
+          "byte_identical": 0.001759,
+          "identical_le2": 0.037533,
+          "changed_gt25": 86646,
+          "max_abs_delta": 213,
+          "mean_abs_delta": 33.209
+        },
+        "clothing_edit_mask": {
+          "pixels": 302487,
+          "byte_identical": 0.000179,
+          "identical_le2": 0.007852,
+          "changed_gt25": 237710,
+          "max_abs_delta": 231,
+          "mean_abs_delta": 63.278
+        },
+        "parsed_background": {
+          "pixels": 582107,
+          "byte_identical": 0.119282,
+          "identical_le2": 0.898321,
+          "changed_gt25": 18240,
+          "max_abs_delta": 190,
+          "mean_abs_delta": 3.662
+        },
+        "outside_both_stitch_crops": {
+          "pixels": 98103,
+          "byte_identical": 0.133064,
+          "identical_le2": 0.998135,
+          "changed_gt25": 0,
+          "max_abs_delta": 4,
+          "mean_abs_delta": 1.002
+        }
+      },
+      "neck_band": {
+        "pixels": 278400,
+        "ghost_pixels": 54007,
+        "ghost_in_protected": 32,
+        "ghost_in_clothing_mask": 18203,
+        "ghost_in_hair_mask": 38094,
+        "ghost_on_parsed_clothing": 15128,
+        "ghost_on_parsed_background": 2494,
+        "pale_remnant_pixels": 33254,
+        "pale_remnant_in_protected": 4931,
+        "pale_remnant_in_clothing_mask": 28322
+      },
+      "chest_band": {
+        "pixels": 108500,
+        "skin_like_pixels_in_final": 17485,
+        "skin_like_pixels_in_original": 7495,
+        "skin_reference_rgb": [
+          172.2,
+          119.4,
+          95.7
+        ]
+      },
+      "hairline_band": {
+        "pixels": 187200,
+        "changed_gt25": 22414,
+        "strong_edge_rows_final": 217,
+        "strong_edge_rows_original": 213
+      },
+      "faces": {
+        "faces": 1,
+        "boxes_normalized": [
+          [
+            0.379,
+            0.255,
+            0.6665,
+            0.4993
+          ]
+        ]
+      }
+    },
+    "clothing_pass": {
+      "path": "evidence/p29-submit-run/clothing_pass.png",
+      "size": [
+        904,
+        1190
+      ],
+      "size_matches_original": true,
+      "shift": {
+        "best_dx": 0,
+        "best_dy": 0,
+        "best_mae": 0.44,
+        "zero_shift_mae": 0.44
+      },
+      "regions": {
+        "protected_identity": {
+          "pixels": 75762,
+          "byte_identical": 0.020736,
+          "identical_le2": 0.935205,
+          "changed_gt25": 341,
+          "max_abs_delta": 145,
+          "mean_abs_delta": 1.666
+        },
+        "facial_core": {
+          "pixels": 73331,
+          "byte_identical": 0.016882,
+          "identical_le2": 0.939984,
+          "changed_gt25": 181,
+          "max_abs_delta": 98,
+          "mean_abs_delta": 1.528
+        },
+        "feature_guard_eyes_nose_mouth_teeth": {
+          "pixels": 21873,
+          "byte_identical": 0.013624,
+          "identical_le2": 0.933983,
+          "changed_gt25": 0,
+          "max_abs_delta": 6,
+          "mean_abs_delta": 1.438
+        },
+        "glasses_guard": {
+          "pixels": 20492,
+          "byte_identical": 0.028353,
+          "identical_le2": 0.952762,
+          "changed_gt25": 0,
+          "max_abs_delta": 6,
+          "mean_abs_delta": 1.35
+        },
+        "hair_edit_mask": {
+          "pixels": 187091,
+          "byte_identical": 0.11689,
+          "identical_le2": 0.901235,
+          "changed_gt25": 10360,
+          "max_abs_delta": 210,
+          "mean_abs_delta": 5.76
+        },
+        "clothing_edit_mask": {
+          "pixels": 302487,
+          "byte_identical": 0.000208,
+          "identical_le2": 0.008681,
+          "changed_gt25": 237251,
+          "max_abs_delta": 231,
+          "mean_abs_delta": 63.035
+        },
+        "parsed_background": {
+          "pixels": 582107,
+          "byte_identical": 0.126248,
+          "identical_le2": 0.963125,
+          "changed_gt25": 6376,
+          "max_abs_delta": 210,
+          "mean_abs_delta": 2.044
+        },
+        "outside_both_stitch_crops": {
+          "pixels": 98103,
+          "byte_identical": 0.133329,
+          "identical_le2": 0.998491,
+          "changed_gt25": 0,
+          "max_abs_delta": 3,
+          "mean_abs_delta": 1.0
+        }
+      },
+      "neck_band": {
+        "pixels": 278400,
+        "ghost_pixels": 18417,
+        "ghost_in_protected": 32,
+        "ghost_in_clothing_mask": 18092,
+        "ghost_in_hair_mask": 2450,
+        "ghost_on_parsed_clothing": 14941,
+        "ghost_on_parsed_background": 1968,
+        "pale_remnant_pixels": 34162,
+        "pale_remnant_in_protected": 4931,
+        "pale_remnant_in_clothing_mask": 28428
+      },
+      "chest_band": {
+        "pixels": 108500,
+        "skin_like_pixels_in_final": 14936,
+        "skin_like_pixels_in_original": 7495,
+        "skin_reference_rgb": [
+          172.2,
+          119.4,
+          95.7
+        ]
+      },
+      "hairline_band": {
+        "pixels": 187200,
+        "changed_gt25": 0,
+        "strong_edge_rows_final": 216,
+        "strong_edge_rows_original": 213
+      },
+      "faces": {
+        "faces": 1,
+        "boxes_normalized": [
+          [
+            0.3757,
+            0.2587,
+            0.6638,
+            0.498
+          ]
+        ]
+      }
+    },
+    "prev_ghost_failure": {
+      "path": "artifacts/p29-fix-run/result_0.png",
+      "size": [
+        904,
+        1190
+      ],
+      "size_matches_original": true,
+      "shift": {
+        "best_dx": 0,
+        "best_dy": 0,
+        "best_mae": 0.442,
+        "zero_shift_mae": 0.442
+      },
+      "regions": {
+        "protected_identity": {
+          "pixels": 75762,
+          "byte_identical": 0.020063,
+          "identical_le2": 0.931113,
+          "changed_gt25": 538,
+          "max_abs_delta": 146,
+          "mean_abs_delta": 1.831
+        },
+        "facial_core": {
+          "pixels": 73331,
+          "byte_identical": 0.01676,
+          "identical_le2": 0.936807,
+          "changed_gt25": 427,
+          "max_abs_delta": 105,
+          "mean_abs_delta": 1.711
+        },
+        "feature_guard_eyes_nose_mouth_teeth": {
+          "pixels": 21873,
+          "byte_identical": 0.013624,
+          "identical_le2": 0.933983,
+          "changed_gt25": 0,
+          "max_abs_delta": 6,
+          "mean_abs_delta": 1.438
+        },
+        "glasses_guard": {
+          "pixels": 20492,
+          "byte_identical": 0.026303,
+          "identical_le2": 0.949492,
+          "changed_gt25": 0,
+          "max_abs_delta": 15,
+          "mean_abs_delta": 1.374
+        },
+        "hair_edit_mask": {
+          "pixels": 187091,
+          "byte_identical": 0.001823,
+          "identical_le2": 0.028719,
+          "changed_gt25": 81251,
+          "max_abs_delta": 211,
+          "mean_abs_delta": 30.732
+        },
+        "clothing_edit_mask": {
+          "pixels": 302487,
+          "byte_identical": 0.000218,
+          "identical_le2": 0.007703,
+          "changed_gt25": 247594,
+          "max_abs_delta": 212,
+          "mean_abs_delta": 80.123
+        },
+        "parsed_background": {
+          "pixels": 582107,
+          "byte_identical": 0.118724,
+          "identical_le2": 0.889775,
+          "changed_gt25": 15370,
+          "max_abs_delta": 187,
+          "mean_abs_delta": 3.405
+        },
+        "outside_both_stitch_crops": {
+          "pixels": 98103,
+          "byte_identical": 0.133074,
+          "identical_le2": 0.998063,
+          "changed_gt25": 0,
+          "max_abs_delta": 3,
+          "mean_abs_delta": 1.002
+        }
+      },
+      "neck_band": {
+        "pixels": 278400,
+        "ghost_pixels": 40662,
+        "ghost_in_protected": 285,
+        "ghost_in_clothing_mask": 15047,
+        "ghost_in_hair_mask": 26811,
+        "ghost_on_parsed_clothing": 12125,
+        "ghost_on_parsed_background": 1766,
+        "pale_remnant_pixels": 23050,
+        "pale_remnant_in_protected": 4975,
+        "pale_remnant_in_clothing_mask": 18075
+      },
+      "chest_band": {
+        "pixels": 108500,
+        "skin_like_pixels_in_final": 17394,
+        "skin_like_pixels_in_original": 7495,
+        "skin_reference_rgb": [
+          172.2,
+          119.4,
+          95.7
+        ]
+      },
+      "hairline_band": {
+        "pixels": 187200,
+        "changed_gt25": 24965,
+        "strong_edge_rows_final": 216,
+        "strong_edge_rows_original": 213
+      },
+      "faces": {
+        "faces": 1,
+        "boxes_normalized": [
+          [
+            0.3784,
+            0.2558,
+            0.6627,
+            0.4987
+          ]
+        ]
+      }
+    },
+    "prev_second_face_failure": {
+      "path": "artifacts/p29-run/result_0.png",
+      "size": [
+        904,
+        1190
+      ],
+      "size_matches_original": true,
+      "shift": {
+        "best_dx": 0,
+        "best_dy": 0,
+        "best_mae": 0.45,
+        "zero_shift_mae": 0.45
+      },
+      "regions": {
+        "protected_identity": {
+          "pixels": 75762,
+          "byte_identical": 0.019284,
+          "identical_le2": 0.926876,
+          "changed_gt25": 680,
+          "max_abs_delta": 165,
+          "mean_abs_delta": 1.965
+        },
+        "facial_core": {
+          "pixels": 73331,
+          "byte_identical": 0.016432,
+          "identical_le2": 0.93468,
+          "changed_gt25": 406,
+          "max_abs_delta": 119,
+          "mean_abs_delta": 1.701
+        },
+        "feature_guard_eyes_nose_mouth_teeth": {
+          "pixels": 21873,
+          "byte_identical": 0.013624,
+          "identical_le2": 0.933983,
+          "changed_gt25": 0,
+          "max_abs_delta": 6,
+          "mean_abs_delta": 1.438
+        },
+        "glasses_guard": {
+          "pixels": 20492,
+          "byte_identical": 0.025132,
+          "identical_le2": 0.947297,
+          "changed_gt25": 20,
+          "max_abs_delta": 108,
+          "mean_abs_delta": 1.463
+        },
+        "hair_edit_mask": {
+          "pixels": 187091,
+          "byte_identical": 0.0014,
+          "identical_le2": 0.023502,
+          "changed_gt25": 117594,
+          "max_abs_delta": 240,
+          "mean_abs_delta": 64.925
+        },
+        "clothing_edit_mask": {
+          "pixels": 302487,
+          "byte_identical": 2.3e-05,
+          "identical_le2": 0.001276,
+          "changed_gt25": 264743,
+          "max_abs_delta": 231,
+          "mean_abs_delta": 126.931
+        },
+        "parsed_background": {
+          "pixels": 582107,
+          "byte_identical": 0.117463,
+          "identical_le2": 0.880013,
+          "changed_gt25": 29196,
+          "max_abs_delta": 203,
+          "mean_abs_delta": 4.637
+        },
+        "outside_both_stitch_crops": {
+          "pixels": 98103,
+          "byte_identical": 0.132626,
+          "identical_le2": 0.994679,
+          "changed_gt25": 0,
+          "max_abs_delta": 11,
+          "mean_abs_delta": 1.016
+        }
+      },
+      "neck_band": {
+        "pixels": 278400,
+        "ghost_pixels": 38645,
+        "ghost_in_protected": 407,
+        "ghost_in_clothing_mask": 6625,
+        "ghost_in_hair_mask": 32995,
+        "ghost_on_parsed_clothing": 4162,
+        "ghost_on_parsed_background": 2009,
+        "pale_remnant_pixels": 17978,
+        "pale_remnant_in_protected": 5159,
+        "pale_remnant_in_clothing_mask": 12819
+      },
+      "chest_band": {
+        "pixels": 108500,
+        "skin_like_pixels_in_final": 13986,
+        "skin_like_pixels_in_original": 7495,
+        "skin_reference_rgb": [
+          172.2,
+          119.4,
+          95.7
+        ]
+      },
+      "hairline_band": {
+        "pixels": 187200,
+        "changed_gt25": 35990,
+        "strong_edge_rows_final": 936,
+        "strong_edge_rows_original": 213
+      },
+      "faces": {
+        "faces": 1,
+        "boxes_normalized": [
+          [
+            0.38,
+            0.2558,
+            0.6662,
+            0.5005
+          ]
+        ]
+      }
+    }
+  }
+}

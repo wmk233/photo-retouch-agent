@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="图片工作台 — 生图工作台：自然语言生图 / 改图（SiliconFlow / Qwen-Image）"
+    />
+    <title>生图工作台 · 图片工作台</title>
+    <link rel="stylesheet" href="./css/studio.css?v=0.2.0" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">图</span>
+        <span class="brand-copy">
+          <strong>图片工作台</strong>
+          <small>生图工作台 · 自然语言生图 / 改图</small>
+        </span>
+      </div>
+
+      <div class="topbar-right">
+        <span class="pill" id="providerPill">
+          <span class="dot"></span>
+          <span id="providerText">正在检查 API…</span>
+        </span>
+        <nav class="workbench-switch" aria-label="工作台切换">
+          <a class="workbench-tab is-active" href="./studio.html" aria-current="page">生图工作台</a>
+          <a class="workbench-tab" href="./index.html">美颜工作台</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- ---------------------------------------------------------- 输入 -->
+      <section class="panel panel-source" id="sourcePanel">
+        <h2 class="panel-title">
+          <span class="step">1</span> 输入图
+          <span class="panel-hint" id="sourceHint">改图必填</span>
+        </h2>
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button">
+          <img id="sourcePreview" alt="输入图预览" hidden />
+          <div class="dropzone-empty" id="dropzoneEmpty">
+            <span class="dropzone-icon">＋</span>
+            <strong>拖一张图进来</strong>
+            <small>或点击选择 · JPG / PNG / WebP</small>
+          </div>
+        </div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden />
+
+        <div class="source-meta" id="sourceMeta" hidden>
+          <span id="sourceMetaText"></span>
+          <button class="text-button" type="button" id="clearSource">换一张</button>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------- 指令 -->
+      <section class="panel panel-prompt">
+        <h2 class="panel-title"><span class="step">2</span> 你要什么</h2>
+
+        <div class="mode-switch" role="tablist" id="modeSwitch">
+          <button class="mode-button is-active" data-mode="edit" type="button">改这张图</button>
+          <button class="mode-button" data-mode="text2image" type="button">凭空生成</button>
+        </div>
+
+        <div class="field-head">
+          <label class="field-label" for="promptInput">提示词</label>
+          <div class="field-head-actions">
+            <select id="interrogateFocus" class="compact-select" aria-label="反推方式">
+              <option value="replicate">复刻这张画面</option>
+              <option value="style">只要风格和色调</option>
+            </select>
+            <button class="ghost-button is-compact" type="button" id="interrogateButton">
+              反推提示词
+            </button>
+          </div>
+        </div>
+        <p class="field-note" id="interrogateNote">
+          不知道怎么写？上传图后点「反推提示词」，让视觉模型看图写一段，再直接出图。
+        </p>
+        <textarea
+          id="promptInput"
+          rows="6"
+          placeholder="例：把背景换成清晨的海边，光线柔和，保留人物面部不变"
+        ></textarea>
+
+        <div class="chips chips-interrogate" id="interrogateChips" hidden></div>
+        <div class="chips" id="promptChips"></div>
+
+        <details class="advanced">
+          <summary>更多参数</summary>
+
+          <label class="field-label" for="modelSelect">模型</label>
+          <select id="modelSelect"></select>
+          <p class="field-note" id="modelNote"></p>
+
+          <label class="field-label" for="interrogateModelSelect">反推模型（看图写提示词）</label>
+          <select id="interrogateModelSelect"></select>
+          <p class="field-note" id="interrogateModelNote"></p>
+
+          <label class="field-label" for="sizeSelect" id="sizeLabel" hidden>画布尺寸</label>
+          <select id="sizeSelect" hidden></select>
+
+          <label class="field-label" for="negativeInput">不要出现（可选）</label>
+          <input id="negativeInput" type="text" placeholder="例：文字、水印、多余的手指" />
+
+          <label class="field-label" for="countSelect">生成张数</label>
+          <select id="countSelect"></select>
+        </details>
+
+        <div class="cost-preview" id="costPreview">先写下提示词</div>
+
+        <button class="primary-button" type="button" id="generateButton" disabled>
+          生成（需确认费用）
+        </button>
+      </section>
+
+      <!-- ---------------------------------------------------------- 结果 -->
+      <section class="panel panel-result">
+        <h2 class="panel-title">
+          <span class="step">3</span> 成片
+          <span class="panel-hint" id="resultHint">还没有生成</span>
+        </h2>
+
+        <div class="result-stage" id="resultStage">
+          <p class="empty-state" id="resultEmpty">
+            生成后这里会显示真实模型返回的图片，<br />并和输入图并排放在一起。
+          </p>
+        </div>
+
+        <div class="compare" id="compare" hidden>
+          <figure class="compare-figure">
+            <img id="compareSource" alt="输入图" />
+            <figcaption>原图</figcaption>
+          </figure>
+          <figure class="compare-figure">
+            <img id="compareResult" alt="生成结果" />
+            <figcaption id="compareResultCaption">成片</figcaption>
+          </figure>
+        </div>
+
+        <dl class="facts" id="resultFacts" hidden></dl>
+
+        <div class="result-actions" id="resultActions" hidden>
+          <a class="primary-button" id="downloadButton" download>下载这张</a>
+          <button class="ghost-button" type="button" id="reuseButton">把它的提示词拿回来改</button>
+        </div>
+
+        <h3 class="sub-title" id="historyTitle" hidden>历史成片</h3>
+        <div class="history" id="history"></div>
+      </section>
+    </main>
+
+    <!-- ------------------------------------------------------- 费用确认 -->
+    <div class="modal-backdrop" id="confirmBackdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <h3 id="confirmTitle">这次要花钱，确认一下</h3>
+        <dl class="confirm-facts" id="confirmFacts"></dl>
+        <p class="confirm-warning" id="confirmWarning">
+          点击「确认并生成」就会真的向 SiliconFlow 发起付费请求，费用计入你的硅基流动账单。
+          取消则不会发出任何请求。
+        </p>
+        <div class="modal-actions">
+          <button class="ghost-button" type="button" id="confirmCancel">取消</button>
+          <button class="primary-button" type="button" id="confirmAccept">确认并生成</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/studio.js?v=0.2.0"></script>
+  </body>
+</html>

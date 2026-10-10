@@ -14,6 +14,24 @@ def _optional_env(name: str) -> str | None:
     return value or None
 
 
+def _runninghub_key() -> str | None:
+    """The RunningHub key, from the environment or the local key file.
+
+    The CLI has always read ``~/.runninghub_key``; the app reads the same file so
+    a developer who already has one does not have to duplicate the secret. The
+    value is never logged and the field is ``repr=False``.
+    """
+    value = _optional_env("RUNNINGHUB_API_KEY")
+    if value:
+        return value
+    key_file = Path.home() / ".runninghub_key"
+    try:
+        text = key_file.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    return text or None
+
+
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "Photo Retouch Agent API"
@@ -133,6 +151,161 @@ class Settings:
             "ARK_IMAGE_MODEL", "doubao-seedream-5-0-260128"
         ).strip()
     )
+    siliconflow_api_key: str | None = field(
+        default_factory=lambda: _optional_env("SILICONFLOW_API_KEY"),
+        repr=False,
+    )
+    siliconflow_base_url: str = field(
+        default_factory=lambda: (
+            _optional_env("SILICONFLOW_BASE_URL") or "https://api.siliconflow.cn/v1"
+        ).rstrip("/")
+    )
+    siliconflow_vision_model: str = field(
+        default_factory=lambda: os.getenv(
+            "SILICONFLOW_VISION_MODEL", "Qwen/Qwen3.5-35B-A3B"
+        ).strip()
+    )
+    siliconflow_image_model: str = field(
+        default_factory=lambda: os.getenv(
+            "SILICONFLOW_IMAGE_MODEL", "Qwen/Qwen-Image-Edit-2509"
+        ).strip()
+    )
+    # --- strict face identity lock ---------------------------------------
+    # The styling providers repaint the whole person, so the generated face is
+    # *not* trustworthy even when the prompt begs for identity preservation.
+    # ``strict`` restores the original facial pixels after generation; ``off``
+    # keeps the raw provider output (unlocked) for debugging only.
+    face_lock_mode: str = field(
+        default_factory=lambda: os.getenv(
+            "PHOTO_AGENT_FACE_LOCK_MODE", "strict"
+        ).strip().lower()
+    )
+    face_landmark_model_path: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("PHOTO_AGENT_FACE_LANDMARK_MODEL")
+            or str(PROJECT_ROOT / "data" / "models" / "face_landmarker.task")
+        )
+    )
+    face_lock_residual_ratio: float = field(
+        default_factory=lambda: float(
+            os.getenv("PHOTO_AGENT_FACE_LOCK_RESIDUAL_RATIO", "0.045")
+        )
+    )
+    face_lock_strict_residual_ratio: float = field(
+        default_factory=lambda: float(
+            os.getenv("PHOTO_AGENT_FACE_LOCK_STRICT_RESIDUAL_RATIO", "0.030")
+        )
+    )
+    face_lock_manual_mask_path: Path | None = field(
+        default_factory=lambda: (
+            Path(value)
+            if (value := _optional_env("PHOTO_AGENT_FACE_LOCK_MASK"))
+            else None
+        )
+    )
+    # --- analysis reuse cache --------------------------------------------
+    # ``POST /api/photos/analyze`` is the one paid *vision* call in the design
+    # flow, and the styling planner makes a second one. Re-analysing the same
+    # (image, provider, model) inside this window returns the stored analysis
+    # instead of billing the provider again for an identical result.
+    analysis_cache_ttl_seconds: float = field(
+        default_factory=lambda: float(
+            os.getenv("PHOTO_AGENT_ANALYSIS_CACHE_TTL", "900")
+        )
+    )
+    analysis_cache_max_entries: int = field(
+        default_factory=lambda: int(
+            os.getenv("PHOTO_AGENT_ANALYSIS_CACHE_MAX", "64")
+        )
+    )
+    # --- semantic human parsing (ATR) ------------------------------------
+    # The P2.6 edit masks were pure geometry: an ellipse for the hair and a
+    # rectangle for the clothing. This pins the ONNX export of the pretrained
+    # SCHP ATR human parser that replaces those stand-ins with real semantic
+    # regions. It is read-only inference on the CPU; no training, no paid call.
+    human_parsing_model_path: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("PHOTO_AGENT_HUMAN_PARSING_MODEL")
+            or str(PROJECT_ROOT / "data" / "models" / "schp-atr-18.onnx")
+        )
+    )
+    # --- native mask inpainting (fal.ai Qwen Image Edit) ------------------
+    # The styling providers repaint the whole person, so even a good prompt
+    # cannot protect the original collar/eyes. ``fal-ai/qwen-image-edit/inpaint``
+    # takes an explicit black/white mask: black pixels are *kept* and white
+    # pixels are *edited*. It is a separate, opt-in backend and never falls
+    # back to the whole-image path. Wiring the endpoint is free; the model is
+    # only billed when a real generation is dispatched.
+    fal_key: str | None = field(
+        default_factory=lambda: _optional_env("FAL_KEY"),
+        repr=False,
+    )
+    fal_inpaint_endpoint: str = field(
+        default_factory=lambda: (
+            _optional_env("FAL_INPAINT_ENDPOINT")
+            or "https://queue.fal.run/fal-ai/qwen-image-edit/inpaint"
+        ).rstrip("/")
+    )
+    fal_inpaint_model: str = field(
+        default_factory=lambda: os.getenv(
+            "FAL_INPAINT_MODEL", "fal-ai/qwen-image-edit/inpaint"
+        ).strip()
+    )
+    fal_inpaint_poll_interval_seconds: float = field(
+        default_factory=lambda: float(
+            os.getenv("FAL_INPAINT_POLL_INTERVAL", "2.0")
+        )
+    )
+    fal_inpaint_max_poll_seconds: float = field(
+        default_factory=lambda: float(os.getenv("FAL_INPAINT_MAX_POLL", "600"))
+    )
+
+    # --- RunningHub CropAndStitch (the validated two-pass masked edit) -----
+    # The one backend whose exact graph produced an accepted result
+    # (RunningHub task 2108330225116082177). Like the fal path it *requires* a
+    # black/white edit mask and never falls back to a whole-image edit. Wiring
+    # it is free; a task is only billed when the user confirms the cost in the
+    # UI and the job layer dispatches it exactly once.
+    runninghub_api_key: str | None = field(
+        default_factory=lambda: _runninghub_key(),
+        repr=False,
+    )
+    runninghub_base_url: str = field(
+        default_factory=lambda: (
+            _optional_env("RUNNINGHUB_BASE_URL") or "https://www.runninghub.cn"
+        ).rstrip("/")
+    )
+    # ``workflowId`` is a required non-null field even when the graph travels
+    # inline in ``workflow``; the API documents that ``workflow`` wins.
+    runninghub_workflow_id: str = field(
+        default_factory=lambda: os.getenv("RUNNINGHUB_WORKFLOW_ID", "1").strip() or "1"
+    )
+    runninghub_instance_type: str = field(
+        default_factory=lambda: os.getenv("RUNNINGHUB_INSTANCE_TYPE", "default").strip() or "default"
+    )
+    runninghub_checkpoint: str = field(
+        default_factory=lambda: os.getenv(
+            "RUNNINGHUB_CHECKPOINT", "juggernautXL_juggXIByRundiffusion.safetensors"
+        ).strip()
+    )
+    runninghub_seed: int = field(
+        default_factory=lambda: int(os.getenv("RUNNINGHUB_SEED", "20261008"))
+    )
+    runninghub_timeout_seconds: float = field(
+        default_factory=lambda: float(os.getenv("RUNNINGHUB_TIMEOUT", "900"))
+    )
+    runninghub_poll_interval_seconds: float = field(
+        default_factory=lambda: float(os.getenv("RUNNINGHUB_POLL_INTERVAL", "6.0"))
+    )
+    #: Live ComfyUI node table. Optional: when the file is absent the workflow is
+    #: structurally validated only (the platform call is unaffected), so a fresh
+    #: checkout without the 30 MB dump still runs.
+    runninghub_object_info_path: Path = field(
+        default_factory=lambda: Path(
+            _optional_env("RUNNINGHUB_OBJECT_INFO")
+            or str(PROJECT_ROOT / "evidence" / "p29-live-run" / "object_info_live.json")
+        )
+    )
 
     @property
     def uploads_dir(self) -> Path:
@@ -145,6 +318,14 @@ class Settings:
     @property
     def jobs_dir(self) -> Path:
         return self.data_dir / "jobs"
+
+    @property
+    def models_dir(self) -> Path:
+        return self.data_dir / "models"
+
+    @property
+    def face_lock_enabled(self) -> bool:
+        return self.face_lock_mode not in ("", "off", "none", "disabled")
 
 
 settings = Settings()

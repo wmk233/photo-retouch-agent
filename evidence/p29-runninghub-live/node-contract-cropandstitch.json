@@ -1,0 +1,191 @@
+{
+  "source": "https://www.runninghub.cn/proxy/<API_KEY>/object_info",
+  "fetched_at_utc": "2026-10-08T15:13:33Z",
+  "upstream_repo": "https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch",
+  "upstream_commit_pinned": "8584b08d851762965df898b421a39075fc5357ae",
+  "total_nodes_in_runtime": 19201,
+  "nodes": {
+    "InpaintCropImproved": {
+      "category": "inpaint",
+      "python_module": "custom_nodes.ComfyUI-Inpaint-CropAndStitch",
+      "outputs": [
+        "STITCHER",
+        "IMAGE",
+        "MASK"
+      ],
+      "output_names": [
+        "stitcher",
+        "cropped_image",
+        "cropped_mask"
+      ],
+      "required_inputs": {
+        "image": {
+          "type": "IMAGE",
+          "default": null
+        },
+        "downscale_algorithm": {
+          "type": "ENUM",
+          "options": [
+            "nearest",
+            "bilinear",
+            "bicubic",
+            "lanczos",
+            "box",
+            "hamming"
+          ],
+          "default": "bilinear"
+        },
+        "upscale_algorithm": {
+          "type": "ENUM",
+          "options": [
+            "nearest",
+            "bilinear",
+            "bicubic",
+            "lanczos",
+            "box",
+            "hamming"
+          ],
+          "default": "bicubic"
+        },
+        "preresize": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "preresize_mode": {
+          "type": "ENUM",
+          "options": [
+            "ensure minimum resolution",
+            "ensure maximum resolution",
+            "ensure minimum and maximum resolution"
+          ],
+          "default": "ensure minimum resolution"
+        },
+        "preresize_min_width": {
+          "type": "INT",
+          "default": 1024
+        },
+        "preresize_min_height": {
+          "type": "INT",
+          "default": 1024
+        },
+        "preresize_max_width": {
+          "type": "INT",
+          "default": 16384
+        },
+        "preresize_max_height": {
+          "type": "INT",
+          "default": 16384
+        },
+        "mask_fill_holes": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "mask_expand_pixels": {
+          "type": "INT",
+          "default": 0
+        },
+        "mask_invert": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "mask_blend_pixels": {
+          "type": "INT",
+          "default": 32
+        },
+        "mask_hipass_filter": {
+          "type": "FLOAT",
+          "default": 0.1
+        },
+        "extend_for_outpainting": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "extend_up_factor": {
+          "type": "FLOAT",
+          "default": 1.0
+        },
+        "extend_down_factor": {
+          "type": "FLOAT",
+          "default": 1.0
+        },
+        "extend_left_factor": {
+          "type": "FLOAT",
+          "default": 1.0
+        },
+        "extend_right_factor": {
+          "type": "FLOAT",
+          "default": 1.0
+        },
+        "context_from_mask_extend_factor": {
+          "type": "FLOAT",
+          "default": 1.2
+        },
+        "output_resize_to_target_size": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "output_target_width": {
+          "type": "INT",
+          "default": 512
+        },
+        "output_target_height": {
+          "type": "INT",
+          "default": 512
+        },
+        "output_padding": {
+          "type": "ENUM",
+          "options": [
+            "0",
+            "8",
+            "16",
+            "32",
+            "64",
+            "128",
+            "256",
+            "512"
+          ],
+          "default": "32"
+        },
+        "device_mode": {
+          "type": "ENUM",
+          "options": [
+            "cpu (compatible)",
+            "gpu (much faster)"
+          ],
+          "default": "cpu (compatible)"
+        }
+      },
+      "optional_inputs": {
+        "mask": {
+          "type": "MASK",
+          "default": null
+        },
+        "optional_context_mask": {
+          "type": "MASK",
+          "default": null
+        }
+      }
+    },
+    "InpaintStitchImproved": {
+      "category": "inpaint",
+      "python_module": "custom_nodes.ComfyUI-Inpaint-CropAndStitch",
+      "outputs": [
+        "IMAGE"
+      ],
+      "output_names": [
+        "image"
+      ],
+      "required_inputs": {
+        "stitcher": {
+          "type": "STITCHER",
+          "default": null
+        },
+        "inpainted_image": {
+          "type": "IMAGE",
+          "default": null
+        }
+      },
+      "optional_inputs": {}
+    }
+  }
+}

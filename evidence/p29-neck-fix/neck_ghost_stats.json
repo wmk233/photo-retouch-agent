@@ -1,0 +1,153 @@
+{
+ "ghost_rule": "diff>25 and result is >15 luminance brighter than original",
+ "ghost_pixels": 75073,
+ "ghost_components": [
+  {
+   "area": 15847,
+   "bbox": [
+    596,
+    874,
+    768,
+    1189
+   ],
+   "mean_lum_delta": 67.71029216886477,
+   "mean_diff": 77.0440461917082
+  },
+  {
+   "area": 12537,
+   "bbox": [
+    263,
+    456,
+    414,
+    705
+   ],
+   "mean_lum_delta": 43.03740926856505,
+   "mean_diff": 62.992821249102654
+  },
+  {
+   "area": 7887,
+   "bbox": [
+    303,
+    747,
+    412,
+    866
+   ],
+   "mean_lum_delta": 31.749968302269558,
+   "mean_diff": 53.466590592113604
+  },
+  {
+   "area": 5579,
+   "bbox": [
+    605,
+    283,
+    669,
+    492
+   ],
+   "mean_lum_delta": 29.195017028141244,
+   "mean_diff": 47.80032263846567
+  },
+  {
+   "area": 3743,
+   "bbox": [
+    459,
+    202,
+    592,
+    337
+   ],
+   "mean_lum_delta": 35.15362009083623,
+   "mean_diff": 56.88351589633984
+  },
+  {
+   "area": 3668,
+   "bbox": [
+    501,
+    776,
+    549,
+    924
+   ],
+   "mean_lum_delta": 41.74318429661941,
+   "mean_diff": 50.719738276990185
+  }
+ ],
+ "primary_component_bbox": [
+  596,
+  874,
+  768,
+  1189
+ ],
+ "primary_component": {
+  "pixels": 16382,
+  "in_hair_paint": 0.3316,
+  "in_clothing_paint": 0.9994,
+  "both": 0.331,
+  "hair_only": 0.0006,
+  "clothing_only": 0.6684,
+  "neither": 0.0,
+  "in_protected": 0.0,
+  "in_soft_hair_ring": 0.046,
+  "in_soft_clothing_ring": 0.0004
+ },
+ "all_ghost": {
+  "pixels": 75073,
+  "in_hair_paint": 0.6896,
+  "in_clothing_paint": 0.4567,
+  "both": 0.149,
+  "hair_only": 0.5406,
+  "clothing_only": 0.3077,
+  "neither": 0.0027,
+  "in_protected": 0.0049,
+  "in_soft_hair_ring": 0.0228,
+  "in_soft_clothing_ring": 0.0212
+ },
+ "band_pixels": 138000,
+ "band_membership": {
+  "pixels": 138000,
+  "in_hair_paint": 0.4289,
+  "in_clothing_paint": 0.5458,
+  "both": 0.2156,
+  "hair_only": 0.2134,
+  "clothing_only": 0.3303,
+  "neither": 0.2408,
+  "in_protected": 0.0863,
+  "in_soft_hair_ring": 0.0322,
+  "in_soft_clothing_ring": 0.0529
+ },
+ "collar_pixels": 37751,
+ "collar_membership": {
+  "pixels": 37751,
+  "in_hair_paint": 0.1847,
+  "in_clothing_paint": 0.9703,
+  "both": 0.1675,
+  "hair_only": 0.0172,
+  "clothing_only": 0.8027,
+  "neither": 0.0126,
+  "in_protected": 0.0161,
+  "in_soft_hair_ring": 0.0424,
+  "in_soft_clothing_ring": 0.0134
+ },
+ "neck_skin_pixels": 48859,
+ "neck_skin_membership": {
+  "pixels": 48859,
+  "in_hair_paint": 0.2889,
+  "in_clothing_paint": 0.9789,
+  "both": 0.2679,
+  "hair_only": 0.021,
+  "clothing_only": 0.711,
+  "neither": 0.0,
+  "in_protected": 0.0,
+  "in_soft_hair_ring": 0.0357,
+  "in_soft_clothing_ring": 0.0098
+ },
+ "center_garment_membership": {
+  "pixels": 23157,
+  "in_hair_paint": 0.8596,
+  "in_clothing_paint": 0.4083,
+  "both": 0.2678,
+  "hair_only": 0.5917,
+  "clothing_only": 0.1404,
+  "neither": 0.0,
+  "in_protected": 0.0,
+  "in_soft_hair_ring": 0.0108,
+  "in_soft_clothing_ring": 0.0797
+ }
+}

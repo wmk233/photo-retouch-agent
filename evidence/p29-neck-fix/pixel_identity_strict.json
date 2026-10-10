@@ -1,0 +1,248 @@
+{
+ "question": "are the core identity pixels byte-identical to the original, or only within a tolerance?",
+ "metric": "byte_identical = max per-channel |delta| == 0; identical_le2/le11 = the tolerance bands the earlier reports used",
+ "p29_fix_run_2108231348232871937": {
+  "protected_shipped": {
+   "pixels": 81741,
+   "byte_identical": 0.022596,
+   "identical_le2": 0.916957,
+   "identical_le11": 0.983815,
+   "changed_gt25": 647,
+   "mean_abs_delta": 1.932,
+   "max_abs_delta": 146,
+   "p99_abs_delta": 21
+  },
+  "protected_fixed": {
+   "pixels": 75762,
+   "byte_identical": 0.020063,
+   "identical_le2": 0.931113,
+   "identical_le11": 0.987962,
+   "changed_gt25": 538,
+   "mean_abs_delta": 1.831,
+   "max_abs_delta": 146,
+   "p99_abs_delta": 17
+  },
+  "facial_core_fixed": {
+   "pixels": 73331,
+   "byte_identical": 0.01676,
+   "identical_le2": 0.936807,
+   "identical_le11": 0.990604,
+   "changed_gt25": 427,
+   "mean_abs_delta": 1.711,
+   "max_abs_delta": 105,
+   "p99_abs_delta": 10
+  },
+  "protected_minus_facial_core": {
+   "pixels": 2431,
+   "byte_identical": 0.119704,
+   "identical_le2": 0.759358,
+   "identical_le11": 0.908268,
+   "changed_gt25": 111,
+   "mean_abs_delta": 5.446,
+   "max_abs_delta": 146,
+   "p99_abs_delta": 95
+  },
+  "parsed_face_all": {
+   "pixels": 86564,
+   "byte_identical": 0.014198,
+   "identical_le2": 0.793621,
+   "identical_le11": 0.84065,
+   "changed_gt25": 12308,
+   "mean_abs_delta": 12.304,
+   "max_abs_delta": 183,
+   "p99_abs_delta": 155
+  },
+  "parsed_hair_inside_fixed_hair": {
+   "pixels": 133101,
+   "byte_identical": 0.002487,
+   "identical_le2": 0.034928,
+   "identical_le11": 0.173402,
+   "changed_gt25": 62147,
+   "mean_abs_delta": 29.871,
+   "max_abs_delta": 211,
+   "p99_abs_delta": 121
+  },
+  "parsed_hair_inside_fixed_protected": {
+   "pixels": 1291,
+   "byte_identical": 0.206042,
+   "identical_le2": 0.917893,
+   "identical_le11": 0.993803,
+   "changed_gt25": 0,
+   "mean_abs_delta": 1.469,
+   "max_abs_delta": 15,
+   "p99_abs_delta": 11
+  },
+  "background_all": {
+   "pixels": 582107,
+   "byte_identical": 0.118724,
+   "identical_le2": 0.889775,
+   "identical_le11": 0.932791,
+   "changed_gt25": 15370,
+   "mean_abs_delta": 3.405,
+   "max_abs_delta": 187,
+   "p99_abs_delta": 41
+  },
+  "background_inside_editable": {
+   "pixels": 61416,
+   "byte_identical": 0.001156,
+   "identical_le2": 0.044711,
+   "identical_le11": 0.377556,
+   "changed_gt25": 15336,
+   "mean_abs_delta": 23.723,
+   "max_abs_delta": 187,
+   "p99_abs_delta": 168
+  },
+  "outside_all_masks": {
+   "pixels": 523777,
+   "byte_identical": 0.132761,
+   "identical_le2": 0.989713,
+   "identical_le11": 0.998308,
+   "changed_gt25": 34,
+   "mean_abs_delta": 1.006,
+   "max_abs_delta": 47,
+   "p99_abs_delta": 3
+  },
+  "outside_both_stitch_crops": {
+   "pixels": 93090,
+   "byte_identical": 0.11505,
+   "identical_le2": 0.99797,
+   "identical_le11": 1.0,
+   "changed_gt25": 0,
+   "mean_abs_delta": 1.027,
+   "max_abs_delta": 3,
+   "p99_abs_delta": 2
+  },
+  "outside_hair_stitch_crop": {
+   "pixels": 230986,
+   "byte_identical": 0.057263,
+   "identical_le2": 0.787909,
+   "identical_le11": 0.82931,
+   "changed_gt25": 30746,
+   "mean_abs_delta": 11.567,
+   "max_abs_delta": 193,
+   "p99_abs_delta": 128
+  }
+ },
+ "p29_run_2108222523123662850": {
+  "protected_shipped": {
+   "pixels": 81741,
+   "byte_identical": 0.020944,
+   "identical_le2": 0.907549,
+   "identical_le11": 0.974639,
+   "changed_gt25": 1376,
+   "mean_abs_delta": 2.577,
+   "max_abs_delta": 177,
+   "p99_abs_delta": 43
+  },
+  "protected_fixed": {
+   "pixels": 75762,
+   "byte_identical": 0.019284,
+   "identical_le2": 0.926876,
+   "identical_le11": 0.984662,
+   "changed_gt25": 680,
+   "mean_abs_delta": 1.965,
+   "max_abs_delta": 165,
+   "p99_abs_delta": 22
+  },
+  "facial_core_fixed": {
+   "pixels": 73331,
+   "byte_identical": 0.016432,
+   "identical_le2": 0.93468,
+   "identical_le11": 0.989595,
+   "changed_gt25": 406,
+   "mean_abs_delta": 1.701,
+   "max_abs_delta": 119,
+   "p99_abs_delta": 12
+  },
+  "protected_minus_facial_core": {
+   "pixels": 2431,
+   "byte_identical": 0.105306,
+   "identical_le2": 0.691485,
+   "identical_le11": 0.83587,
+   "changed_gt25": 274,
+   "mean_abs_delta": 9.917,
+   "max_abs_delta": 165,
+   "p99_abs_delta": 123
+  },
+  "parsed_face_all": {
+   "pixels": 86564,
+   "byte_identical": 0.01392,
+   "identical_le2": 0.792038,
+   "identical_le11": 0.844092,
+   "changed_gt25": 12012,
+   "mean_abs_delta": 10.224,
+   "max_abs_delta": 207,
+   "p99_abs_delta": 109
+  },
+  "parsed_hair_inside_fixed_hair": {
+   "pixels": 133101,
+   "byte_identical": 0.001938,
+   "identical_le2": 0.031555,
+   "identical_le11": 0.086746,
+   "changed_gt25": 87015,
+   "mean_abs_delta": 72.681,
+   "max_abs_delta": 240,
+   "p99_abs_delta": 211
+  },
+  "parsed_hair_inside_fixed_protected": {
+   "pixels": 1291,
+   "byte_identical": 0.187452,
+   "identical_le2": 0.882262,
+   "identical_le11": 0.953524,
+   "changed_gt25": 21,
+   "mean_abs_delta": 2.921,
+   "max_abs_delta": 108,
+   "p99_abs_delta": 60
+  },
+  "background_all": {
+   "pixels": 582107,
+   "byte_identical": 0.117463,
+   "identical_le2": 0.880013,
+   "identical_le11": 0.909917,
+   "changed_gt25": 29196,
+   "mean_abs_delta": 4.637,
+   "max_abs_delta": 203,
+   "p99_abs_delta": 65
+  },
+  "background_inside_editable": {
+   "pixels": 61416,
+   "byte_identical": 0.000163,
+   "identical_le2": 0.00666,
+   "identical_le11": 0.18588,
+   "changed_gt25": 28406,
+   "mean_abs_delta": 34.45,
+   "max_abs_delta": 203,
+   "p99_abs_delta": 174
+  },
+  "outside_all_masks": {
+   "pixels": 523777,
+   "byte_identical": 0.131478,
+   "identical_le2": 0.983432,
+   "identical_le11": 0.99554,
+   "changed_gt25": 707,
+   "mean_abs_delta": 1.103,
+   "max_abs_delta": 157,
+   "p99_abs_delta": 4
+  },
+  "outside_both_stitch_crops": {
+   "pixels": 93090,
+   "byte_identical": 0.114695,
+   "identical_le2": 0.994425,
+   "identical_le11": 1.0,
+   "changed_gt25": 0,
+   "mean_abs_delta": 1.041,
+   "max_abs_delta": 11,
+   "p99_abs_delta": 2
+  },
+  "outside_hair_stitch_crop": {
+   "pixels": 230986,
+   "byte_identical": 0.056545,
+   "identical_le2": 0.776103,
+   "identical_le11": 0.81821,
+   "changed_gt25": 32868,
+   "mean_abs_delta": 15.423,
+   "max_abs_delta": 217,
+   "p99_abs_delta": 178
+  }
+ }
+}
